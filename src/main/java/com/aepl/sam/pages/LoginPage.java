@@ -230,13 +230,13 @@ public class LoginPage extends LoginPageLocators {
 			comm.highlightElement(eyeIcon, "solid purple");
 			comm.highlightElement(passwordField, "solid purple");
 
-			String beforeType = passwordField.getAttribute("type");
+			String beforeType = passwordField.getDomAttribute("type");
 			logger.debug("Before click, password field type: {}", beforeType);
 
 			eyeIcon.click();
 			Thread.sleep(500);
 
-			String afterType = passwordField.getAttribute("type");
+			String afterType = passwordField.getDomAttribute("type");
 			logger.debug("After click, password field type: {}", afterType);
 
 			if (beforeType.equalsIgnoreCase("password") && afterType.equalsIgnoreCase("text")) {

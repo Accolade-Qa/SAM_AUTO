@@ -42,7 +42,7 @@ public class WebDriverFactory {
 		}
 
 		threadLocalDriver.set(driver);
-		logger.info("Driver instance stored for thread ID: {}", Thread.currentThread().getId());
+		logger.info("Driver instance stored for thread: {}", Thread.currentThread().getName());
 	}
 
 	public static void quitDriver() {
@@ -50,7 +50,7 @@ public class WebDriverFactory {
 		if (driver != null) {
 			driver.quit();
 			threadLocalDriver.remove();
-			logger.info("Driver closed and removed for thread ID: {}", Thread.currentThread().getId());
+			logger.info("Driver closed and removed for thread: {}", Thread.currentThread().getName());
 		}
 	}
 

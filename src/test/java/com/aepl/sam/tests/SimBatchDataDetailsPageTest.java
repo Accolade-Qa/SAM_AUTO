@@ -1,6 +1,5 @@
 package com.aepl.sam.tests;
 
-import java.util.List;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -100,20 +99,20 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 16)
 	public void testUploadSimDataDetailsComponentsTableHeaders() {
-		final List<String> EXP_UPLOAD_TABLE_HEADERS = List.of("ICCID", "CARD STATE", "CARD STATUS",
-			"PRIMARY TSP", "FALLBACK TSP",
-			"PRIMARY STATUS", "PRIMARY MSISDN", "FALLBACK STATUS", "FALLBACK MSISDN", "ACTIVE PROFILES",
-			"CARD EXPIRY DATE", "PRODUCT NAME", "IS RSU REQUIRED", "IS IMSI REQUIRED", "ACTIVE SR NUMBER");
+		// final List<String> EXP_UPLOAD_TABLE_HEADERS = List.of("ICCID", "CARD STATE", "CARD STATUS",
+		// 	"PRIMARY TSP", "FALLBACK TSP",
+		// 	"PRIMARY STATUS", "PRIMARY MSISDN", "FALLBACK STATUS", "FALLBACK MSISDN", "ACTIVE PROFILES",
+		// 	"CARD EXPIRY DATE", "PRODUCT NAME", "IS RSU REQUIRED", "IS IMSI REQUIRED", "ACTIVE SR NUMBER");
 	}
 
 	@Test(priority = 17)
 	public void testDuplicateICCIDInUploadedExcelSheetTableHeaders() {
-		final List<String> EXP_DUPLICATE_ICCID_HEADERS = List.of("ICCID", "MESSAGE");
+		// final List<String> EXP_DUPLICATE_ICCID_HEADERS = List.of("ICCID", "MESSAGE");
 	}
 
 	@Test(priority = 18)
 	public void testICCIDNotPresentInSensoriseDatabaseTableHeaders() {
-		final List<String> EXP_NOT_PRESENT_ICCID_HEADERS = List.of("ICCID", "MESSAGE");
+		// final List<String> EXP_NOT_PRESENT_ICCID_HEADERS = List.of("ICCID", "MESSAGE");
 	}
 
 	@Test(priority = 19)
@@ -133,18 +132,17 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 22)
 	public void testManualUploadButtonIsVisible() {
-		final boolean EXP_MANUAL_UPLOAD_VISIBLE = true;
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 23)
 	public void testManualUploadButtonIsClickable() {
-		final boolean EXP_MANUAL_UPLOAD_CLICKABLE = true;
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 24)
 	public void testManualUploadClickAndOpen() {
-		final List<String> EXP_MANUAL_UPLOAD_CLICKED_OPENED = List.of(Constants.SIM_MANUAL_UPLOAD,
-			"SIM Data Details");
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 27)
@@ -154,22 +152,22 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 28)
 	public void testEmptyInputValidation() {
-		final String EXP_EMPTY_INPUT_VALIDATION = "This field is required and can't be only spaces.";
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 29)
 	public void testShortInputValidation() {
-		final String EXP_SHORT_INPUT_VALIDATION = "Value must be exactly 20 characters long.";
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 30)
 	public void testLongInputValidation() {
-		final String EXP_LONG_INPUT_VALIDATION = "Value must be exactly 20 characters long.";
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 31)
 	public void testSpecialCharValidation() {
-		final String EXP_SPECIAL_CHAR_VALIDATION = "Special characters are not allowed.";
+		// expectation placeholder removed
 	}
 
 	@Test(priority = 32)

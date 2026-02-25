@@ -126,7 +126,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 		try {
 			wait.until(ExpectedConditions.visibilityOf(inputBox));
-			String type = inputBox.getAttribute("type");
+			String type = inputBox.getDomAttribute("type");
 
 			if ("file".equalsIgnoreCase(type)) {
 				// 1. Click inside file input to enable it
@@ -565,7 +565,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@formcontrolname='file']")));
 
 		// 2. Check that it is empty
-		String filePath = fileInput.getAttribute("value");
+		String filePath = fileInput.getDomAttribute("value");
 		if (filePath != null && !filePath.isEmpty()) {
 			logger.warn("File input is not empty. Current value: {}", filePath);
 		} else {
@@ -580,7 +580,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 		// 5. Optional: Double-check using the 'disabled' attribute (covers
 		// Angular/React cases)
-		String disabledAttr = submitButton.getAttribute("disabled");
+		String disabledAttr = submitButton.getDomAttribute("disabled");
 		boolean isDisabledAttr = disabledAttr != null
 				&& (disabledAttr.equals("true") || disabledAttr.equals("disabled"));
 
@@ -673,9 +673,9 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 		WebElement imeiField = wait.until(ExpectedConditions.visibilityOfElementLocated(IMEI));
 		WebElement iccidField = wait.until(ExpectedConditions.visibilityOfElementLocated(ICCID));
 
-		boolean isUIDReadOnly = uidField.getAttribute("readonly") != null;
-		boolean isIMEIReadOnly = imeiField.getAttribute("readonly") != null;
-		boolean isICCIDReadOnly = iccidField.getAttribute("readonly") != null;
+		boolean isUIDReadOnly = uidField.getDomAttribute("readonly") != null;
+		boolean isIMEIReadOnly = imeiField.getDomAttribute("readonly") != null;
+		boolean isICCIDReadOnly = iccidField.getDomAttribute("readonly") != null;
 
 		logger.info("UID field read-only: {}", isUIDReadOnly);
 		logger.info("IMEI field read-only: {}", isIMEIReadOnly);

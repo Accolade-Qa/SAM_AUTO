@@ -310,9 +310,7 @@ public class DeviceModelsPage extends DeviceModelsPageLocators {
 		wait.until(ExpectedConditions.visibilityOf(submitButton));
 
 		boolean isDisabledByState = !submitButton.isEnabled();
-
-		@SuppressWarnings("deprecation")
-		String disabledAttr = submitButton.getAttribute("disabled");
+		String disabledAttr = submitButton.getDomAttribute("disabled");
 		boolean isDisabledByAttribute = disabledAttr != null
 				&& (disabledAttr.equals("true") || disabledAttr.equals("disabled"));
 
@@ -393,9 +391,8 @@ public class DeviceModelsPage extends DeviceModelsPageLocators {
 		WebElement updateBtn = driver.findElement(ADD_UPDATE_BUTTON);
 
 		// Check if any input field is dirty
-		@SuppressWarnings("deprecation")
 		boolean isAnyDirty = listOfInputs.stream()
-				.anyMatch(element -> element.getAttribute("class").contains("ng-dirty"));
+				.anyMatch(element -> element.getDomAttribute("class").contains("ng-dirty"));
 
 		// Return true if button is enabled and any input is dirty
 		return updateBtn.isEnabled() && isAnyDirty;

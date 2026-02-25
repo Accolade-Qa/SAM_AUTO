@@ -149,12 +149,12 @@ public class UserProfilePage extends UserProfilePageLocators {
 			WebElement state = driver.findElement(STATE);
 			WebElement updateBtn = driver.findElement(UPDATE);
 
-			String firstNameValue = firstName.getAttribute("value");
-			String lastNameValue = lastName.getAttribute("value");
-			String emailValue = email.getAttribute("value");
-			String mobileNumberValue = mobileNumber.getAttribute("value");
-			String countryValue = country.getAttribute("value");
-			String stateValue = state.getAttribute("value");
+			String firstNameValue = firstName.getDomAttribute("value");
+			String lastNameValue = lastName.getDomAttribute("value");
+			String emailValue = email.getDomAttribute("value");
+			String mobileNumberValue = mobileNumber.getDomAttribute("value");
+			String countryValue = country.getDomAttribute("value");
+			String stateValue = state.getDomAttribute("value");
 
 			firstName.clear();
 			firstName.sendKeys(firstNameValue);
@@ -189,14 +189,14 @@ public class UserProfilePage extends UserProfilePageLocators {
 
 			// --- Collect UI Data ---
 			Map<String, String> uiData = new HashMap<>();
-			uiData.put("adminName", driver.findElement(ADM_NAME).getAttribute("value"));
-			uiData.put("firstName", driver.findElement(FIRST_NAME).getAttribute("value"));
-			uiData.put("lastName", driver.findElement(LAST_NAME).getAttribute("value"));
-			uiData.put("email", driver.findElement(EMAIL).getAttribute("value"));
-			uiData.put("mobileNumber", driver.findElement(MOBILE_NUMBER).getAttribute("value"));
-			uiData.put("country", driver.findElement(COUNTRY).getAttribute("value"));
-			uiData.put("state", driver.findElement(STATE).getAttribute("value"));
-			uiData.put("role", driver.findElement(USR_ROLE).getAttribute("value"));
+			uiData.put("adminName", driver.findElement(ADM_NAME).getDomAttribute("value"));
+			uiData.put("firstName", driver.findElement(FIRST_NAME).getDomAttribute("value"));
+			uiData.put("lastName", driver.findElement(LAST_NAME).getDomAttribute("value"));
+			uiData.put("email", driver.findElement(EMAIL).getDomAttribute("value"));
+			uiData.put("mobileNumber", driver.findElement(MOBILE_NUMBER).getDomAttribute("value"));
+			uiData.put("country", driver.findElement(COUNTRY).getDomAttribute("value"));
+			uiData.put("state", driver.findElement(STATE).getDomAttribute("value"));
+			uiData.put("role", driver.findElement(USR_ROLE).getDomAttribute("value"));
 
 			logger.info("UI Profile Data: {}", uiData);
 

@@ -536,19 +536,19 @@ public class DealersManagementPage extends DealersManagementLocators {
 					inputBox.click();
 					inputBox.sendKeys(Keys.CONTROL + "a");
 					inputBox.sendKeys(Keys.DELETE);
-					logger.debug("Cleared field '{}'", inputBox.getAttribute("formcontrolname"));
+					logger.debug("Cleared field '{}'", inputBox.getDomAttribute("formcontrolname"));
 				}
 			} catch (Exception e) {
-				logger.warn("Unable to clear field '{}': {}", inputBox.getAttribute("formcontrolname"), e.getMessage());
+				logger.warn("Unable to clear field '{}': {}", inputBox.getDomAttribute("formcontrolname"), e.getMessage());
 			}
 		}
 
 		// âœ… Step 2: Enter random data into each input
 		for (WebElement inputBox : inputBoxes) {
 			try {
-				String fieldName = inputBox.getAttribute("formcontrolname");
+				String fieldName = inputBox.getDomAttribute("formcontrolname");
 				if (fieldName == null || fieldName.isEmpty()) {
-					fieldName = inputBox.getAttribute("placeholder");
+					fieldName = inputBox.getDomAttribute("placeholder");
 				}
 
 				if (!inputBox.isDisplayed() || !inputBox.isEnabled()) {

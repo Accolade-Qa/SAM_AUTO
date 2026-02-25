@@ -13,6 +13,7 @@ public class Transformer implements IAnnotationTransformer {
 	private static final Logger logger = LogManager.getLogger(Transformer.class);
 
 	@Override
+	@SuppressWarnings({"rawtypes"})
 	public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
 		String methodName = (testMethod != null) ? testMethod.getName() : "Unknown Method";
 

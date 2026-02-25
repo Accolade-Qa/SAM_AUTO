@@ -579,11 +579,11 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		try {
 			wait.until(ExpectedConditions.elementToBeClickable(inputBox));
 
-			if (!inputBox.isEnabled() || Boolean.parseBoolean(inputBox.getAttribute("readonly"))) {
+			if (!inputBox.isEnabled() || Boolean.parseBoolean(inputBox.getDomAttribute("readonly"))) {
 				throw new IllegalStateException("Input field is disabled or readonly");
 			}
 
-			String type = inputBox.getAttribute("type");
+			String type = inputBox.getDomAttribute("type");
 
 			if ("file".equalsIgnoreCase(type)) {
 				if (inputValue != null && !inputValue.isEmpty()) {
@@ -722,8 +722,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		WebElement stateInput = wait
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@formcontrolname='state']")));
 
-		@SuppressWarnings("deprecation")
-		String inputValue = stateInput.getAttribute("value").trim();
+		String inputValue = stateInput.getDomAttribute("value").trim();
 
 		logger.info("State input value: {}", inputValue);
 		logger.info("Expected randomStateName: {}", randomStateName);
@@ -743,10 +742,9 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		WebElement stateCodeInput = wait.until(
 				ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@formcontrolname='stateCode']")));
 
-		@SuppressWarnings("deprecation")
-		String initialStateName = stateInput.getAttribute("value").trim();
-		@SuppressWarnings("deprecation")
-		String initialStateCode = stateCodeInput.getAttribute("value").trim();
+		String initialStateName = stateInput.getDomAttribute("value").trim();
+
+		String initialStateCode = stateCodeInput.getDomAttribute("value").trim();
 
 		logger.info("Initial State Name: {}", initialStateName);
 		logger.info("Initial State Code: {}", initialStateCode);
@@ -1034,8 +1032,6 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 	}
 
 	public boolean validateUploadFileInputBoxWithvalidFile() {
-		final String EXPECTED_FILE_NAME = "TCP01.bin";
-
 		try {
 			// Locate the hidden input[type='file'] element
 			WebElement fileUpload = driver.findElement(By.xpath("//input[@type='file' and contains(@accept, '.bin')]"));
@@ -1047,7 +1043,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 					ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@formcontrolname='fileName']")));
 			comm.highlightElement(uploadedFileName, "solid purple");
 
-			String fileNameText = uploadedFileName.getAttribute("value");
+			String fileNameText = uploadedFileName.getDomAttribute("value");
 			logger.info("Uploaded File Name: {}", fileNameText);
 
 			// Assert and return result
@@ -1078,7 +1074,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		WebElement releaseDateInput = driver.findElement(RELEASE_DATE_INPUT);
 		comm.highlightElement(releaseDateInput, "solid purple");
 
-		String selectedDate = releaseDateInput.getAttribute("value");
+		String selectedDate = releaseDateInput.getDomAttribute("value");
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String formattedCurrentDate = currentDate.format(formatter);

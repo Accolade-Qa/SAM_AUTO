@@ -227,9 +227,8 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					eyeElement.click();
 					logger.debug("Clicked eye icon #{} to open login packet modal.", packetCounter);
 
-					// Wait for modal to appear
-					WebElement modal = wait.until(ExpectedConditions
-							.visibilityOfElementLocated(By.xpath("//div[contains(@class,'component-body')]")));
+						// Wait for modal to appear
+						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'component-body')]") ));
 
 					// Locate component-body that contains table details
 					List<WebElement> detailsElements = driver
@@ -432,9 +431,8 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 
 					logger.debug("Clicked eye icon #{} to open health packet modal.", packetCounter);
 
-					// Wait for modal to appear
-					WebElement modal = wait.until(ExpectedConditions
-							.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'component-body')]")));
+					    // Wait for modal to appear
+					    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'component-body')]") ));
 
 					// Locate the component-body that contains table data
 					List<WebElement> detailsElements = driver
@@ -680,7 +678,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 	// get the attribute value of the search input on device details page
 	public String validateIMEIOnDeviceDetailsPage() {
 		WebElement imeiValue = driver.findElement(By.xpath("//input[contains(@formcontrolname,'searchInput')]"));
-		String actImeiValue = imeiValue.getAttribute("value");
+		String actImeiValue = imeiValue.getDomAttribute("value");
 		comm.highlightElement(imeiValue, "solid purple");
 
 		Assert.assertFalse(actImeiValue.isEmpty(), "IMEI value is empty");
@@ -754,7 +752,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			searchBtn.click();
 			Thread.sleep(500);
 
-			String searchedImei = driver.findElement(element).getAttribute("value");
+			String searchedImei = driver.findElement(element).getDomAttribute("value");
 			Assert.assertEquals(searchedImei, Constants.IMEI, "Searched IMEI does not match expected");
 
 			return searchedImei;
@@ -1078,8 +1076,8 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 				Thread.sleep(300);
 
 				// Check if arrow is disabled (varies by UI framework)
-				String arrowClass = rightArrow.getAttribute("class");
-				String ariaDisabled = rightArrow.getAttribute("aria-disabled");
+				String arrowClass = rightArrow.getDomAttribute("class");
+				String ariaDisabled = rightArrow.getDomAttribute("aria-disabled");
 				if (arrowClass.contains("disabled") || "true".equalsIgnoreCase(ariaDisabled)
 						|| !rightArrow.isEnabled()) {
 					logger.info("Reached last page of pagination. Total rows counted: {}", totalRowCount);
@@ -1214,8 +1212,8 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 				Thread.sleep(300);
 
 				// Check if arrow is disabled (varies by UI framework)
-				String arrowClass = rightArrow.getAttribute("class");
-				String ariaDisabled = rightArrow.getAttribute("aria-disabled");
+				String arrowClass = rightArrow.getDomAttribute("class");
+				String ariaDisabled = rightArrow.getDomAttribute("aria-disabled");
 				if (arrowClass.contains("disabled") || "true".equalsIgnoreCase(ariaDisabled)
 						|| !rightArrow.isEnabled()) {
 					logger.info("Reached last page of pagination. Total rows counted: {}", totalRowCount);

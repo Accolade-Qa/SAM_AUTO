@@ -21,7 +21,6 @@ import com.aepl.sam.utils.ExcelUtility;
 
 public class GovernmentServerPageTest extends TestBase {
 	private static final String SHEET_NAME = "Government_Server_Test";
-	private static final String BIN_FILE_PATH = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\src\\test\\resources\\SampleUpload\\TCP01.bin";
 
 	private GovernmentServerPage govServerPage;
 	private ExcelUtility excelUtility;

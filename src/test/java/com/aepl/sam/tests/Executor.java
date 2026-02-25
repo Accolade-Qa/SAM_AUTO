@@ -48,7 +48,6 @@ public class Executor {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	private boolean compareValues(Object expected, Object actual) {
 		if (expected == null && actual == null) {
 			return true;

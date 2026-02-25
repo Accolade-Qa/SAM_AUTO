@@ -1,5 +1,6 @@
 package com.aepl.sam.utils;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -12,7 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CalendarActions {
-	private WebDriver driver;
 	private WebDriverWait wait;
 	private static final Logger logger = LogManager.getLogger(CalendarActions.class);
 
@@ -20,8 +20,8 @@ public class CalendarActions {
 		if (driver == null) {
 			throw new IllegalArgumentException("WebDriver instance cannot be null");
 		}
-		this.driver = driver;
-		this.wait = wait;
+		// Use provided wait if available, otherwise create one from driver
+		this.wait = (wait != null) ? wait : new WebDriverWait(driver, Duration.ofSeconds(10));
 		logger.debug("CalendarActions initialized with driver and wait.");
 	}
 

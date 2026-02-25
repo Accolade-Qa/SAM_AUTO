@@ -145,7 +145,7 @@ public class FotaPage extends FotaPageLocators {
 
 			String text = element.getText();
 			if (text == null || text.isEmpty()) {
-				text = element.getAttribute("value");
+				text = element.getDomAttribute("value");
 			}
 			logger.info("{}: {}", label, text);
 		} catch (Exception e) {

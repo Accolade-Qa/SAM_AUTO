@@ -113,7 +113,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 		try {
 			wait.until(ExpectedConditions.visibilityOf(inputBox));
-			String type = inputBox.getAttribute("type");
+			String type = inputBox.getDomAttribute("type");
 
 			if ("file".equalsIgnoreCase(type)) {
 				// 1. Click inside file input to enable it
@@ -406,7 +406,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@formcontrolname='file']")));
 
 		// 2. Check that it is empty
-		String filePath = fileInput.getAttribute("value");
+		String filePath = fileInput.getDomAttribute("value");
 		if (filePath != null && !filePath.isEmpty()) {
 			logger.warn("File input is not empty. Current value: {}", filePath);
 		} else {
@@ -421,7 +421,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 		// 5. Optional: Double-check using the 'disabled' attribute (covers
 		// Angular/React cases)
-		String disabledAttr = submitButton.getAttribute("disabled");
+		String disabledAttr = submitButton.getDomAttribute("disabled");
 		boolean isDisabledAttr = disabledAttr != null
 				&& (disabledAttr.equals("true") || disabledAttr.equals("disabled"));
 
@@ -608,7 +608,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 	public boolean isUIDFieldNonEditableOnUpdateDispatchedDevicePage() {
 		WebElement uidField = wait.until(ExpectedConditions.visibilityOfElementLocated(UID));
-		String readonlyAttr = uidField.getAttribute("readonly");
+		String readonlyAttr = uidField.getDomAttribute("readonly");
 		return readonlyAttr != null && (readonlyAttr.equals("true") || readonlyAttr.equals("readonly"));
 	}
 

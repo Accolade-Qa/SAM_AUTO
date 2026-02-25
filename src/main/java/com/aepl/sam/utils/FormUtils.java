@@ -37,9 +37,9 @@ public class FormUtils {
 			WebElement input = inputBoxes.get(i);
 			boolean displayed = input.isDisplayed();
 			boolean enabled = input.isEnabled();
-			String key = input.getAttribute("formcontrolname");
+			String key = input.getDomAttribute("formcontrolname");
 			if (key == null || key.isEmpty()) {
-				key = input.getAttribute("placeholder");
+				key = input.getDomAttribute("placeholder");
 			}
 
 			logger.info("Input [{}] - Key: {} | Displayed: {}, Enabled: {}", i + 1, key, displayed, enabled);
@@ -74,7 +74,7 @@ public class FormUtils {
 			WebElement select = selects.get(i);
 			boolean displayed = select.isDisplayed();
 			boolean enabled = select.isEnabled();
-			String key = select.getAttribute("formcontrolname");
+			String key = select.getDomAttribute("formcontrolname");
 
 			logger.info("Select [{}] - Key: {} | Displayed: {}, Enabled: {}", i + 1, key, displayed, enabled);
 
@@ -135,9 +135,9 @@ public class FormUtils {
 
 		for (WebElement inputBox : inputBoxes) {
 			try {
-				String fieldName = inputBox.getAttribute("formcontrolname");
+				String fieldName = inputBox.getDomAttribute("formcontrolname");
 				if (fieldName == null || fieldName.isEmpty()) {
-					fieldName = inputBox.getAttribute("placeholder");
+					fieldName = inputBox.getDomAttribute("placeholder");
 				}
 
 				// Skip hidden/disabled fields
@@ -153,11 +153,9 @@ public class FormUtils {
 				// Check only if we have expected errors for this field
 				if (expectedErrors.containsKey(fieldName) && fieldValues.containsKey(fieldName)) {
 					List<String> testInputs = fieldValues.get(fieldName);
-					List<String> expectedList = expectedErrors.get(fieldName);
 
 					for (int i = 0; i < testInputs.size(); i++) {
 						String testValue = testInputs.get(i);
-						String expectedError = (i < expectedList.size()) ? expectedList.get(i) : "Unknown error";
 
 						try {
 							// Clear old value
@@ -204,7 +202,7 @@ public class FormUtils {
 
 			} catch (Exception e) {
 				logger.error("Exception while validating input box: {}", e.getMessage(), e);
-				actualErrors.put(inputBox.getAttribute("formcontrolname"), List.of("Exception: " + e.getMessage()));
+				actualErrors.put(inputBox.getDomAttribute("formcontrolname"), List.of("Exception: " + e.getMessage()));
 			}
 		}
 

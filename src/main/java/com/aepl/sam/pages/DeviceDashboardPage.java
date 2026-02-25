@@ -225,7 +225,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			for (WebElement link : navBarLinks) {
 				js.executeScript("arguments[0].style.border='5px solid cyan'", link);
-				if (link.getAttribute("placeholder").equalsIgnoreCase("Search")
+				if (link.getDomAttribute("placeholder").equalsIgnoreCase("Search")
 						|| link.getTagName().equalsIgnoreCase("input")) {
 					link.click();
 					isClicked = true;
@@ -244,15 +244,12 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedIMEI, Keys.ENTER);
-			String enteredIMEI = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedICCID, Keys.ENTER);
-			String enteredICCID = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedUIN, Keys.ENTER);
-			String enteredUIN = searchBox.getAttribute("value");
 
 			return expectedIMEI + " | " + expectedICCID + " | " + expectedUIN;
 
@@ -283,7 +280,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			for (WebElement link : navBarLinks) {
 				js.executeScript("arguments[0].style.border='5px solid cyan'", link);
-				if (link.getAttribute("placeholder").equalsIgnoreCase("Search")
+				if (link.getDomAttribute("placeholder").equalsIgnoreCase("Search")
 						|| link.getTagName().equalsIgnoreCase("input")) {
 					link.click();
 					isClicked = true;
@@ -302,15 +299,12 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedIMEI, Keys.ENTER);
-			String enteredIMEI = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedICCID, Keys.ENTER);
-			String enteredICCID = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedUIN, Keys.ENTER);
-			String enteredUIN = searchBox.getAttribute("value");
 
 			return expectedIMEI + " | " + expectedICCID + " | " + expectedUIN;
 
@@ -335,7 +329,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			for (WebElement link : navBarLinks) {
 				js.executeScript("arguments[0].style.border='5px solid cyan'", link);
-				if (link.getAttribute("placeholder").equalsIgnoreCase("Search")
+				if (link.getDomAttribute("placeholder").equalsIgnoreCase("Search")
 						|| link.getTagName().equalsIgnoreCase("input")) {
 					link.click();
 					isClicked = true;
@@ -354,15 +348,12 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedIMEI, Keys.ENTER);
-			String enteredIMEI = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedICCID, Keys.ENTER);
-			String enteredICCID = searchBox.getAttribute("value");
 
 			searchBox.clear();
 			searchBox.sendKeys(expectedUIN, Keys.ENTER);
-			String enteredUIN = searchBox.getAttribute("value");
 
 			return expectedIMEI + " | " + expectedICCID + " | " + expectedUIN;
 
@@ -907,8 +898,6 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			List<WebElement> graphs = wait
 					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".graph-card")));
 
-			boolean firmwareGraphFound = false;
-
 			for (WebElement graph : graphs) {
 
 				comm.highlightElement(graph, "orange");
@@ -917,7 +906,6 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 				String graphName = graph.getText().split("\n")[0].trim();
 
 				if (graphName.equalsIgnoreCase("Firmware Wise Devices")) {
-					firmwareGraphFound = true;
 
 					graph.click();
 

@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TableUtils {
-	private WebDriver driver;
 	private WebDriverWait wait;
 	private static final Logger logger = LogManager.getLogger(TableUtils.class);
 
@@ -26,7 +25,6 @@ public class TableUtils {
 
 	public TableUtils(WebDriver driver, WebDriverWait wait) {
 		this.wait = wait;
-		this.driver = driver;
 	}
 
 	public List<String> getTableHeaders(By tableLocator) {

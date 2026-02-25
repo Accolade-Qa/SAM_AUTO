@@ -90,7 +90,7 @@ public class PageAssertionsUtil {
 
 			for (WebElement button : buttons) {
 				((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", button);
-				String label = button.getText().isBlank() ? button.getAttribute("aria-label") : button.getText();
+				String label = button.getText().isBlank() ? button.getDomAttribute("aria-label") : button.getText();
 				softAssert.assertTrue(button.isDisplayed(), "Button not displayed: " + label);
 				softAssert.assertTrue(button.isEnabled(), "Button not enabled: " + label);
 				actions.highlightElement(button, "solid purple");

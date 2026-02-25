@@ -7,18 +7,14 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.UserProfilePage;
 import com.aepl.sam.utils.ExcelUtility;
 
 public class UserProfilePageTest extends TestBase {
-
 	private static final String SHEET_NAME = "User_Profile_Test";
-
 	private ExcelUtility excelUtility;
 	private UserProfilePage userProf;
-	private PageActionsUtil comm;
 	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
@@ -27,7 +23,6 @@ public class UserProfilePageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new PageActionsUtil(driver, wait);
 		this.assertion = new PageAssertionsUtil(driver, wait);
 		this.userProf = new UserProfilePage(driver, wait);
 		this.excelUtility = new ExcelUtility();
