@@ -15,31 +15,6 @@ import com.aepl.sam.utils.ExcelUtility;
 public class OtaPageTest extends TestBase {
 	private static final String SHEET_NAME = "OTA_Test";
 
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR = "Test Navigate to Device Utility Tab";
-	private static final String TC_VALIDATE_BUTTONS = "Test All Buttons on OTA Page";
-	private static final String TC_VALIDATE_COMPONENTS = "Test All Components on OTA Page";
-	private static final String TC_PAGINATION = "Test Pagination on OTA Page";
-	private static final String TC_MANUAL_OTA = "Test Manual OTA Feature";
-	private static final String TC_OTA_DETAILS = "Test OTA Details";
-	private static final String TC_OTA_PAGINATION = "Test OTA Pagination";
-	private static final String TC_EXPORT = "Test Export Button on OTA Page";
-	private static final String TC_ABORT = "Test Abort Button on OTA Page";
-	private static final String TC_BATCH = "Test OTA Batch Functionality";
-
-	private static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_NAV_BAR = Constants.OTA_LINK;
-	private static final String EXP_VALIDATE_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_VALIDATE_COMPONENTS = "All components are displayed and validated successfully.";
-	private static final String EXP_PAGINATION = "Pagination is working correctly.";
-	private static final String EXP_MANUAL_OTA = "New OTA added successfully for IMEI: " + Constants.IMEI;
-	private static final String EXP_OTA_DETAILS = "OTA details displayed successfully.";
-	private static final String EXP_EXPORT = "Export functionality is working correctly.";
-	private static final String EXP_ABORT = "Abort functionality is working correctly.";
-	private static final String EXP_BATCH = "OTA batch functionality is working correctly.";
-
 	private ExcelUtility excelUtility;
 	private OtaPage ota;
 	private CommonMethods comm;
@@ -60,73 +35,73 @@ public class OtaPageTest extends TestBase {
 
 	@Test(priority = -1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 0)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 1)
 	public void testNavBarLink() {
-		executor.executeTest(TC_NAV_BAR, EXP_NAV_BAR, ota::navBarLink);
+		executor.executeTest("Test Navigate to Device Utility Tab", Constants.OTA_LINK, ota::navBarLink);
 	}
 
 	@Test(priority = 2)
 	public void testAllButtons() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Test All Buttons on OTA Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	@Test(priority = 3)
 	public void testAllComponents() {
-		executor.executeTest(TC_VALIDATE_COMPONENTS, EXP_VALIDATE_COMPONENTS, comm::validateComponents);
+		executor.executeTest("Test All Components on OTA Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	@Test(priority = 4)
 	public void testOtaPagePagination() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Test Pagination on OTA Page", "Pagination is working correctly.", () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return "Pagination is working correctly.";
 		});
 	}
 
 	@Test(priority = 5)
 	public void testManualOtaFeature() {
-		executor.executeTest(TC_MANUAL_OTA, EXP_MANUAL_OTA, ota::testManualOtaFeature);
+		executor.executeTest("Test Manual OTA Feature", "New OTA added successfully for IMEI: " + Constants.IMEI, ota::testManualOtaFeature);
 	}
 
 	@Test(priority = 6)
 	public void testOtaDetails() {
-		executor.executeTest(TC_OTA_DETAILS, EXP_OTA_DETAILS, ota::testOtaDetails);
+		executor.executeTest("Test OTA Details", "OTA details displayed successfully.", ota::testOtaDetails);
 	}
 
 	@Test(priority = 7)
 	public void testOtaPagination() {
-		executor.executeTest(TC_OTA_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Test OTA Pagination", "Pagination is working correctly.", () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return "Pagination is working correctly.";
 		});
 	}
 
 	@Test(priority = 8)
 	public void testExportButton() {
-		executor.executeTest(TC_EXPORT, EXP_EXPORT, () -> {
-			return comm.validateExportButton() ? EXP_EXPORT : "Export functionality failed.";
+		executor.executeTest("Test Export Button on OTA Page", "Export functionality is working correctly.", () -> {
+			return comm.validateExportButton() ? "Export functionality is working correctly." : "Export functionality failed.";
 		});
 	}
 
 	@Test(priority = 9)
 	public void testAbortButton() {
-		executor.executeTest(TC_ABORT, EXP_ABORT, () -> {
-			return ota.testAbortButton() ? EXP_ABORT : "Abort functionality failed.";
+		executor.executeTest("Test Abort Button on OTA Page", "Abort functionality is working correctly.", () -> {
+			return ota.testAbortButton() ? "Abort functionality is working correctly." : "Abort functionality failed.";
 		});
 	}
 
 	@Test(priority = 10)
 	public void testOtaBatch() {
-		executor.executeTest(TC_BATCH, EXP_BATCH, ota::testOtaBatch);
+		executor.executeTest("Test OTA Batch Functionality", "OTA batch functionality is working correctly.", ota::testOtaBatch);
 	}
 
 	@AfterClass

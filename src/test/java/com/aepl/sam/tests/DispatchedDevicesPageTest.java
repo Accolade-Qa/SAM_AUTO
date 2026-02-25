@@ -16,27 +16,8 @@ import com.aepl.sam.pages.DispatchedDevicesPage;
 import com.aepl.sam.utils.ExcelUtility;
 
 public class DispatchedDevicesPageTest extends TestBase {
-	// Test Case Names (TC_)
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR_LINK = "Test Navigation to Device Utility Tab";
 
-	private static final String TC_VALIDATE_BUTTONS = "Test All Buttons";
-	private static final String TC_COMPONENT_TITLES = "Test All Components";
 
-	private static final String TC_VERSION = "Verify Application Version Display";
-	private static final String TC_COPYRIGHT = "Verify Copyright Text";
-
-	// Expected Values (EXP_)
-	private static final String LOGO_DISPLAYED = "Logo Displayed";
-	private static final String LOGO_NOT_DISPLAYED = "Logo Not Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-
-	private static final String EXP_VALIDATE_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_COMPONENT_TITLES = "All components are displayed and validated successfully.";
-
-	private static final String EXP_VERSION = "Version: 1.5.0";
-	private static final String EXP_COPYRIGHT = "Accolade Electronics Pvt. Ltd.";
 
 	private ExcelUtility excelUtility;
 	private DispatchedDevicesPage dispatchedDevicePage;
@@ -58,18 +39,18 @@ public class DispatchedDevicesPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void navBarLinkTest() {
-		executor.executeTest(TC_NAV_BAR_LINK, Constants.DISP_DEVICE_LINK, dispatchedDevicePage::navBarLink);
+		executor.executeTest("Test Navigation to Device Utility Tab", Constants.DISP_DEVICE_LINK, dispatchedDevicePage::navBarLink);
 	}
 
 	/*** Manual Upload ***/
@@ -77,19 +58,19 @@ public class DispatchedDevicesPageTest extends TestBase {
 	// validate page title
 	@Test(priority = 4)
 	public void testPageTitleManualUpload() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	// validate all components on the page
 	@Test(priority = 5)
 	public void testAllComponentsManualUpload() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Test All Components", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// validate all buttons on the page
 	@Test(priority = 6)
 	public void testAllButtonsManualUpload() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Test All Buttons", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	// validate the manual upload button is visible
@@ -116,13 +97,13 @@ public class DispatchedDevicesPageTest extends TestBase {
 	// validate all components on manual upload page
 	@Test(priority = 10)
 	public void testAllComponentsOnManualUploadPage() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Test All Components", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// validate all buttons on manual upload page
 	@Test(priority = 11)
 	public void testAllButtonsOnManualUploadPage() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Test All Buttons", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	/*** validate all errors of the fields on the manual upload page ***/
@@ -245,13 +226,13 @@ public class DispatchedDevicesPageTest extends TestBase {
 	// validate all components on bulk upload page
 	@Test(priority = 27)
 	public void testAllComponentsOnBulkUploadPage() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Test All Components", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// validate all buttons on bulk upload page
 	@Test(priority = 28)
 	public void testAllButtonsOnBulkUploadPage() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Test All Buttons", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	// validate the download sample link is clickable on bulk upload page
@@ -546,12 +527,12 @@ public class DispatchedDevicesPageTest extends TestBase {
 
 	@Test(priority = 60)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, EXP_VERSION, comm::checkVersion);
+		executor.executeTest("Verify Application Version", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	@Test(priority = 61)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, EXP_COPYRIGHT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass

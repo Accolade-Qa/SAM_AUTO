@@ -22,62 +22,6 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Excel Sheet Name
 	private static final String DEVICE_DETAILS_EXCEL_SHEET = "Device_Details_Test";
 
-	// Test Case Names
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_REFRESH_BUTTON = "Verify Refresh Button Functionality";
-	private static final String TC_SEARCH_VIEW_DEVICE = "Search and View Device";
-	private static final String TC_ALL_BUTTONS = "Verify All Buttons on Device Details Page";
-	private static final String TC_COMPONENT_TITLES = "Verify All Component Title on Device Details Page";
-	private static final String TC_ALL_CARDS = "Verify All Cards on Device Details Page";
-
-	private static final String TC_EXPORT_BUTTON = "Verify Last 50 Login Packets on Device Details Page";
-	private static final String TC_VIEW_LOGIN_PACKET = "Verify View Login Packet on Device Details Page";
-	private static final String TC_PAGINATION = "Verify Pagination on Device Details Page";
-	private static final String TC_VERSION = "Verify Version on Device Details Page";
-	private static final String TC_COPYRIGHT = "Verify Copyright on Device Details Page";
-	private static final String TC_HEALTH_PACKET = "Verify Health Packet";
-	private static final String TC_BAR_GRAPH = "Verify Bar Graph on Device Details Page";
-
-	private static final String TC_SEARCH_INPUT_ENABLED = "Search Input Enabled";
-
-	private static final String TC_SEARCH_INPUT_VISIBLE = "Search Input Visible";
-
-	private static final String TC_SEARCH_BUTTON_ENABLED = "Search Button Enabled";
-
-	private static final String TC_SEARCH_BUTTON_VISIBLE = "Search Button Visible";
-
-	// Expected Results
-	private static final String LOGO_DISPLAYED = "Logo Displayed";
-	private static final String LOGO_NOT_DISPLAYED = "Logo Not Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_REFRESH_CLICKED = "Clicked on the refreshed button";
-	private static final String EXP_SEARCH_VIEW = "Device details displayed successfully";
-	private static final String EXP_ALL_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_COMPONENT_TITLES = "All components are displayed and validated successfully.";
-	private static final String EXP_CARDS = "All cards are displayed and validated successfully.";
-
-	private static final String EXP_EXPORT = "Last 50 login packets are displayed successfully";
-	private static final String EXP_VIEW_LOGIN = "All login packets viewed and saved successfully";
-	private static final String EXP_PAGINATION = "Pagination is displayed and functional";
-	private static final String EXP_HEALTH_RESULT = "Health packet details are displayed successfully";
-	private static final String EXP_BAR_GRAPH = "Device Activity Overview";
-	private static final String EXP_SEARCH_BUTTON_ENABLED = "Search Button Enabled";
-
-	private static final String EXP_SEARCH_BUTTON_NOT_ENABLED = "Search Button Not Enabled";
-
-	private static final String EXP_SEARCH_BUTTON_VISIBLE = "Search Button Visible";
-
-	private static final String EXP_SEARCH_BUTTON_NOT_VISIBLE = "Search Button Not Visible";
-
-	private static final String EXP_SEARCH_INPUT_ENABLED = "Search Input Enabled";
-
-	private static final String EXP_SEARCH_INPUT_NOT_ENABLED = "Search Input Not Enabled";
-
-	private static final String EXP_SEARCH_INPUT_VISIBLE = "Search Input Visible";
-
-	private static final String EXP_SEARCH_INPUT_NOT_VISIBLE = "Search Input Not Visible";
-
 	private DeviceDetailsPage deviceDetails;
 	private CommonMethods comm;
 	private ExcelUtility excelUtility;
@@ -100,41 +44,41 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for company logo display
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	// Testing for page title
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	// Testing for refresh button functionality
 	@Test(priority = 3)
 	public void testRefreshButton() {
-		executor.executeTest(TC_REFRESH_BUTTON, EXP_REFRESH_CLICKED, () -> {
+		executor.executeTest("Verify Refresh Button Functionality", "Clicked on the refreshed button", () -> {
 			comm.clickRefreshButton();
-			return EXP_REFRESH_CLICKED;
+			return "Clicked on the refreshed button";
 		});
 	}
 
 	// Testing for all buttons on the page
 	@Test(priority = 4)
 	public void testButtons() {
-		executor.executeTest(TC_ALL_BUTTONS, EXP_ALL_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	// Testing for component titles on the page
 	@Test(priority = 5)
 	public void testComponentTitles() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// Testing for the bar graph on the page
 	@Test(priority = 6)
 	public void testClickOnDeviceActivityBarGraph() {
-		executor.executeTest(TC_BAR_GRAPH, EXP_BAR_GRAPH, () -> {
+		executor.executeTest("Verify Bar Graph on Device Details Page", "Device Activity Overview", () -> {
 			if (deviceDetails.isBarGraphVisible()) {
 				String actual = deviceDetails.clickOnDeviceActivityBarGraph();
 				return actual;
@@ -150,31 +94,31 @@ public class DeviceDetailsPageTest extends TestBase {
 	// validate search button is visible
 	@Test(priority = 7)
 	public void testIsSearchButtonVisible() {
-		executor.executeTest(TC_SEARCH_BUTTON_VISIBLE, EXP_SEARCH_BUTTON_VISIBLE,
-				() -> deviceDetails.isSearchButtonVisible() ? EXP_SEARCH_BUTTON_VISIBLE
-						: EXP_SEARCH_BUTTON_NOT_VISIBLE);
+		executor.executeTest("Search Button Visible", "Search Button Visible",
+				() -> deviceDetails.isSearchButtonVisible() ? "Search Button Visible"
+						: "Search Button Not Visible");
 	}
 
 	// validate search button is enabled
 	@Test(priority = 8)
 	public void testIsSearchButtonEnabled() {
-		executor.executeTest(TC_SEARCH_BUTTON_ENABLED, EXP_SEARCH_BUTTON_ENABLED,
-				() -> deviceDetails.isSearchButtonEnabled() ? EXP_SEARCH_BUTTON_ENABLED
-						: EXP_SEARCH_BUTTON_NOT_ENABLED);
+		executor.executeTest("Search Button Enabled", "Search Button Enabled",
+				() -> deviceDetails.isSearchButtonEnabled() ? "Search Button Enabled"
+						: "Search Button Not Enabled");
 	}
 
 	// validate search input is visible
 	@Test(priority = 9)
 	public void testIsSearchInputVisible() {
-		executor.executeTest(TC_SEARCH_INPUT_VISIBLE, EXP_SEARCH_INPUT_VISIBLE,
-				() -> deviceDetails.isSearchInputVisible() ? EXP_SEARCH_INPUT_VISIBLE : EXP_SEARCH_INPUT_NOT_VISIBLE);
+		executor.executeTest("Search Input Visible", "Search Input Visible",
+				() -> deviceDetails.isSearchInputVisible() ? "Search Input Visible" : "Search Input Not Visible");
 	}
 
 	// validate search input is enabled
 	@Test(priority = 10)
 	public void testIsSearchInputEnabled() {
-		executor.executeTest(TC_SEARCH_INPUT_ENABLED, EXP_SEARCH_INPUT_ENABLED,
-				() -> deviceDetails.isSearchInputEnabled() ? EXP_SEARCH_INPUT_ENABLED : EXP_SEARCH_INPUT_NOT_ENABLED);
+		executor.executeTest("Search Input Enabled", "Search Input Enabled",
+				() -> deviceDetails.isSearchInputEnabled() ? "Search Input Enabled" : "Search Input Not Enabled");
 	}
 
 	// validate the search functionality
@@ -216,9 +160,9 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for searching and viewing a device
 	@Test(priority = 15)
 	public void testViewDevice() {
-		executor.executeTest(TC_SEARCH_VIEW_DEVICE, EXP_SEARCH_VIEW, () -> {
+		executor.executeTest("Search and View Device", "Device details displayed successfully", () -> {
 			deviceDetails.viewDevice();
-			return EXP_SEARCH_VIEW;
+			return "Device details displayed successfully";
 		});
 	}
 
@@ -232,13 +176,13 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for all buttons on the page again after viewing a device
 	@Test(priority = 17)
 	public void testAllButtons() {
-		executor.executeTest(TC_ALL_BUTTONS, EXP_ALL_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	// Validationg all components on the page
 	@Test(priority = 18)
 	public void testComponentTitle() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// Validate the imei displayed on the device details page is correct
@@ -269,17 +213,17 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Validate the search button is visible
 	@Test(priority = 23)
 	public void testIsSearchButtonVisibleAfterViewingDevice() {
-		executor.executeTest(TC_SEARCH_BUTTON_VISIBLE, EXP_SEARCH_BUTTON_VISIBLE,
-				() -> deviceDetails.isSearchButtonVisible() ? EXP_SEARCH_BUTTON_VISIBLE
-						: EXP_SEARCH_BUTTON_NOT_VISIBLE);
+		executor.executeTest("Search Button Visible", "Search Button Visible",
+				() -> deviceDetails.isSearchButtonVisible() ? "Search Button Visible"
+						: "Search Button Not Visible");
 	}
 
 	// Validate the search button is enabled
 	@Test(priority = 24)
 	public void testIsSearchButtonEnabledAfterViewingDevice() {
-		executor.executeTest(TC_SEARCH_BUTTON_ENABLED, EXP_SEARCH_BUTTON_ENABLED,
-				() -> deviceDetails.isSearchButtonEnabled() ? EXP_SEARCH_BUTTON_ENABLED
-						: EXP_SEARCH_BUTTON_NOT_ENABLED);
+		executor.executeTest("Search Button Enabled", "Search Button Enabled",
+				() -> deviceDetails.isSearchButtonEnabled() ? "Search Button Enabled"
+						: "Search Button Not Enabled");
 	}
 
 	// Validate the valid imei searched
@@ -332,7 +276,7 @@ public class DeviceDetailsPageTest extends TestBase {
 	// shows the IGN,MAINS, TAMPER, PWR, etc
 	@Test(priority = 32)
 	public void testAllCards() {
-		executor.executeTest(TC_ALL_CARDS, EXP_CARDS, comm::validateCards);
+		executor.executeTest("Verify All Cards on Device Details Page", "All cards are displayed and validated successfully.", comm::validateCards);
 	}
 
 	// Test all cards headers is valid with the expected headers
@@ -410,7 +354,7 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for export button functionality
 	@Test(priority = 43)
 	public void testvalidateExportButton() {
-		executor.executeTest(TC_EXPORT_BUTTON, EXP_EXPORT, () -> comm.validateExportButton() ? EXP_EXPORT : "ERROR");
+		executor.executeTest("Verify Last 50 Login Packets on Device Details Page", "Last 50 login packets are displayed successfully", () -> comm.validateExportButton() ? "Last 50 login packets are displayed successfully" : "ERROR");
 	}
 
 	// validate the table headers of the last 50 login packets component
@@ -440,14 +384,14 @@ public class DeviceDetailsPageTest extends TestBase {
 	// view last 10 login packets and create a json file of it.
 	@Test(priority = 47)
 	public void testViewLoginPacket() {
-		executor.executeTest(TC_VIEW_LOGIN_PACKET, EXP_VIEW_LOGIN, deviceDetails::viewLoginPacket);
+		executor.executeTest("Verify View Login Packet on Device Details Page", "All login packets viewed and saved successfully", deviceDetails::viewLoginPacket);
 	}
 
 	@Test(priority = 48)
 	public void testPaginationOnLoginPacketComponent() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination on Device Details Page", "Pagination is displayed and functional", () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return "Pagination is displayed and functional";
 		});
 	}
 
@@ -496,7 +440,7 @@ public class DeviceDetailsPageTest extends TestBase {
 
 	@Test(priority = 55)
 	public void testViewHealthPacket() {
-		executor.executeTest(TC_HEALTH_PACKET, EXP_HEALTH_RESULT, () -> {
+		executor.executeTest("Verify Health Packet", "Health packet details are displayed successfully", () -> {
 			if (deviceDetails.isHealthPacketVisible()) {
 				return deviceDetails.viewHealthPacket();
 			} else {
@@ -509,23 +453,23 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for pagination functionality
 	@Test(priority = 56)
 	public void testPaginationOnHealthPacketComponent() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination on Device Details Page", "Pagination is displayed and functional", () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return "Pagination is displayed and functional";
 		});
 	}
 
 	// Testing for version text on the page
 	@Test(priority = 57)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version on Device Details Page", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 		logger.info("Version test executed successfully.");
 	}
 
 	// Testing for copyright text on the page
 	@Test(priority = 58)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright on Device Details Page", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 		logger.info("Copyright test executed successfully.");
 	}
 

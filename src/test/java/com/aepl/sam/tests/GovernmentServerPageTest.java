@@ -20,42 +20,6 @@ import com.aepl.sam.utils.ExcelUtility;
 
 public class GovernmentServerPageTest extends TestBase {
 	private static final String SHEET_NAME = "Government_Server_Test";
-
-	// Test Cases
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR = "Verify Navigation Bar Click Functionality";
-	private static final String TC_REFRESH = "Verify Refresh Button Functionality";
-	private static final String TC_BACK = "Verify Back Button Functionality";
-	private static final String TC_ADD_SERVER = "Verify Add Government Server Functionality";
-	private static final String TC_FILL_FORM = "Verify Government Server Form Filling";
-	private static final String TC_SEARCH_VIEW = "Verify Search and View Functionality";
-	private static final String TC_UPDATE = "Verify Update Government Server Functionality";
-	private static final String TC_ADD_FIRMWARE = "Verify Add Firmware Functionality";
-	private static final String TC_DELETE = "Verify Delete Government Server Functionality";
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String TC_VERSION = "Verify Version Functionality";
-	private static final String TC_COPYRIGHT = "Verify Copyright Functionality";
-	private static final String TC_COMPONENT_TITLE = "Test Page Component Title";
-	private static final String TC_VALIDATE_BUTTONS = "Test all button on page {Government Server}";
-	private static final String TC_VALIDATE_COMPONENTS = "Test All Components on the page {Government Server}";
-
-	// Expected Results
-	private static final boolean EXP_LOGO_DISPLAYED = true;
-	private static final String EXP_PAGE_TITLE = "Government Server";
-	private static final boolean EXP_NAV_BAR = true;
-	private static final String EXP_REFRESH = "Government Server";
-	private static final String EXP_BACK = Constants.GOV_LINK;
-	private static final String EXP_ADD_SERVER = "Government Servers Details";
-	private static final String EXP_FILL_FORM = "Data Fetched Successfully";
-	private static final String EXP_SEARCH_VIEW = "Search and View Successful";
-	private static final String EXP_UPDATE = "Data Saved successfully!!";
-	private static final String EXP_ADD_FIRMWARE = "Firmware Added Successfully";
-	private static final String EXP_DELETE = "Data Fetched Successfully";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-	private static final String EXP_COMPONENT_TITLE = "Government Servers List";
-	private static final String EXP_VALIDATE_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_VALIDATE_COMPONENTS = "All components are displayed and validated successfully.";
 	private static final String BIN_FILE_PATH = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\src\\test\\resources\\SampleUpload\\TCP01.bin";
 
 	private GovernmentServerPage govServerPage;
@@ -80,37 +44,37 @@ public class GovernmentServerPageTest extends TestBase {
 	// Validate the company logo on the left of the page. if it is displayed or not.
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, EXP_LOGO_DISPLAYED, () -> comm.verifyWebpageLogo());
+		executor.executeTest("Verify Company Logo on Webpage", true, () -> comm.verifyWebpageLogo());
 	}
 
 	// Validate the navigation bar
 	@Test(priority = 2)
 	public void testClickNavBar() {
-		executor.executeTest(TC_NAV_BAR, EXP_NAV_BAR, govServerPage::navBarLink);
+		executor.executeTest("Verify Navigation Bar Click Functionality", true, govServerPage::navBarLink);
 	}
 
 	// Validate the page title of the government server page
 	@Test(priority = 3)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, govServerPage::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", "Government Server", govServerPage::verifyPageTitle);
 	}
 
 	// Validate the component title of the government server page
 	@Test(priority = 4)
 	public void testComponentTitle() {
-		executor.executeTest(TC_COMPONENT_TITLE, EXP_COMPONENT_TITLE, comm::validateComponentTitle);
+		executor.executeTest("Test Page Component Title", "Government Servers List", comm::validateComponentTitle);
 	}
 
 	// Validate the all buttons on the screen that is appeared.
 	@Test(priority = 5)
 	public void testButtons() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Test all button on page {Government Server}", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	// Validate the all components on the screen.
 	@Test(priority = 6)
 	public void testComponents() {
-		executor.executeTest(TC_VALIDATE_COMPONENTS, EXP_VALIDATE_COMPONENTS, comm::validateComponents);
+		executor.executeTest("Test All Components on the page {Government Server}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// Search box is enabled
@@ -227,9 +191,9 @@ public class GovernmentServerPageTest extends TestBase {
 
 	@Test(priority = 20)
 	public void testAddGovernmentServer() {
-		executor.executeTest(TC_ADD_SERVER, EXP_ADD_SERVER, () -> {
+		executor.executeTest("Verify Add Government Server Functionality", "Government Servers Details", () -> {
 			String result = govServerPage.addGovernmentServer();
-			return (result != null && !result.isEmpty()) ? EXP_ADD_SERVER : "Government Server Addition Failed";
+			return (result != null && !result.isEmpty()) ? "Government Servers Details" : "Government Server Addition Failed";
 		});
 	}
 
@@ -376,7 +340,7 @@ public class GovernmentServerPageTest extends TestBase {
 	// for new state
 	@Test(priority = 39)
 	public void testFillForm() {
-		executor.executeTest(TC_FILL_FORM, EXP_FILL_FORM, () -> govServerPage.manageGovServer("add"));
+		executor.executeTest("Verify Government Server Form Filling", "Data Fetched Successfully", () -> govServerPage.manageGovServer("add"));
 	}
 
 	// Verify the given details are added is correctly displyed on the table
@@ -412,14 +376,14 @@ public class GovernmentServerPageTest extends TestBase {
 	// fill any data into the input box and then try to update the record
 	@Test(priority = 44)
 	public void testUpdateGovServer() {
-		executor.executeTest(TC_UPDATE, EXP_UPDATE, () -> govServerPage.manageGovServer("update"));
+		executor.executeTest("Verify Update Government Server Functionality", "Data Saved successfully!!", () -> govServerPage.manageGovServer("update"));
 	}
 
 	// scroll down to verify the page title as {Device Firmware List}
 	@Test(priority = 45)
 	public void testDeviceFirmwareListComponentIsVisible() {
 		executor.executeTest("Test the device fimware list component is visible",
-				"All components are displayed and validated successfully.", () -> comm.validateComponents());
+				Constants.EXP_VALIDATE_COMPONENTS_TEXT, () -> comm.validateComponents());
 	}
 
 	@Test(priority = 46)
@@ -432,7 +396,7 @@ public class GovernmentServerPageTest extends TestBase {
 	@Test(priority = 47)
 	public void testButtonsValidations() {
 		executor.executeTest("Test the device fimware list component title ",
-				"All buttons are displayed and enabled successfully.", () -> comm.validateButtons());
+				Constants.EXP_VALIDATE_BUTTONS_TEXT, () -> comm.validateButtons());
 	}
 
 	// Search box is enabled
@@ -617,14 +581,14 @@ public class GovernmentServerPageTest extends TestBase {
 	// Verify the buttons
 	@Test(priority = 71)
 	public void testAllButtonsOnTheFirmwareMasterPage() {
-		executor.executeTest("Test all buttons on the firmware master page", EXP_VALIDATE_BUTTONS,
+		executor.executeTest("Test all buttons on the firmware master page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
 				comm::validateButtons);
 	}
 
 	// Verify the components
 	@Test(priority = 72)
 	public void testAllComponentOnTheFirmwareMasterPage() {
-		executor.executeTest("Test all components on the firmware master page", EXP_VALIDATE_COMPONENTS,
+		executor.executeTest("Test all components on the firmware master page", Constants.EXP_VALIDATE_COMPONENTS_TEXT,
 				comm::validateComponents);
 	}
 
@@ -858,13 +822,13 @@ public class GovernmentServerPageTest extends TestBase {
 	// Validate the Version
 	@Test(priority = 102)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	// Validate the copyright
 	@Test(priority = 103)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass

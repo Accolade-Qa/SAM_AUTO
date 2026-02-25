@@ -14,36 +14,6 @@ import com.aepl.sam.utils.ExcelUtility;
 public class RoleManagementPageTest extends TestBase {
 	private static final String SHEET_NAME = "User_Role_Test";
 
-	// Test Case Names
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR = "Verify NavBar Link Navigation";
-	private static final String TC_BACK_BTN = "Verify Back Button Navigation";
-	private static final String TC_REFRESH_BTN = "Verify Refresh Button Functionality";
-	private static final String TC_ADD_USER_ROLE = "Verify 'Add User Role' Button Click";
-	private static final String TC_SELECT_OPTIONS = "Verify Selecting Options in Add User Role";
-	private static final String TC_SUBMIT_ROLE = "Verify Select All Permissions and Submit Role";
-	private static final String TC_SEARCH_ROLE = "Verify Search User Role Functionality";
-	private static final String TC_UPDATE_ROLE = "Verify Update User Role Functionality";
-	private static final String TC_DELETE_ROLE = "Verify Delete User Role Functionality";
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String TC_VERSION = "Verify Version Functionality";
-	private static final String TC_COPYRIGHT = "Verify Copyright Functionality";
-
-	// Expected Results
-	private static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_NAV_BAR = "Role Management";
-	private static final String EXP_BACK_NAVIGATION = "Back button navigated successfully.";
-	private static final String EXP_REFRESH_TITLE = "Role Management";
-	private static final String EXP_ADD_ROLE_SCREEN = "Role Management";
-	private static final String EXP_SELECT_OPTIONS = "Options selected successfully";
-	private static final String EXP_SUBMIT_ROLE = "User role permissions selected and submitted";
-	private static final String EXP_SEARCH_ROLE = "Role 'DEMO' should be found and searched successfully";
-	private static final String EXP_UPDATE_ROLE = "User role should be updated successfully";
-	private static final String EXP_DELETE_ROLE = "User role should be deleted successfully";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-
 	private ExcelUtility excelUtility;
 	private RoleManagementPage userRole;
 	private CommonMethods comm;
@@ -64,83 +34,83 @@ public class RoleManagementPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testNavBarLink() {
-		executor.executeTest(TC_NAV_BAR, Constants.ROLE_MANAGEMENT, userRole::navBarLink);
+		executor.executeTest("Verify NavBar Link Navigation", Constants.ROLE_MANAGEMENT, userRole::navBarLink);
 	}
 
 	// @Test(priority = 4)
 	public void testBackButton() {
-		executor.executeTest(TC_BACK_BTN, EXP_BACK_NAVIGATION, () -> {
+		executor.executeTest("Verify Back Button Navigation", "Back button navigated successfully.", () -> {
 			userRole.backButton();
-			return EXP_BACK_NAVIGATION;
+			return "Back button navigated successfully.";
 		});
 	}
 
 	// @Test(priority = 5)
 	public void testRefreshButton() {
-		executor.executeTest(TC_REFRESH_BTN, EXP_REFRESH_TITLE, userRole::refreshButton);
+		executor.executeTest("Verify Refresh Button Functionality", "Role Management", userRole::refreshButton);
 	}
 
 	@Test(priority = 6)
 	public void testClickAddUserRole() {
-		executor.executeTest(TC_ADD_USER_ROLE, EXP_ADD_ROLE_SCREEN, userRole::clickAddUserRoleBtn);
+		executor.executeTest("Verify 'Add User Role' Button Click", "Role Management", userRole::clickAddUserRoleBtn);
 	}
 
 	@Test(priority = 7)
 	public void testSelectingOptions() {
-		executor.executeTest(TC_SELECT_OPTIONS, EXP_SELECT_OPTIONS, () -> {
+		executor.executeTest("Verify Selecting Options in Add User Role", "Options selected successfully", () -> {
 			userRole.selectingOptions();
-			return EXP_SELECT_OPTIONS;
+			return "Options selected successfully";
 		});
 	}
 
 	@Test(priority = 8)
 	public void testSelectOptionsAndSubmit() {
-		executor.executeTest(TC_SUBMIT_ROLE, EXP_SUBMIT_ROLE, () -> {
+		executor.executeTest("Verify Select All Permissions and Submit Role", "User role permissions selected and submitted", () -> {
 			userRole.selectOptionsAndSubmit();
-			return EXP_SUBMIT_ROLE;
+			return "User role permissions selected and submitted";
 		});
 	}
 
 	@Test(priority = 9)
 	public void testSearchUserRole() {
-		executor.executeTest(TC_SEARCH_ROLE, EXP_SEARCH_ROLE, () -> {
+		executor.executeTest("Verify Search User Role Functionality", "Role 'DEMO' should be found and searched successfully", () -> {
 			userRole.searchUserRole();
-			return EXP_SEARCH_ROLE;
+			return "Role 'DEMO' should be found and searched successfully";
 		});
 	}
 
 	// @Test(priority = 10)
 	public void testUpdateUserRole() {
-		executor.executeTest(TC_UPDATE_ROLE, EXP_UPDATE_ROLE, () -> {
+		executor.executeTest("Verify Update User Role Functionality", "User role should be updated successfully", () -> {
 			userRole.updateUserRole();
-			return EXP_UPDATE_ROLE;
+			return "User role should be updated successfully";
 		});
 	}
 
 	// @Test(priority = 11)
 	public void testDeleteUserRole() {
-		executor.executeTest(TC_DELETE_ROLE, EXP_DELETE_ROLE, () -> {
+		executor.executeTest("Verify Delete User Role Functionality", "User role should be deleted successfully", () -> {
 			userRole.deleteUserRole();
-			return EXP_DELETE_ROLE;
+			return "User role should be deleted successfully";
 		});
 	}
 
 	// // @Test(priority = 12)
 	public void testPagination() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination Functionality", Constants.EXP_PAGINATION_TEXT, () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return Constants.EXP_PAGINATION_TEXT;
 		});
 	}
 

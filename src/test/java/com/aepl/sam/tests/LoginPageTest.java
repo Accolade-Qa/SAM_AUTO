@@ -138,7 +138,7 @@ public class LoginPageTest extends TestBase {
 	// validate that the site name is matched or not
 	@Test(priority = 3)
 	public void testSiteNameIsMatched() {
-		executor.executeTest("Test the site name is matched", "AEPL Sampark Diagnostic Cloud",
+		executor.executeTest("Test the site name is matched", Constants.EXP_PAGE_TITLE_TEXT,
 				() -> loginPage.siteNameMaching());
 	}
 

@@ -15,64 +15,6 @@ public class CustomerMasterPageTest extends TestBase {
 	// Excel Sheet Name
 	private static final String CUSTOMER_MASTER_EXCEL_SHEET = "Customer_Master_Test";
 
-	// Test Case Names
-	private static final String TC_PAGE_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITILE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR = "Verify Navigation Bar Click Functionality";
-	private static final String TC_ADD_CUSTOMER = "Verify Add New Customer Functionality";
-	private static final String TC_VALIDATE_BUTTONS = "Verify Buttons on Customer Master Page";
-	private static final String TC_INPUT_BOX_ERROR = "Verify Input Box Error Handling";
-	private static final String TC_SEARCH_CUSTOMER = "Verify Search Customer Functionality";
-	private static final String TC_EDIT_CUSTOMER = "Verify Edit Customer Functionality";
-	private static final String TC_DELETE_CUSTOMER = "Verify Delete Customer Functionality";
-	private static final String TC_VALIDATE_COMPONENTS = "Verify Components on Customer Master Page";
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String TC_VERSION = "Verify Version Functionality";
-	private static final String TC_COPYRIGHT = "Verify Copyright Functionality";
-	private static final String TC_VALIDATE_CUST = "Verify Edited Customer Validation";
-	private static final String TC_EMPTY_INPUT_ERROR = "Verify Empty Input Box Error";
-	private static final String TC_WRONG_INPUT_ERROR = "Verify Wrong Input Box Error";
-	private static final String TC_COMPONENT_TITLE = "Verify Component Title";
-	private static final String TC_SEARCH_INPUT_ENABLED = "Verify Search Input Enabled";
-	private static final String TC_SEARCH_INPUT_VISIBLE = "Verify Search Input Visible";
-	private static final String TC_SEARCH_BUTTON_ENABLED = "Verify Search Button Enabled";
-	private static final String TC_SEARCH_BUTTON_VISIBLE = "Verify Search Button Visible";
-	private static final String TC_EDIT_BUTTON_ENABLED = "Verify Edit Button Enabled";
-	private static final String TC_EDIT_BUTTON_VISIBLE = "Verify Edit Button Visible";
-	private static final String TC_DELETE_BUTTON_ENABLED = "Verify Delete Button Enabled";
-	private static final String TC_DELETE_BUTTON_VISIBLE = "Verify Delete Button Visible";
-
-	// Expected Results
-	private static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_NAV_BAR_URL = "http://aepltest.accoladeelectronics.com:6102/customer-master";
-	private static final String EXP_ADD_CUSTOMER = "Customer Added Successfully";
-	private static final String EXP_VALIDATE_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_INPUT_BOX_ERROR = " This field is required and can't be empty.";
-	private static final String EXP_SEARCH_CUSTOMER = "Customer Found";
-	private static final String EXP_EDIT_CUSTOMER = "Customer Edited Successfully";
-	private static final String EXP_DELETE_CUSTOMER = "Customer Deleted Successfully";
-	private static final String EXP_VALIDATE_COMPONENTS = "All components are displayed and validated successfully.";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-	private static final String EXP_VERSION = Constants.EXP_VERSION_TEXT;
-	private static final String EXP_COPYRIGHT = Constants.EXP_COPYRIGHT_TEXT;
-	private static final String EXP_VALIDATION = "Customer data validated successfully";
-	private static final String EXP_EMPTY_INPUT_ERROR = "This field is required and can't be empty.";
-	private static final String EXP_WRONG_INPUT_ERROR = "Only alphabets and spaces are allowed.";
-	private static final String EXP_COMPONENT_TITLE = "Customer List";
-	private static final String EXP_SEARCH_INPUT_ENABLED = "input box is enabled";
-	private static final String EXP_SEARCH_INPUT_NOT_ENABLED = "input box is not enabled";
-	private static final String EXP_SEARCH_INPUT_VISIBLE = "input box is displayed";
-	private static final String EXP_SEARCH_INPUT_NOT_VISIBLE = "input box is not displayed";
-	private static final String EXP_SEARCH_BUTTON_ENABLED = "search button is enabled";
-	private static final String EXP_SEARCH_BUTTON_NOT_ENABLED = "search button is not enabled";
-	private static final String EXP_SEARCH_BUTTON_VISIBLE = "search button is visible";
-	private static final String EXP_SEARCH_BUTTON_NOT_VISIBLE = "search button is not visible";
-	private static final String EXP_EDIT_BUTTON_VISIBLE = "edit button is visible";
-	private static final String EXP_EDIT_BUTTON_NOT_VISIBLE = "edit button is not visible";
-	private static final String EXP_DELETE_BUTTON_VISIBLE = "delete button is visible";
-	private static final String EXP_DELETE_BUTTON_NOT_VISIBLE = "delete button is not visible";
-
 	private CustomerMasterPage customerMasterPage;
 	private CommonMethods comm;
 	private ExcelUtility excelUtility;
@@ -94,57 +36,57 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_PAGE_LOGO, EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITILE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testClickNavBar() {
-		executor.executeTest(TC_NAV_BAR, EXP_NAV_BAR_URL, customerMasterPage::navBarLink);
+		executor.executeTest("Verify Navigation Bar Click Functionality", "http://aepltest.accoladeelectronics.com:6102/customer-master", customerMasterPage::navBarLink);
 	}
 
 	@Test(priority = 4)
 	public void testButtons1() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	@Test(priority = 5)
 	public void testEmptyInputBoxError() {
-		executor.executeTest(TC_EMPTY_INPUT_ERROR, EXP_EMPTY_INPUT_ERROR,
+		executor.executeTest("Verify Empty Input Box Error", "This field is required and can't be empty.",
 				customerMasterPage::emptyInputBoxErrorValidation);
 	}
 
 	@Test(priority = 6)
 	public void testWrongInputBoxError() {
-		executor.executeTest(TC_WRONG_INPUT_ERROR, EXP_WRONG_INPUT_ERROR,
+		executor.executeTest("Verify Wrong Input Box Error", "Only alphabets and spaces are allowed.",
 				customerMasterPage::wrongInputBoxErrorValidation);
 	}
 
 	@Test(priority = 7)
 	public void testAddNewCustomer() {
-		executor.executeTest(TC_ADD_CUSTOMER, EXP_ADD_CUSTOMER, customerMasterPage::addNewCustomer);
+		executor.executeTest("Verify Add New Customer Functionality", "Customer Added Successfully", customerMasterPage::addNewCustomer);
 	}
 
 	@Test(priority = 8)
 	public void testComponentTitle() {
-		executor.executeTest(TC_COMPONENT_TITLE, EXP_COMPONENT_TITLE, comm::validateComponentTitle);
+		executor.executeTest("Verify Component Title", "Customer List", comm::validateComponentTitle);
 	}
 
 	@Test(priority = 9)
 	public void testButtons2() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	@Test(priority = 10, enabled = false)
 	public void testInputBoxError() {
-		executor.executeTest(TC_INPUT_BOX_ERROR, EXP_INPUT_BOX_ERROR, () -> {
+		executor.executeTest("Verify Input Box Error Handling", " This field is required and can't be empty.", () -> {
 			String res = comm.validateInputBoxError();
-			if (res.equals(EXP_INPUT_BOX_ERROR)) {
+			if (res.equals(" This field is required and can't be empty.")) {
 				return res;
 			}
 			return "Input Box Error Not Displayed";
@@ -153,114 +95,114 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 11)
 	public void testSearchCustomer() {
-		executor.executeTest(TC_SEARCH_CUSTOMER, EXP_SEARCH_CUSTOMER, customerMasterPage::searchCustomer);
+		executor.executeTest("Verify Search Customer Functionality", "Customer Found", customerMasterPage::searchCustomer);
 	}
 
 	@Test(priority = 12)
 	public void testIsSearchInputEnabled() {
-		executor.executeTest(TC_SEARCH_INPUT_ENABLED, EXP_SEARCH_INPUT_ENABLED, () -> {
-			return customerMasterPage.isSearchInputEnabled() ? EXP_SEARCH_INPUT_ENABLED : EXP_SEARCH_INPUT_NOT_ENABLED;
+		executor.executeTest("Verify Search Input Enabled", "input box is enabled", () -> {
+			return customerMasterPage.isSearchInputEnabled() ? "input box is enabled" : "input box is not enabled";
 		});
 	}
 
 	@Test(priority = 13)
 	public void testIsSearchInputVisible() {
-		executor.executeTest(TC_SEARCH_INPUT_VISIBLE, EXP_SEARCH_INPUT_VISIBLE, () -> {
-			return customerMasterPage.isSearchInputVisible() ? EXP_SEARCH_INPUT_VISIBLE : EXP_SEARCH_INPUT_NOT_VISIBLE;
+		executor.executeTest("Verify Search Input Visible", "input box is displayed", () -> {
+			return customerMasterPage.isSearchInputVisible() ? "input box is displayed" : "input box is not displayed";
 		});
 	}
 
 	@Test(priority = 14)
 	public void testIsSearchButtonEnabled() {
-		executor.executeTest(TC_SEARCH_BUTTON_ENABLED, EXP_SEARCH_BUTTON_ENABLED, () -> {
-			return customerMasterPage.isSearchButtonEnabled() ? EXP_SEARCH_BUTTON_ENABLED
-					: EXP_SEARCH_BUTTON_NOT_ENABLED;
+		executor.executeTest("Verify Search Button Enabled", "search button is enabled", () -> {
+			return customerMasterPage.isSearchButtonEnabled() ? "search button is enabled"
+					: "search button is not enabled";
 		});
 	}
 
 	@Test(priority = 15)
 	public void testIsSearchButtonVisible() {
-		executor.executeTest(TC_SEARCH_BUTTON_VISIBLE, EXP_SEARCH_BUTTON_VISIBLE, () -> {
-			return customerMasterPage.isSearchButtonVisible() ? EXP_SEARCH_BUTTON_VISIBLE
-					: EXP_SEARCH_BUTTON_NOT_VISIBLE;
+		executor.executeTest("Verify Search Button Visible", "search button is visible", () -> {
+			return customerMasterPage.isSearchButtonVisible() ? "search button is visible"
+					: "search button is not visible";
 		});
 	}
 
 	@Test(priority = 16)
 	public void testEditCustomer() {
-		executor.executeTest(TC_EDIT_CUSTOMER, EXP_EDIT_CUSTOMER, () -> {
+		executor.executeTest("Verify Edit Customer Functionality", "Customer Edited Successfully", () -> {
 			customerMasterPage.editCustomer();
-			return EXP_EDIT_CUSTOMER;
+			return "Customer Edited Successfully";
 		});
 	}
 
 	@Test(priority = 17)
 	public void testIsEditButtonEnabled() {
-		executor.executeTest(TC_EDIT_BUTTON_ENABLED, EXP_EDIT_BUTTON_VISIBLE, () -> {
-			return customerMasterPage.isEditButtonEnabled() ? EXP_EDIT_BUTTON_VISIBLE : EXP_EDIT_BUTTON_NOT_VISIBLE;
+		executor.executeTest("Verify Edit Button Enabled", "edit button is visible", () -> {
+			return customerMasterPage.isEditButtonEnabled() ? "edit button is visible" : "edit button is not visible";
 		});
 	}
 
 	@Test(priority = 18)
 	public void testIsEditButtonDisplayed() {
-		executor.executeTest(TC_EDIT_BUTTON_VISIBLE, EXP_EDIT_BUTTON_VISIBLE, () -> {
-			return customerMasterPage.isEditButtonDisplayed() ? EXP_EDIT_BUTTON_VISIBLE : EXP_EDIT_BUTTON_NOT_VISIBLE;
+		executor.executeTest("Verify Edit Button Visible", "edit button is visible", () -> {
+			return customerMasterPage.isEditButtonDisplayed() ? "edit button is visible" : "edit button is not visible";
 		});
 	}
 
 	@Test(priority = 19)
 	public void testValidateEditedCustomer() {
-		executor.executeTest(TC_VALIDATE_CUST, EXP_VALIDATION, () -> {
+		executor.executeTest("Verify Edited Customer Validation", "Customer data validated successfully", () -> {
 			customerMasterPage.validateCustomerTable();
-			return EXP_VALIDATION;
+			return "Customer data validated successfully";
 		});
 	}
 
 	@Test(priority = 20)
 	public void testIsDeleteButtonEnabled() {
-		executor.executeTest(TC_DELETE_BUTTON_ENABLED, EXP_DELETE_BUTTON_VISIBLE, () -> {
-			return customerMasterPage.isDeleteButtonEnabled() ? EXP_DELETE_BUTTON_VISIBLE
-					: EXP_DELETE_BUTTON_NOT_VISIBLE;
+		executor.executeTest("Verify Delete Button Enabled", "delete button is visible", () -> {
+			return customerMasterPage.isDeleteButtonEnabled() ? "delete button is visible"
+					: "delete button is not visible";
 		});
 	}
 
 	@Test(priority = 21)
 	public void testIsDeleteButtonDisplayed() {
-		executor.executeTest(TC_DELETE_BUTTON_VISIBLE, EXP_DELETE_BUTTON_VISIBLE, () -> {
-			return customerMasterPage.isDeleteButtonDisplayed() ? EXP_DELETE_BUTTON_VISIBLE
-					: EXP_DELETE_BUTTON_NOT_VISIBLE;
+		executor.executeTest("Verify Delete Button Visible", "delete button is visible", () -> {
+			return customerMasterPage.isDeleteButtonDisplayed() ? "delete button is visible"
+					: "delete button is not visible";
 		});
 	}
 
 	@Test(priority = 22)
 	public void testDeleteCustomer() {
-		executor.executeTest(TC_DELETE_CUSTOMER, EXP_DELETE_CUSTOMER, () -> {
+		executor.executeTest("Verify Delete Customer Functionality", "Customer Deleted Successfully", () -> {
 			customerMasterPage.deleteCustomer();
-			return EXP_DELETE_CUSTOMER;
+			return "Customer Deleted Successfully";
 		});
 	}
 
 	@Test(priority = 23)
 	public void testValidateComponents() {
-		executor.executeTest(TC_VALIDATE_COMPONENTS, EXP_VALIDATE_COMPONENTS, comm::validateComponents);
+		executor.executeTest("Verify Components on Customer Master Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	@Test(priority = 24)
 	public void testPagination() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination Functionality", Constants.EXP_PAGINATION_TEXT, () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return Constants.EXP_PAGINATION_TEXT;
 		});
 	}
 
 	@Test(priority = 25)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, EXP_VERSION, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	@Test(priority = 26)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, EXP_COPYRIGHT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass

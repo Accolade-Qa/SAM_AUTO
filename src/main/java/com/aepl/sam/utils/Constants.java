@@ -27,6 +27,13 @@ public class Constants {
     public static final String OTA_LINK = BASE_URL + "/ota-batch-page";
     public static final String SIM_MANUAL_UPLOAD = BASE_URL + "/sensorise-sim-manual-upload";
 
+    // Common UI Expectations
+    public static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
+    public static final String EXP_PAGE_TITLE_TEXT = "AEPL Sampark Diagnostic Cloud";
+    public static final String EXP_VALIDATE_BUTTONS_TEXT = "All buttons are displayed and enabled successfully.";
+    public static final String EXP_VALIDATE_COMPONENTS_TEXT = "All components are displayed and validated successfully.";
+    public static final String EXP_PAGINATION_TEXT = "Pagination works correctly";
+
     // Footer
     public static final String EXP_VERSION_TEXT = "Version: 1.6.0";
     public static final String EXP_COPYRIGHT_TEXT = "Accolade Electronics Pvt. Ltd.";

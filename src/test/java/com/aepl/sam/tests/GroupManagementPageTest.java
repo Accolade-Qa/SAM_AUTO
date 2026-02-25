@@ -14,28 +14,6 @@ import com.aepl.sam.utils.ExcelUtility;
 public class GroupManagementPageTest extends TestBase {
 	private static final String SHEET_NAME = "Group_Management_Test";
 
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR = "Verify Navigation Bar Click Functionality";
-	private static final String TC_BACK = "Verify Back Button Functionality";
-	private static final String TC_REFRESH = "Verify Refresh Button Functionality";
-	private static final String TC_ADD_ROLE = "Verify Add User Role Functionality";
-	private static final String TC_SEARCH_ROLE = "Verify Search Role Group Functionality";
-	private static final String TC_DELETE_ROLE = "Verify Delete Role Group Functionality";
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String TC_VERSION = "Verify Version Functionality";
-	private static final String TC_COPYRIGHT = "Verify Copyright Functionality";
-
-	private static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_NAV_BAR = Constants.ROLE_GROUP;
-	private static final String EXP_BACK = Constants.ROLE_GROUP;
-	private static final String EXP_REFRESH = Constants.ROLE_GROUP;
-	private static final String EXP_ADD_ROLE = "User Role Group Added Successfully";
-	private static final String EXP_SEARCH_ROLE = "Role group found";
-	private static final String EXP_DELETE_ROLE = "Role group deleted successfully";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-
 	private ExcelUtility excelUtility;
 	private GroupManagementPage groupManagement;
 	private CommonMethods comm;
@@ -57,28 +35,28 @@ public class GroupManagementPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testClickNavBar() {
-		executor.executeTest(TC_NAV_BAR, EXP_NAV_BAR, groupManagement::navBarLink);
+		executor.executeTest("Verify Navigation Bar Click Functionality", Constants.ROLE_GROUP, groupManagement::navBarLink);
 	}
 
 	@Test(priority = 4)
 	public void testBackButton() {
-		executor.executeTest(TC_BACK, EXP_BACK, groupManagement::backButton);
+		executor.executeTest("Verify Back Button Functionality", Constants.ROLE_GROUP, groupManagement::backButton);
 	}
 
 	@Test(priority = 5)
 	public void testRefreshButton() {
-		executor.executeTest(TC_REFRESH, EXP_REFRESH, () -> {
+		executor.executeTest("Verify Refresh Button Functionality", Constants.ROLE_GROUP, () -> {
 			comm.clickRefreshButton();
 			return driver.getCurrentUrl();
 		});
@@ -86,41 +64,41 @@ public class GroupManagementPageTest extends TestBase {
 
 	@Test(priority = 6)
 	public void testAddUserRole() {
-		executor.executeTest(TC_ADD_ROLE, EXP_ADD_ROLE, () -> {
+		executor.executeTest("Verify Add User Role Functionality", "User Role Group Added Successfully", () -> {
 			groupManagement.addGroup();
-			return EXP_ADD_ROLE;
+			return "User Role Group Added Successfully";
 		});
 	}
 
 	@Test(priority = 7)
 	public void testSearchgroupManagement() {
-		executor.executeTest(TC_SEARCH_ROLE, EXP_SEARCH_ROLE, () -> {
-			return groupManagement.isGroupManagementFound("QA") ? EXP_SEARCH_ROLE : "Role group not found";
+		executor.executeTest("Verify Search Role Group Functionality", "Role group found", () -> {
+			return groupManagement.isGroupManagementFound("QA") ? "Role group found" : "Role group not found";
 		});
 	}
 
 	// Uncomment and enable this test if deletion functionality is required
 	// @Test(priority = 8)
 	public void testDeleteRoleGroup() {
-		executor.executeTest(TC_DELETE_ROLE, EXP_DELETE_ROLE, groupManagement::deleteRoleGroup);
+		executor.executeTest("Verify Delete Role Group Functionality", "Role group deleted successfully", groupManagement::deleteRoleGroup);
 	}
 
 	@Test(priority = 9)
 	public void testPagination() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination Functionality", Constants.EXP_PAGINATION_TEXT, () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return Constants.EXP_PAGINATION_TEXT;
 		});
 	}
 
 	@Test(priority = 10)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	@Test(priority = 11)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass

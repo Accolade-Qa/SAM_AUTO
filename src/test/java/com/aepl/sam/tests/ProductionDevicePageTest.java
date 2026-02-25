@@ -18,34 +18,6 @@ public class ProductionDevicePageTest extends TestBase {
 
 	private static final String DEVICE_EXCEL_SHEET = "Device_Dashboard_Test";
 
-	private static final String TC_PAGE_LOGO = "Verify Company Logo on Webpage";
-	private static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-
-	private static final String TC_ADD_DEVICE = "Test input fields by entering values";
-	private static final String EXP_ADD_DEVICE = "Create Production Device";
-
-	private static final String TC_SEARCH_DEVICE = "Test search functionality for production device";
-	private static final String EXP_SEARCH_DEVICE = "Production Device";
-
-	private static final String TC_VIEW_DEVICE = "Test View Device";
-	private static final String EXP_VIEW_DEVICE = "Update Production Device";
-
-	private static final String TC_UPDATE_DEVICE = "Test input fields by updating values";
-	private static final String EXP_UPDATE_DEVICE = "Production Device";
-
-	private static final String TC_DELETE_DEVICE = "Test View Device";
-	private static final String EXP_DELETE_DEVICE = "Production Device";
-
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-
-	private static final String TC_VERSION = "Verify Version Functionality";
-
-	private static final String TC_COPYRIGHT = "Verify Copyright Functionality";
-
 	private ProductionDevicePage productionDevicePage;
 	private CommonMethods comm;
 	private ExcelUtility excelUtility;
@@ -67,14 +39,14 @@ public class ProductionDevicePageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_PAGE_LOGO, EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	// this is main page title here - AEPL Sampark Diagnostic Cloud
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	// validate that the navbar link is clickable
@@ -111,7 +83,7 @@ public class ProductionDevicePageTest extends TestBase {
 	// validate all buttons
 	@Test(priority = 7)
 	public void testAllButtonsVisible() {
-		executor.executeTest("Test all buttons are visible", "All buttons are displayed and enabled successfully.",
+		executor.executeTest("Test all buttons are visible", Constants.EXP_VALIDATE_BUTTONS_TEXT,
 				comm::validateButtons);
 	}
 
@@ -119,7 +91,7 @@ public class ProductionDevicePageTest extends TestBase {
 	@Test(priority = 8)
 	public void testAllComponentsVisible() {
 		executor.executeTest("Test all components are visible",
-				"All components are displayed and validated successfully.", comm::validateComponents);
+				Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// validate the manual upload button is visible
@@ -725,20 +697,20 @@ public class ProductionDevicePageTest extends TestBase {
 	//
 	// @Test(priority = 9)
 	// public void testPagination() {
-	// executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+	// executor.executeTest(TC_PAGINATION, Constants.EXP_PAGINATION_TEXT, () -> {
 	// comm.checkPagination();
-	// return EXP_PAGINATION;
+	// return Constants.EXP_PAGINATION_TEXT;
 	// });
 	// }
 
 	@Test(priority = 99)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	@Test(priority = 100)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass

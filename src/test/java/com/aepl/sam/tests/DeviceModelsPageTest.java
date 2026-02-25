@@ -21,34 +21,6 @@ import com.aepl.sam.utils.ExcelUtility;
 public class DeviceModelsPageTest extends TestBase {
 	private static final String DEVICE_MODELS_EXCEL_SHEET = "Device_Models_Test";
 
-	// Test Case Names (TC_)
-	private static final String TC_LOGO = "Verify Company Logo on Webpage";
-	private static final String TC_PAGE_TITLE = "Verify Page Title on Webpage";
-	private static final String TC_NAV_BAR_LINK = "Test Navigation to Device Utility Tab";
-	private static final String TC_CLICK_ADD_MODEL = "Test Clicking Add Device Model Button";
-	private static final String TC_ADD_MODEL = "Test Adding a New Device Model";
-	private static final String TC_SEARCH_MODEL = "Test Search Functionality for Device Model";
-	private static final String TC_VIEW_MODEL = "Test Viewing a Device Model";
-	private static final String TC_UPDATE_MODEL = "Test Updating an Existing Device Model";
-	private static final String TC_SEARCH_MODEL_2 = "Test Search Again for Device Model";
-	private static final String TC_DELETE_MODEL = "Test Deleting a Device Model";
-	private static final String TC_PAGINATION = "Verify Pagination Functionality";
-	private static final String TC_VERSION = "Verify Application Version Display";
-	private static final String TC_COPYRIGHT = "Verify Copyright Text";
-	private static final String TC_VALIDATE_BUTTONS = "Verify All Buttons on Device Details Page";
-	private static final String TC_COMPONENT_TITLES = "Verify All Component Title on Device Details Page";
-
-	// Expected Values (EXP_)
-	private static final String LOGO_DISPLAYED = "Logo Displayed";
-	private static final String LOGO_NOT_DISPLAYED = "Logo Not Displayed";
-	private static final String EXP_PAGE_TITLE = "AEPL Sampark Diagnostic Cloud";
-	private static final String EXP_ADD_MODEL_PAGE = "Create Device Model";
-	private static final String EXP_MODELS_PAGE = "Device Models";
-	private static final String EXP_VIEW_MODEL_PAGE = "View/Update Device Model";
-	private static final String EXP_PAGINATION = "Pagination works correctly";
-	private static final String EXP_VALIDATE_BUTTONS = "All buttons are displayed and enabled successfully.";
-	private static final String EXP_COMPONENT_TITLES = "All components are displayed and validated successfully.";
-
 	private ExcelUtility excelUtility;
 	private DeviceModelsPage deviceModelsPage;
 	private CommonMethods comm;
@@ -69,28 +41,29 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest(TC_LOGO, LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
+		final String LOGO_NOT_DISPLAYED = "Logo Not Displayed";
+		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
+				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest(TC_PAGE_TITLE, EXP_PAGE_TITLE, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testButtons() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	@Test(priority = 4)
 	public void testComponents() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	@Test(priority = 5)
 	public void navBarLinkTest() {
-		executor.executeTest(TC_NAV_BAR_LINK, Constants.DEVICE_LINK, deviceModelsPage::navBarLink);
+		executor.executeTest("Test Navigation to Device Utility Tab", Constants.DEVICE_LINK, deviceModelsPage::navBarLink);
 	}
 
 	// Page title test case
@@ -116,7 +89,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 9)
 	public void clickAddDeviceModelTest() {
-		executor.executeTest(TC_CLICK_ADD_MODEL, EXP_ADD_MODEL_PAGE, deviceModelsPage::ClickAddDeviceModel);
+		executor.executeTest("Test Clicking Add Device Model Button", "Create Device Model", deviceModelsPage::ClickAddDeviceModel);
 	}
 
 	// Validate the component title for the page after it gets clicked
@@ -142,7 +115,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 13)
 	public void addModelTest() {
-		executor.executeTest(TC_ADD_MODEL, EXP_MODELS_PAGE, () -> {
+		executor.executeTest("Test Adding a New Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.NewInputFields("add");
 			} catch (InterruptedException e) {
@@ -154,12 +127,12 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 14)
 	public void testButtons2() {
-		executor.executeTest(TC_VALIDATE_BUTTONS, EXP_VALIDATE_BUTTONS, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
 	}
 
 	@Test(priority = 15)
 	public void testComponentTitles2() {
-		executor.executeTest(TC_COMPONENT_TITLES, EXP_COMPONENT_TITLES, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
 	}
 
 	// Validate the search input box is visible
@@ -188,7 +161,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 20)
 	public void searchModelTest() {
-		executor.executeTest(TC_SEARCH_MODEL, EXP_MODELS_PAGE, () -> {
+		executor.executeTest("Test Search Functionality for Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.searchModel();
 			} catch (InterruptedException e) {
@@ -235,7 +208,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 23)
 	public void viewModelTest() {
-		executor.executeTest(TC_VIEW_MODEL, EXP_VIEW_MODEL_PAGE, () -> {
+		executor.executeTest("Test Viewing a Device Model", "View/Update Device Model", () -> {
 			try {
 				return deviceModelsPage.viewModel();
 			} catch (InterruptedException e) {
@@ -255,7 +228,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 25)
 	public void updateModelTest() {
-		executor.executeTest(TC_UPDATE_MODEL, EXP_MODELS_PAGE, () -> {
+		executor.executeTest("Test Updating an Existing Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.NewInputFields("update");
 			} catch (InterruptedException e) {
@@ -267,7 +240,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 26)
 	public void searchModelTest2() {
-		executor.executeTest(TC_SEARCH_MODEL_2, EXP_MODELS_PAGE, () -> {
+		executor.executeTest("Test Search Again for Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.searchModel2();
 			} catch (InterruptedException e) {
@@ -279,7 +252,7 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 27)
 	public void deleteModelTest() {
-		executor.executeTest(TC_DELETE_MODEL, EXP_MODELS_PAGE, () -> {
+		executor.executeTest("Test Deleting a Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.DeleteModel();
 			} catch (InterruptedException e) {
@@ -291,20 +264,20 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 28)
 	public void testPagination() {
-		executor.executeTest(TC_PAGINATION, EXP_PAGINATION, () -> {
+		executor.executeTest("Verify Pagination Functionality", Constants.EXP_PAGINATION_TEXT, () -> {
 			comm.checkPagination();
-			return EXP_PAGINATION;
+			return Constants.EXP_PAGINATION_TEXT;
 		});
 	}
 
 	@Test(priority = 29)
 	public void testVersion() {
-		executor.executeTest(TC_VERSION, Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Application Version Display", Constants.EXP_VERSION_TEXT, comm::checkVersion);
 	}
 
 	@Test(priority = 30)
 	public void testCopyright() {
-		executor.executeTest(TC_COPYRIGHT, Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Text", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
 	}
 
 	@AfterClass
