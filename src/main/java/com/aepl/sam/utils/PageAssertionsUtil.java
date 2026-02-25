@@ -22,19 +22,17 @@ public class PageAssertionsUtil {
 
 	private final WebDriver driver;
 	private final WebDriverWait wait;
-	private final PageActionsUtil actions;
 	private final SoftAssert softAssert = new SoftAssert();
 
 	public PageAssertionsUtil(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = (wait != null) ? wait : new WebDriverWait(driver, Duration.ofSeconds(10));
-		this.actions = new PageActionsUtil(driver, this.wait);
 	}
 
 	public boolean verifyWebpageLogo() {
 		try {
 			WebElement logo = wait.until(ExpectedConditions.visibilityOfElementLocated(ORG_LOGO));
-			actions.highlightElement(logo, "solid purple");
+			highlightElement(logo, "solid purple");
 			return logo.isDisplayed();
 		} catch (TimeoutException e) {
 			logger.error("Logo element was not visible in time.", e);
@@ -45,7 +43,7 @@ public class PageAssertionsUtil {
 	public String verifyPageTitle() {
 		String expectedTitle = "AEPL Sampark Diagnostic Cloud";
 		WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(PROJECT_TITLE));
-		actions.highlightElement(titleElement, "solid purple");
+		highlightElement(titleElement, "solid purple");
 		String actualTitle = titleElement.getText();
 		if (!actualTitle.equalsIgnoreCase(expectedTitle)) {
 			throw new RuntimeException(
@@ -62,11 +60,11 @@ public class PageAssertionsUtil {
 			WebElement separator = driver.findElement(SEPARATOR);
 			WebElement footer = driver.findElement(FOOTER);
 
-			actions.highlightElement(headerContainer, "solid purple");
-			actions.highlightElement(pageHeader, "solid purple");
-			actions.highlightElement(componentContainer, "solid purple");
-			actions.highlightElement(separator, "solid purple");
-			actions.highlightElement(footer, "solid purple");
+			highlightElement(headerContainer, "solid purple");
+			highlightElement(pageHeader, "solid purple");
+			highlightElement(componentContainer, "solid purple");
+			highlightElement(separator, "solid purple");
+			highlightElement(footer, "solid purple");
 
 			softAssert.assertTrue(headerContainer.isDisplayed(), "No header container is displayed");
 			softAssert.assertTrue(pageHeader.isDisplayed(), "No pageHeader container is displayed");
@@ -93,7 +91,7 @@ public class PageAssertionsUtil {
 				String label = button.getText().isBlank() ? button.getDomAttribute("aria-label") : button.getText();
 				softAssert.assertTrue(button.isDisplayed(), "Button not displayed: " + label);
 				softAssert.assertTrue(button.isEnabled(), "Button not enabled: " + label);
-				actions.highlightElement(button, "solid purple");
+				highlightElement(button, "solid purple");
 			}
 
 			((JavascriptExecutor) driver).executeScript("window.scrollTo(0,0)");
@@ -106,17 +104,21 @@ public class PageAssertionsUtil {
 
 	public String checkCopyright() {
 		WebElement copyRight = driver.findElement(COPYRIGHT);
-		actions.highlightElement(copyRight, "solid purple");
+		highlightElement(copyRight, "solid purple");
 		return copyRight.getText();
 	}
 
 	public String checkVersion() {
 		try {
 			WebElement version = driver.findElement(VERSION);
-			actions.highlightElement(version, "solid purple");
+			highlightElement(version, "solid purple");
 			return version.getText();
 		} catch (NoSuchElementException e) {
 			return "No version was found on page!!!";
 		}
+	}
+
+	private void highlightElement(WebElement element, String colorCode) {
+		((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px " + colorCode + " '", element);
 	}
 }

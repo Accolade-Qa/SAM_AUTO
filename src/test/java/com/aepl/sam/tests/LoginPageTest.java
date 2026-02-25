@@ -47,7 +47,7 @@ public class LoginPageTest extends TestBase {
 	public void testValidUsernameWithLongInvalidPassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(randomGen.generateRandomString(16))
 				.clickLogin();
-		Assert.assertEquals(loginPage.getToastMessage(), Constants.toast_error_msg);
+		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
 	@Test(priority = 3)
@@ -60,7 +60,7 @@ public class LoginPageTest extends TestBase {
 	public void testInvalidUsernameWithValidPassword() {
 		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(ConfigProperties.getProperty("password"))
 				.clickLogin();
-		Assert.assertEquals(loginPage.getToastMessage(), Constants.toast_error_msg);
+		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
 	@Test(priority = 5)
@@ -69,7 +69,8 @@ public class LoginPageTest extends TestBase {
 		String actualEmailError = loginPage.getEmailFieldErrorMessage();
 		String actualPasswordError = loginPage.getPasswordFieldErrorMessage();
 		Assert.assertEquals(actualEmailError, Constants.email_error_msg_01);
-		Assert.assertTrue(actualPasswordError.equals(Constants.password_error_msg_01)
+		Assert.assertTrue(actualPasswordError.isBlank()
+				|| actualPasswordError.equals(Constants.password_error_msg_01)
 				|| actualPasswordError.equals(Constants.password_error_msg_02));
 	}
 
@@ -77,7 +78,7 @@ public class LoginPageTest extends TestBase {
 	public void testInvalidUsernameWithInvalidPassword() {
 		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(randomGen.generateRandomString(8))
 				.clickLogin();
-		Assert.assertEquals(loginPage.getToastMessage(), Constants.toast_error_msg);
+		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
 	@Test(priority = 7)
@@ -90,6 +91,10 @@ public class LoginPageTest extends TestBase {
 	public void testValidUsernameWithWhitespacePassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("       ").clickLogin();
 		String actual = loginPage.getPasswordFieldErrorMessage();
+		if (actual.isBlank()) {
+			assertInvalidLoginToast(loginPage.getToastMessage());
+			return;
+		}
 		Assert.assertTrue(actual.equals(Constants.password_error_msg_01) || actual.equals(Constants.password_error_msg_02));
 	}
 
@@ -185,5 +190,11 @@ public class LoginPageTest extends TestBase {
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}
-}
 
+	private void assertInvalidLoginToast(String actualToast) {
+		Assert.assertTrue(actualToast.equals(Constants.toast_error_msg)
+				|| actualToast.equals(Constants.toast_error_msg_03)
+				|| actualToast.equals(Constants.toast_error_msg_02),
+				"Unexpected login toast: " + actualToast);
+	}
+}

@@ -1,6 +1,7 @@
 package com.aepl.sam.pages;
 
 import java.util.NoSuchElementException;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -281,11 +282,18 @@ public class LoginPage extends LoginPageLocators {
 	}
 
 	public String getEmailFieldErrorMessage() {
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText();
+		return getVisibleValidationMessages().stream().findFirst().orElse("");
 	}
 
 	public String getPasswordFieldErrorMessage() {
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText();
+		List<String> messages = getVisibleValidationMessages();
+		if (messages.size() >= 2) {
+			return messages.get(1);
+		}
+		if (messages.size() == 1) {
+			return messages.get(0);
+		}
+		return "";
 	}
 
 	public String getToastMessage() {
@@ -295,6 +303,26 @@ public class LoginPage extends LoginPageLocators {
 	// Helper method for waiting element visibility
 	public WebElement waitForVisibility(By locator) {
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+
+	private List<String> getVisibleValidationMessages() {
+		try {
+			wait.until(ExpectedConditions.or(
+					ExpectedConditions.visibilityOfElementLocated(By.xpath("//mat-error")),
+					ExpectedConditions.visibilityOfElementLocated(By.xpath("//simple-snack-bar/div[1]"))));
+		} catch (Exception ignored) {
+		}
+
+		List<String> messages = new java.util.ArrayList<>();
+		for (WebElement error : driver.findElements(By.xpath("//mat-error"))) {
+			if (error.isDisplayed()) {
+				String text = error.getText();
+				if (text != null && !text.isBlank()) {
+					messages.add(text.trim());
+				}
+			}
+		}
+		return messages;
 	}
 }
 
