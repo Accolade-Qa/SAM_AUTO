@@ -24,6 +24,10 @@ public class ConfigProperties {
 		ENV_OVERRIDES.put("password", "SAM_PASSWORD");
 		ENV_OVERRIDES.put("valid.username", "SAM_USERNAME");
 		ENV_OVERRIDES.put("valid.password", "SAM_PASSWORD");
+		ENV_OVERRIDES.put("qa_man", "SAM_QA_MANAGER_USERNAME");
+		ENV_OVERRIDES.put("qa_pass", "SAM_QA_MANAGER_PASSWORD");
+		ENV_OVERRIDES.put("soft_man", "SAM_SOFT_MANAGER_USERNAME");
+		ENV_OVERRIDES.put("soft_pass", "SAM_SOFT_MANAGER_PASSWORD");
 	}
 
 	private ConfigProperties() {
@@ -90,6 +94,13 @@ public class ConfigProperties {
 		if (properties == null) {
 			logger.error("Attempted to set property before initialization.");
 			throw new IllegalStateException("ConfigProperties is not initialized. Call initialize(env) first.");
+		}
+
+		String envKey = ENV_OVERRIDES.get(key);
+		if (envKey != null) {
+			logger.info("Persisting credential property '{}' to .env key '{}'", key, envKey);
+			DotEnvUtil.set(envKey, value, true);
+			return;
 		}
 
 		logger.info("Setting property '{}'", key);

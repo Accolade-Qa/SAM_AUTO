@@ -1,55 +1,44 @@
-# Ignore Eclipse files
+# IDE and editor files
 .classpath
+.factorypath
 .project
 .settings/
+.idea/
+.vscode/
+*.iml
+*.swp
 
+# Java and Maven build outputs
+target/
+bin/
+*.class
 
- .properties
-
-# Ignore test results (e.g., TestNG, JUnit, etc.)
+# Runtime artifacts
 test-output/
 test-results/
 logs/
 screenshots/
-src/test/resources/SampleDownload
-# src/test/resources/SampleUpload
+src/test/resources/SampleDownload/
 
-# Ignore IDE-specific files
-*.iml
-.idea/
-.vscode/
-*.swp
+# Local environment and secrets
+.env
+.env.*
+!.env.example
 
-# === Maven/Java Specific ===
-# Ignore Maven output and temporary files
-target/
+# Temporary and log files
 *.log
 *.tmp
 *.bak
 *.out
-*.class
-
-# === Sensitive or Config Files ===
-# Ignore properties and configuration files (if sensitive)
- src/main/resources/*.properties
- .github/workflows/*.yml
-
-# === Git Specific ===
-# Ignore Git specific files
 *.orig
 *.rej
-
-# === Logs and Temp Files ===
-*\.log
 *.lock
 *.pid
 *.seed
 *.gz
 
-# === Other Tools ===
-# Ignore coverage reports
+# Coverage artifacts
 coverage/
 *.lcov
 *.clover
 coverage-final.json
-/bin/

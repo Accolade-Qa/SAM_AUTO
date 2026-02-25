@@ -10,7 +10,6 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.ProductionDevicePage;
 import com.aepl.sam.utils.ExcelUtility;
@@ -20,7 +19,6 @@ public class ProductionDevicePageTest extends TestBase {
 	private static final String DEVICE_EXCEL_SHEET = "Device_Dashboard_Test";
 
 	private ProductionDevicePage productionDevicePage;
-	private PageActionsUtil comm;
 	private PageAssertionsUtil assertion;
 	private ExcelUtility excelUtility;
 	private SoftAssert softAssert;
@@ -31,7 +29,6 @@ public class ProductionDevicePageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		this.productionDevicePage = new ProductionDevicePage(driver, wait);
-		this.comm = new PageActionsUtil(driver, wait);
 		this.assertion = new PageAssertionsUtil(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();

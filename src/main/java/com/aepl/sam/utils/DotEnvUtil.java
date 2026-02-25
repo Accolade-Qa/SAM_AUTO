@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public final class DotEnvUtil {
 			return;
 		}
 
-		Path envPath = Paths.get(System.getProperty("user.dir"), ENV_FILE);
+		Path envPath = resolveEnvPath();
 		if (!Files.exists(envPath)) {
 			logger.warn(".env file not found at {}", envPath.toAbsolutePath());
 			loaded = true;
@@ -64,5 +65,54 @@ public final class DotEnvUtil {
 			return fromDotEnv;
 		}
 		return System.getenv(key);
+	}
+
+	public static synchronized void set(String key, String value, boolean persistToFile) {
+		load();
+		String safeValue = value == null ? "" : value;
+		ENV_MAP.put(key, safeValue);
+
+		if (!persistToFile) {
+			return;
+		}
+
+		Path envPath = resolveEnvPath();
+		List<String> lines = new ArrayList<>();
+
+		try {
+			if (Files.exists(envPath)) {
+				lines.addAll(Files.readAllLines(envPath));
+			}
+
+			boolean updated = false;
+			for (int i = 0; i < lines.size(); i++) {
+				String rawLine = lines.get(i);
+				String line = rawLine.trim();
+				if (line.isEmpty() || line.startsWith("#") || !line.contains("=")) {
+					continue;
+				}
+
+				String existingKey = line.split("=", 2)[0].trim();
+				if (existingKey.equals(key)) {
+					lines.set(i, key + "=" + safeValue);
+					updated = true;
+					break;
+				}
+			}
+
+			if (!updated) {
+				lines.add(key + "=" + safeValue);
+			}
+
+			Files.write(envPath, lines);
+			logger.info("Updated .env key '{}'", key);
+		} catch (IOException e) {
+			logger.error("Failed to update .env key '{}'", key, e);
+			throw new RuntimeException("Failed to update .env file", e);
+		}
+	}
+
+	private static Path resolveEnvPath() {
+		return Paths.get(System.getProperty("user.dir"), ENV_FILE);
 	}
 }
