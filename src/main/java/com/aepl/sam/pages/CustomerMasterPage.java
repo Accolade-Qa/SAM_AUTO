@@ -15,13 +15,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.sam.locators.CustomerMasterLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 import com.aepl.sam.utils.TableUtils;
 
 public class CustomerMasterPage extends CustomerMasterLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private String editedUser;
 	private String randomName;
 	private TableUtils tableUtils;
@@ -32,7 +33,7 @@ public class CustomerMasterPage extends CustomerMasterLocators {
 	public CustomerMasterPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
 		this.random = new RandomGeneratorUtils();
 		this.tableUtils = new TableUtils(wait);
 	}
@@ -272,3 +273,4 @@ public class CustomerMasterPage extends CustomerMasterLocators {
 		return driver.findElement(By.xpath("//div/mat-error")).getText();
 	}
 }
+

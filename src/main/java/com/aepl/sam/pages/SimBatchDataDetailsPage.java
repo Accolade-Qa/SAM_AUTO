@@ -18,17 +18,18 @@ import org.testng.Assert;
 
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.SimBatchDataDetailsPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 
 public class SimBatchDataDetailsPage extends SimBatchDataDetailsPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
-	public SimBatchDataDetailsPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public SimBatchDataDetailsPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 	}
 
 	public Boolean navBarLink() {
@@ -83,16 +84,16 @@ public class SimBatchDataDetailsPage extends SimBatchDataDetailsPageLocators {
 					.until(ExpectedConditions.visibilityOfElementLocated(By.className("submit-button")));
 
 			if (submit.isDisplayed() && submit.isEnabled()) {
-				logger.info("✅ Submit button is displayed and enabled. Clicking now...");
+				logger.info("âœ… Submit button is displayed and enabled. Clicking now...");
 				submit.click();
 				return true;
 			} else {
-				logger.warn("⚠️ Submit button is either not displayed or disabled.");
+				logger.warn("âš ï¸ Submit button is either not displayed or disabled.");
 				return false;
 			}
 
 		} catch (Exception e) {
-			logger.error("❌ Unexpected error while validating Submit button: {}", e.getMessage());
+			logger.error("âŒ Unexpected error while validating Submit button: {}", e.getMessage());
 			return false;
 		}
 	}
@@ -317,3 +318,4 @@ public class SimBatchDataDetailsPage extends SimBatchDataDetailsPageLocators {
 		return driver.findElement(UPLOAD_BTN_FILE_UPLOAD).isEnabled();
 	}
 }
+

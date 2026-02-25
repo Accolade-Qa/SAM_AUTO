@@ -8,7 +8,8 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.OtaPage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -17,7 +18,8 @@ public class OtaPageTest extends TestBase {
 
 	private ExcelUtility excelUtility;
 	private OtaPage ota;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -25,8 +27,9 @@ public class OtaPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
-		this.ota = new OtaPage(driver, wait, comm);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
+		this.ota = new OtaPage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
@@ -36,12 +39,12 @@ public class OtaPageTest extends TestBase {
 	@Test(priority = -1)
 	public void testCompanyLogo() {
 		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+				() -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 0)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
 	@Test(priority = 1)
@@ -51,12 +54,12 @@ public class OtaPageTest extends TestBase {
 
 	@Test(priority = 2)
 	public void testAllButtons() {
-		executor.executeTest("Test All Buttons on OTA Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Test All Buttons on OTA Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 3)
 	public void testAllComponents() {
-		executor.executeTest("Test All Components on OTA Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Test All Components on OTA Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	@Test(priority = 4)
@@ -109,3 +112,5 @@ public class OtaPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+

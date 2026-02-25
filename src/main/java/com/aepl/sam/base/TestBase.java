@@ -11,10 +11,10 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
-import com.aepl.sam.actions.MouseActions;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.pages.LoginPage;
 import com.aepl.sam.utils.ConfigProperties;
+import com.aepl.sam.utils.MouseActions;
 import com.aepl.sam.utils.WebDriverFactory;
 
 public class TestBase {

@@ -28,20 +28,21 @@ import org.testng.Assert;
 
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.DeviceDetailsPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.TableUtils;
 
 public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private TableUtils tableUtils;
 
 	private final Logger logger = LogManager.getLogger(DeviceDetailsPage.class);
 
-	public DeviceDetailsPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public DeviceDetailsPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 		this.tableUtils = new TableUtils(wait);
 	}
 
@@ -198,11 +199,11 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			logger.info("Found {} eye icons (packets) on the page.", eyeIcons.size());
 
 			if (eyeIcons.isEmpty()) {
-				logger.error("No eye icons found — no login packets available to view.");
+				logger.error("No eye icons found â€” no login packets available to view.");
 				return "No login packets found on the page";
 			}
 
-			// ✅ Ensure the target directory exists
+			// âœ… Ensure the target directory exists
 			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\test-results\\outputs";
 			File directory = new File(directoryPath);
 			if (!directory.exists() && !directory.mkdirs()) {
@@ -262,7 +263,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 
 					JSONObject json = new JSONObject(dataMap);
 
-					// ✅ Create timestamped unique file name
+					// âœ… Create timestamped unique file name
 					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS").format(new Date());
 					String fileName = String.format("login_packet_%02d_%s.json", packetCounter, timestamp);
 					String filePath = directoryPath + "\\" + fileName;
@@ -270,7 +271,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					// Write JSON to file
 					try (FileWriter writer = new FileWriter(filePath)) {
 						writer.write(json.toString(4));
-						logger.info("✅ Saved login packet #{} to file: {}", packetCounter, filePath);
+						logger.info("âœ… Saved login packet #{} to file: {}", packetCounter, filePath);
 					}
 
 					// Close modal before continuing
@@ -283,7 +284,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					packetCounter++;
 
 				} catch (Exception packetEx) {
-					logger.error("⚠️ Error processing packet #{}: {}", packetCounter, packetEx.getMessage());
+					logger.error("âš ï¸ Error processing packet #{}: {}", packetCounter, packetEx.getMessage());
 					try {
 						WebElement closeBtn = driver
 								.findElement(By.xpath("//button[contains(@class, 'custom-close-btn')]"));
@@ -297,7 +298,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			return "All login packets viewed and saved successfully";
 
 		} catch (Exception e) {
-			logger.error("❌ Failed to extract login packets: {}", e.getMessage(), e);
+			logger.error("âŒ Failed to extract login packets: {}", e.getMessage(), e);
 			return "Failed to extract login packet details";
 		}
 	}
@@ -406,7 +407,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 				return "No health packets found";
 			}
 
-			// ✅ Ensure the directory exists
+			// âœ… Ensure the directory exists
 			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\test-results\\outputFiles";
 			File directory = new File(directoryPath);
 			if (!directory.exists() && !directory.mkdirs()) {
@@ -468,11 +469,11 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 
 					JSONObject json = new JSONObject(dataMap);
 
-					// ✅ Add metadata
+					// âœ… Add metadata
 					json.put("packet_index", packetCounter);
 					json.put("extracted_at", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
-					// ✅ Unique file name for each packet
+					// âœ… Unique file name for each packet
 					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS").format(new Date());
 					String fileName = String.format("health_packet_%02d_%s.json", packetCounter, timestamp);
 					String filePath = directoryPath + "\\" + fileName;
@@ -480,7 +481,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					// Write JSON to file
 					try (FileWriter writer = new FileWriter(filePath)) {
 						writer.write(json.toString(4));
-						logger.info("✅ Saved health packet #{} to file: {}", packetCounter, filePath);
+						logger.info("âœ… Saved health packet #{} to file: {}", packetCounter, filePath);
 					}
 
 					// Close modal before moving to next
@@ -493,7 +494,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					packetCounter++;
 
 				} catch (Exception innerEx) {
-					logger.error("⚠️ Error processing health packet #{}: {}", packetCounter, innerEx.getMessage());
+					logger.error("âš ï¸ Error processing health packet #{}: {}", packetCounter, innerEx.getMessage());
 					try {
 						WebElement closeBtn = driver
 								.findElement(By.xpath("//button[contains(@class, 'custom-close-btn')]"));
@@ -503,11 +504,11 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 				}
 			}
 
-			logger.info("✅ All health packets processed successfully. Total files created: {}", packetCounter - 1);
+			logger.info("âœ… All health packets processed successfully. Total files created: {}", packetCounter - 1);
 			return "All health packets viewed and saved successfully";
 
 		} catch (Exception e) {
-			logger.error("❌ Failed to process health packets: {}", e.getMessage(), e);
+			logger.error("âŒ Failed to process health packets: {}", e.getMessage(), e);
 			return "Failed to extract health packet details";
 		}
 	}
@@ -643,7 +644,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			} catch (ElementClickInterceptedException e) {
 				// Fallback to JS click if intercepted
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", searchBtn);
-				logger.warn("⚠️ Performed JS click due to intercept.");
+				logger.warn("âš ï¸ Performed JS click due to intercept.");
 			}
 
 			return true;
@@ -906,18 +907,18 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 
 			// Validation logic: log error if unexpected, but do not fail the test
 			if (isOn && mainsValue <= 12) {
-				logger.error("⚠️ Mains card shows ON but value ({}) is below threshold (<= 12)", mainsValue);
+				logger.error("âš ï¸ Mains card shows ON but value ({}) is below threshold (<= 12)", mainsValue);
 			} else if (!isOn && mainsValue > 12) {
-				logger.error("⚠️ Mains card shows OFF but value ({}) is above threshold (> 12)", mainsValue);
+				logger.error("âš ï¸ Mains card shows OFF but value ({}) is above threshold (> 12)", mainsValue);
 			} else {
-				logger.info("✅ Mains card value is consistent with ON/OFF state.");
+				logger.info("âœ… Mains card value is consistent with ON/OFF state.");
 			}
 
 			// Always return true to avoid failing the test
 			return true;
 
 		} catch (Exception e) {
-			logger.error("❌ Error while validating Mains On/Off card value: {}", e.getMessage(), e);
+			logger.error("âŒ Error while validating Mains On/Off card value: {}", e.getMessage(), e);
 			return true; // Still return true to keep the test from failing
 		}
 	}
@@ -1130,7 +1131,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 				comm.highlightElement(last50Health, "solid purple");
 
 				if (last50Health.isDisplayed()) {
-					logger.info("✅ Last 50 Health Packets component is visible (Attempt " + attempt + ").");
+					logger.info("âœ… Last 50 Health Packets component is visible (Attempt " + attempt + ").");
 					return true;
 				}
 			} catch (TimeoutException e) {
@@ -1147,7 +1148,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			}
 		}
 
-		logger.warn("⚠️ Last 50 Health Packets component not visible after " + maxAttempts
+		logger.warn("âš ï¸ Last 50 Health Packets component not visible after " + maxAttempts
 				+ " attempts. Please check manually.");
 		return false;
 	}
@@ -1249,4 +1250,5 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 		return tableUtils.clickFirstViewButton(By.xpath("//table"));
 	}
 }
+
 

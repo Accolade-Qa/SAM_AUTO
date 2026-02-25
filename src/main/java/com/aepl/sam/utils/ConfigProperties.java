@@ -3,6 +3,8 @@ package com.aepl.sam.utils;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +17,14 @@ public class ConfigProperties {
 	private static Properties properties;
 	private static String environment;
 	private static final String CONFIG_FILE_FORMAT = "src/main/resources/%s.config.properties";
+	private static final Map<String, String> ENV_OVERRIDES = new HashMap<>();
+
+	static {
+		ENV_OVERRIDES.put("username", "SAM_USERNAME");
+		ENV_OVERRIDES.put("password", "SAM_PASSWORD");
+		ENV_OVERRIDES.put("valid.username", "SAM_USERNAME");
+		ENV_OVERRIDES.put("valid.password", "SAM_PASSWORD");
+	}
 
 	private ConfigProperties() {
 	}
@@ -45,6 +55,15 @@ public class ConfigProperties {
 		if (properties == null) {
 			logger.error("Attempted to access property before initialization.");
 			throw new IllegalStateException("ConfigProperties is not initialized. Call initialize(env) first.");
+		}
+
+		String envKey = ENV_OVERRIDES.get(key);
+		if (envKey != null) {
+			String envValue = DotEnvUtil.get(envKey);
+			if (envValue != null && !envValue.isBlank()) {
+				logger.debug("Resolved property '{}' from env key '{}'.", key, envKey);
+				return envValue;
+			}
 		}
 
 		String value = properties.getProperty(key);

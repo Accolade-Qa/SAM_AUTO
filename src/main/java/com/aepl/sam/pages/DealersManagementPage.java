@@ -21,19 +21,20 @@ import org.testng.Assert;
 
 import com.aepl.sam.locators.DealersManagementLocators;
 import com.aepl.sam.utils.FormUtils;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 import com.aepl.sam.utils.TableUtils;
 
 public class DealersManagementPage extends DealersManagementLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
-	public DealersManagementPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public DealersManagementPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 	}
 
 	public Boolean navBarLink() {
@@ -123,7 +124,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 			logger.info("Toast message after search: {}", toastMsg);
 			Assert.assertTrue(toastMsg.contains("Data Fetched Successfully"),
 					"Expected success message not found in toast");
-			logger.info("✅ Search box validation passed for all inputs.");
+			logger.info("âœ… Search box validation passed for all inputs.");
 			return true;
 
 		} catch (Exception e) {
@@ -245,7 +246,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 			if (!allEnabled) {
 				logger.error("Some view buttons are disabled!");
 			} else {
-				logger.info("All view buttons are enabled ✅");
+				logger.info("All view buttons are enabled âœ…");
 			}
 			return allEnabled;
 		} catch (Exception e) {
@@ -272,7 +273,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 				}
 			}
 
-			logger.info("Delete buttons validated successfully ✅");
+			logger.info("Delete buttons validated successfully âœ…");
 			return true;
 
 		} catch (Exception e) {
@@ -281,7 +282,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 		}
 	}
 
-	// ✅ Validation: All mobile numbers must be valid (10 digits)
+	// âœ… Validation: All mobile numbers must be valid (10 digits)
 	public void validateMobileNumbers() {
 		try {
 			TableUtils table = new TableUtils(wait);
@@ -306,14 +307,14 @@ public class DealersManagementPage extends DealersManagementLocators {
 				Assert.assertTrue(isValid, "Invalid Mobile Number at row " + (i + 1) + ": " + mobile);
 			}
 
-			logger.info("✅ All mobile numbers passed validation.");
+			logger.info("âœ… All mobile numbers passed validation.");
 		} catch (Exception e) {
 			logger.error("Error validating mobile numbers: {}", e.getMessage(), e);
 			Assert.fail("Exception occurred while validating mobile numbers: " + e.getMessage());
 		}
 	}
 
-	// ✅ Validation: All emails must be valid format
+	// âœ… Validation: All emails must be valid format
 	public void validateEmails() {
 		try {
 			TableUtils table = new TableUtils(wait);
@@ -338,14 +339,14 @@ public class DealersManagementPage extends DealersManagementLocators {
 				Assert.assertTrue(isValid, "Invalid Email at row " + (i + 1) + ": " + email);
 			}
 
-			logger.info("✅ All emails passed validation.");
+			logger.info("âœ… All emails passed validation.");
 		} catch (Exception e) {
 			logger.error("Error validating emails: {}", e.getMessage(), e);
 			Assert.fail("Exception occurred while validating emails: " + e.getMessage());
 		}
 	}
 
-	// ✅ Check if Add Dealer button is enabled
+	// âœ… Check if Add Dealer button is enabled
 	public Boolean isAddDealerButtonEnabled() {
 		try {
 			WebElement add_dealer = driver.findElement(ADD_DEALER);
@@ -366,7 +367,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 		}
 	}
 
-	// ✅ Check if Add Dealer button is visible
+	// âœ… Check if Add Dealer button is visible
 	public Boolean isAddDealerButtonVisible() {
 		try {
 			WebElement add_dealer = driver.findElement(ADD_DEALER);
@@ -387,7 +388,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 		}
 	}
 
-	// ✅ Click Add Dealer button and validate component
+	// âœ… Click Add Dealer button and validate component
 	public String clickAddDealerButton() {
 		String componentTitle = null;
 		try {
@@ -428,14 +429,14 @@ public class DealersManagementPage extends DealersManagementLocators {
 		}
 	}
 
-	// ✅ Validate all error messages for all input boxes in dealer form
+	// âœ… Validate all error messages for all input boxes in dealer form
 	public Boolean testAllFormFieldsErrors() {
 		boolean hasErrors = false;
 		try {
 			WebElement formContainer = driver.findElement(By.cssSelector("div.image-form-section"));
 			WebElement submitButton = driver.findElement(By.className("submit-button"));
 
-			// 🔹 Invalid test values per field (each entry should trigger an error)
+			// ðŸ”¹ Invalid test values per field (each entry should trigger an error)
 			Map<String, List<String>> testValues = new HashMap<>();
 			testValues.put("firstName", List.of("abcdefghijk", "123@", " Suraj ", " "));
 			testValues.put("lastName", List.of(" ", "123@", " Bhalerao ", "abcdefghijk"));
@@ -443,7 +444,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 			testValues.put("mobileNumber", List.of(" ", "abc123", "12345678901"));
 			testValues.put("userEmail", List.of(" ", "invalid-email"));
 
-			// 🔹 Expected errors per test value (order must match testValues order)
+			// ðŸ”¹ Expected errors per test value (order must match testValues order)
 			Map<String, List<String>> expectedErrors = new HashMap<>();
 			expectedErrors.put("firstName", List.of("Maximum 10 characters allowed.", //
 					"Only alphabets and spaces are allowed.", //
@@ -468,14 +469,14 @@ public class DealersManagementPage extends DealersManagementLocators {
 			expectedErrors.put("userEmail",
 					List.of("This field is required and can't be only spaces.", "Please enter a valid Email ID."));
 
-			// 🔹 Validate using updated FormUtils (returns all errors per field)
+			// ðŸ”¹ Validate using updated FormUtils (returns all errors per field)
 			Map<String, List<String>> actualErrors = FormUtils.validateFormFields(driver, formContainer, testValues,
 					submitButton, expectedErrors);
 
-			// 🔹 Log actual results
+			// ðŸ”¹ Log actual results
 			actualErrors.forEach((field, errors) -> logger.info("Field: {} | Errors captured: {}", field, errors));
 
-			// 🔹 Validate field by field
+			// ðŸ”¹ Validate field by field
 			for (String field : expectedErrors.keySet()) {
 				List<String> expectedList = expectedErrors.get(field);
 				List<String> actualList = actualErrors.getOrDefault(field, List.of());
@@ -485,21 +486,21 @@ public class DealersManagementPage extends DealersManagementLocators {
 					if (i < actualList.size()) {
 						String actual = actualList.get(i);
 						if (expected.equals(actual)) {
-							logger.info("✅ Field '{}' case {} passed with error: {}", field, i + 1, actual);
+							logger.info("âœ… Field '{}' case {} passed with error: {}", field, i + 1, actual);
 						} else {
-							logger.error("❌ Field '{}' case {} mismatch. Expected: '{}', Got: '{}'", field, i + 1,
+							logger.error("âŒ Field '{}' case {} mismatch. Expected: '{}', Got: '{}'", field, i + 1,
 									expected, actual);
 						}
 						Assert.assertEquals(actual, expected,
 								"Validation mismatch for field '" + field + "' case " + (i + 1));
 					} else {
-						logger.error("❌ Field '{}' missing expected error: {}", field, expected);
+						logger.error("âŒ Field '{}' missing expected error: {}", field, expected);
 						Assert.fail("Missing validation error for field '" + field + "'. Expected: " + expected);
 					}
 				}
 			}
 
-			// ✅ Ensure at least one error appeared
+			// âœ… Ensure at least one error appeared
 			hasErrors = actualErrors.values().stream().anyMatch(list -> !list.isEmpty());
 			Assert.assertTrue(hasErrors, "Validation errors should appear for invalid input.");
 
@@ -528,7 +529,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 		List<WebElement> inputBoxes = formContainer.findElements(By.cssSelector("input.mat-mdc-input-element"));
 		logger.info("Found {} input boxes in the form.", inputBoxes.size());
 
-		// ✅ Step 1: Clear all input fields
+		// âœ… Step 1: Clear all input fields
 		for (WebElement inputBox : inputBoxes) {
 			try {
 				if (inputBox.isDisplayed() && inputBox.isEnabled()) {
@@ -542,7 +543,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 			}
 		}
 
-		// ✅ Step 2: Enter random data into each input
+		// âœ… Step 2: Enter random data into each input
 		for (WebElement inputBox : inputBoxes) {
 			try {
 				String fieldName = inputBox.getAttribute("formcontrolname");
@@ -583,7 +584,7 @@ public class DealersManagementPage extends DealersManagementLocators {
 			}
 		}
 
-		// ✅ Step 3: Submit form
+		// âœ… Step 3: Submit form
 		try {
 			submitButton.click();
 			logger.info("Clicked on submit button.");
@@ -595,3 +596,4 @@ public class DealersManagementPage extends DealersManagementLocators {
 	}
 
 }
+

@@ -14,7 +14,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DeviceModelsPage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -23,7 +24,8 @@ public class DeviceModelsPageTest extends TestBase {
 
 	private ExcelUtility excelUtility;
 	private DeviceModelsPage deviceModelsPage;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -31,8 +33,9 @@ public class DeviceModelsPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
-		this.deviceModelsPage = new DeviceModelsPage(driver, wait, comm);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
+		this.deviceModelsPage = new DeviceModelsPage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
@@ -43,22 +46,22 @@ public class DeviceModelsPageTest extends TestBase {
 	public void testCompanyLogo() {
 		final String LOGO_NOT_DISPLAYED = "Logo Not Displayed";
 		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
+				() -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : LOGO_NOT_DISPLAYED);
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
 	public void testButtons() {
-		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 4)
 	public void testComponents() {
-		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	@Test(priority = 5)
@@ -127,12 +130,12 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 14)
 	public void testButtons2() {
-		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 15)
 	public void testComponentTitles2() {
-		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	// Validate the search input box is visible
@@ -272,12 +275,12 @@ public class DeviceModelsPageTest extends TestBase {
 
 	@Test(priority = 29)
 	public void testVersion() {
-		executor.executeTest("Verify Application Version Display", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Application Version Display", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	@Test(priority = 30)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright Text", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Text", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@AfterClass
@@ -285,3 +288,5 @@ public class DeviceModelsPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+

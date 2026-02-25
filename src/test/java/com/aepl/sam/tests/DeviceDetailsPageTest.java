@@ -14,7 +14,8 @@ import org.testng.asserts.SoftAssert;
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
 
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DeviceDetailsPage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -23,7 +24,8 @@ public class DeviceDetailsPageTest extends TestBase {
 	private static final String DEVICE_DETAILS_EXCEL_SHEET = "Device_Details_Test";
 
 	private DeviceDetailsPage deviceDetails;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private ExcelUtility excelUtility;
 	private SoftAssert softAssert;
 	private Executor executor;
@@ -32,8 +34,9 @@ public class DeviceDetailsPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
-		this.deviceDetails = new DeviceDetailsPage(driver, wait, comm);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
+		this.deviceDetails = new DeviceDetailsPage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
@@ -45,13 +48,13 @@ public class DeviceDetailsPageTest extends TestBase {
 	@Test(priority = 1)
 	public void testCompanyLogo() {
 		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
-				() -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+				() -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	// Testing for page title
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
 	// Testing for refresh button functionality
@@ -66,13 +69,13 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for all buttons on the page
 	@Test(priority = 4)
 	public void testButtons() {
-		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	// Testing for component titles on the page
 	@Test(priority = 5)
 	public void testComponentTitles() {
-		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	// Testing for the bar graph on the page
@@ -176,13 +179,13 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for all buttons on the page again after viewing a device
 	@Test(priority = 17)
 	public void testAllButtons() {
-		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Verify All Buttons on Device Details Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	// Validationg all components on the page
 	@Test(priority = 18)
 	public void testComponentTitle() {
-		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Verify All Component Title on Device Details Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	// Validate the imei displayed on the device details page is correct
@@ -276,7 +279,10 @@ public class DeviceDetailsPageTest extends TestBase {
 	// shows the IGN,MAINS, TAMPER, PWR, etc
 	@Test(priority = 32)
 	public void testAllCards() {
-		executor.executeTest("Verify All Cards on Device Details Page", "All cards are displayed and validated successfully.", comm::validateCards);
+		executor.executeTest("Verify All Cards on Device Details Page", "All cards are displayed and validated successfully.", () -> {
+			deviceDetails.validateAllCardsHeaders();
+			return "All cards are displayed and validated successfully.";
+		});
 	}
 
 	// Test all cards headers is valid with the expected headers
@@ -462,14 +468,14 @@ public class DeviceDetailsPageTest extends TestBase {
 	// Testing for version text on the page
 	@Test(priority = 57)
 	public void testVersion() {
-		executor.executeTest("Verify Version on Device Details Page", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version on Device Details Page", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 		logger.info("Version test executed successfully.");
 	}
 
 	// Testing for copyright text on the page
 	@Test(priority = 58)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright on Device Details Page", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright on Device Details Page", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 		logger.info("Copyright test executed successfully.");
 	}
 
@@ -478,3 +484,5 @@ public class DeviceDetailsPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+

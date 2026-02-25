@@ -14,7 +14,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.GovernmentServerPage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -24,7 +25,8 @@ public class GovernmentServerPageTest extends TestBase {
 
 	private GovernmentServerPage govServerPage;
 	private ExcelUtility excelUtility;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -33,7 +35,8 @@ public class GovernmentServerPageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		this.govServerPage = new GovernmentServerPage(driver, wait, action);
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
@@ -44,7 +47,7 @@ public class GovernmentServerPageTest extends TestBase {
 	// Validate the company logo on the left of the page. if it is displayed or not.
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest("Verify Company Logo on Webpage", true, () -> comm.verifyWebpageLogo());
+		executor.executeTest("Verify Company Logo on Webpage", true, () -> assertion.verifyWebpageLogo());
 	}
 
 	// Validate the navigation bar
@@ -68,13 +71,13 @@ public class GovernmentServerPageTest extends TestBase {
 	// Validate the all buttons on the screen that is appeared.
 	@Test(priority = 5)
 	public void testButtons() {
-		executor.executeTest("Test all button on page {Government Server}", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Test all button on page {Government Server}", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	// Validate the all components on the screen.
 	@Test(priority = 6)
 	public void testComponents() {
-		executor.executeTest("Test All Components on the page {Government Server}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Test All Components on the page {Government Server}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	// Search box is enabled
@@ -123,8 +126,8 @@ public class GovernmentServerPageTest extends TestBase {
 	 * -- update follow
 	 *
 	 *
-	 * if instead of just action checking other fields then the data matched 😒.
-	 * don't know why 😂
+	 * if instead of just action checking other fields then the data matched ÃƒÂ°Ã…Â¸Ã‹Å“Ã¢â‚¬â„¢.
+	 * don't know why ÃƒÂ°Ã…Â¸Ã‹Å“Ã¢â‚¬Å¡
 	 **/
 	@Test(priority = 13)
 	public void testTableDataOfGovernmetServerListTable() {
@@ -383,7 +386,7 @@ public class GovernmentServerPageTest extends TestBase {
 	@Test(priority = 45)
 	public void testDeviceFirmwareListComponentIsVisible() {
 		executor.executeTest("Test the device fimware list component is visible",
-				Constants.EXP_VALIDATE_COMPONENTS_TEXT, () -> comm.validateComponents());
+				Constants.EXP_VALIDATE_COMPONENTS_TEXT, () -> assertion.validateComponents());
 	}
 
 	@Test(priority = 46)
@@ -396,7 +399,7 @@ public class GovernmentServerPageTest extends TestBase {
 	@Test(priority = 47)
 	public void testButtonsValidations() {
 		executor.executeTest("Test the device fimware list component title ",
-				Constants.EXP_VALIDATE_BUTTONS_TEXT, () -> comm.validateButtons());
+				Constants.EXP_VALIDATE_BUTTONS_TEXT, () -> assertion.validateButtons());
 	}
 
 	// Search box is enabled
@@ -513,7 +516,7 @@ public class GovernmentServerPageTest extends TestBase {
 		List<Map<String, String>> expectedData = new ArrayList<>();
 
 		Map<String, String> expectedRow = new LinkedHashMap<>();
-		expectedRow.put("SELECT", "Unchecked"); // optional — only if checkbox exists
+		expectedRow.put("SELECT", "Unchecked"); // optional ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â only if checkbox exists
 		expectedRow.put("FIRMWARE TYPE", "Device");
 		expectedRow.put("FIRMWARE VERSION", "TCP01.bin");
 		expectedRow.put("UPLOAD FILE / FILE NAME", "Default_TCP01.bin");
@@ -582,14 +585,14 @@ public class GovernmentServerPageTest extends TestBase {
 	@Test(priority = 71)
 	public void testAllButtonsOnTheFirmwareMasterPage() {
 		executor.executeTest("Test all buttons on the firmware master page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
-				comm::validateButtons);
+				assertion::validateButtons);
 	}
 
 	// Verify the components
 	@Test(priority = 72)
 	public void testAllComponentOnTheFirmwareMasterPage() {
 		executor.executeTest("Test all components on the firmware master page", Constants.EXP_VALIDATE_COMPONENTS_TEXT,
-				comm::validateComponents);
+				assertion::validateComponents);
 	}
 
 	// Test component title
@@ -822,13 +825,13 @@ public class GovernmentServerPageTest extends TestBase {
 	// Validate the Version
 	@Test(priority = 102)
 	public void testVersion() {
-		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	// Validate the copyright
 	@Test(priority = 103)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@AfterClass
@@ -836,3 +839,4 @@ public class GovernmentServerPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+

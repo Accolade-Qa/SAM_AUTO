@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.aepl.sam.locators.FotaPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 
 public class FotaPage extends FotaPageLocators {
 
@@ -24,12 +25,12 @@ public class FotaPage extends FotaPageLocators {
 
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 
-	public FotaPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public FotaPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 		logger.info("Initialized FotaPage");
 	}
 
@@ -333,3 +334,4 @@ public class FotaPage extends FotaPageLocators {
 		}
 	}
 }
+

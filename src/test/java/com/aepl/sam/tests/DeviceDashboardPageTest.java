@@ -9,7 +9,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DeviceDashboardPage;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
@@ -18,7 +19,8 @@ public class DeviceDashboardPageTest extends TestBase {
 	private static final String DEVICE_DASHBOARD_EXCEL_SHEET = "DeviceDashboardTests";
 
 	private DeviceDashboardPage deviceDashboardPage;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private ExcelUtility excelUtility;
 	private SoftAssert softAssert;
 	private Executor executor;
@@ -28,7 +30,8 @@ public class DeviceDashboardPageTest extends TestBase {
 	public void setUp() {
 		super.setUp();
 		this.deviceDashboardPage = new DeviceDashboardPage(driver, wait, action);
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
 		this.softAssert = new SoftAssert();
 		this.excelUtility = new ExcelUtility();
 		this.executor = new Executor(excelUtility, softAssert);
@@ -37,7 +40,7 @@ public class DeviceDashboardPageTest extends TestBase {
 	}
 
 	// =========================================================
-	// 🧪 General Tests
+	// ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âª General Tests
 	// =========================================================
 
 	@Test(priority = 1)
@@ -47,7 +50,7 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
@@ -57,12 +60,12 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 4)
 	public void testValidateComponents() {
-		executor.executeTest("Validate Components", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Validate Components", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	@Test(priority = 5)
 	public void testValidateButtons() {
-		executor.executeTest("Validate Buttons", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Validate Buttons", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	// Validate all cards
@@ -83,7 +86,7 @@ public class DeviceDashboardPageTest extends TestBase {
 		executor.executeTest("Test graph click and headers", true, deviceDashboardPage::validateGraphClick);
 	}
 	// =========================================================
-	// 📊 Total Production Devices Table
+	// ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Total Production Devices Table
 	// =========================================================
 
 	@Test(priority = 9)
@@ -615,12 +618,12 @@ public class DeviceDashboardPageTest extends TestBase {
 
 	@Test(priority = 99)
 	public void testVersion() {
-		executor.executeTest("Verify Application Version", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Application Version", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	@Test(priority = 100)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@AfterClass
@@ -628,3 +631,4 @@ public class DeviceDashboardPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+

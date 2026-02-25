@@ -8,7 +8,8 @@ import org.testng.asserts.SoftAssert;
 import com.aepl.sam.base.TestBase;
 import java.util.List;
 
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DealersManagementPage;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
@@ -19,7 +20,8 @@ public class DealersManagementPageTest extends TestBase {
 
 	private ExcelUtility excelUtility;
 	private DealersManagementPage dealerPage;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -27,8 +29,9 @@ public class DealersManagementPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
-		this.dealerPage = new DealersManagementPage(driver, wait, comm);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
+		this.dealerPage = new DealersManagementPage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		excelUtility.initializeExcel(SHEET_NAME);
@@ -37,7 +40,7 @@ public class DealersManagementPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest("Test Company logo", true, () -> comm.verifyWebpageLogo());
+		executor.executeTest("Test Company logo", true, () -> assertion.verifyWebpageLogo());
 	}
 
 	@Test(priority = 2)
@@ -57,12 +60,12 @@ public class DealersManagementPageTest extends TestBase {
 
 	@Test(priority = 5)
 	public void testButtons() {
-		executor.executeTest("Test all button on page {Sim Batch Data Details}", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Test all button on page {Sim Batch Data Details}", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 6)
 	public void testComponents() {
-		executor.executeTest("Test All Components on the page {Sim Batch Data Details}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Test All Components on the page {Sim Batch Data Details}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	@Test(priority = 7)
@@ -159,3 +162,5 @@ public class DealersManagementPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+

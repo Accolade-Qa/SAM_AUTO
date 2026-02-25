@@ -17,18 +17,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.OtaPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 
 public class OtaPage extends OtaPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private JavascriptExecutor js;
 	private static final Logger logger = LogManager.getLogger(OtaPage.class);
 
-	public OtaPage(WebDriver driver, WebDriverWait wait, CommonMethods commonMethods) {
+	public OtaPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = commonMethods;
+		this.comm = new PageActionsUtil(driver, wait);
 		this.js = (JavascriptExecutor) driver;
 	}
 
@@ -240,3 +241,4 @@ public class OtaPage extends OtaPageLocators {
 		return "OTA batch functionality is working correctly.";
 	}
 }
+

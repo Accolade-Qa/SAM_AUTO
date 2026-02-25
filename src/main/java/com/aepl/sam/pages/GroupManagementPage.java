@@ -13,20 +13,22 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.sam.locators.GroupManagementPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 
 public class GroupManagementPage extends GroupManagementPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	public String randomGroupName;
 	private RandomGeneratorUtils random;
 	private static final Logger logger = LogManager.getLogger(GroupManagementPage.class);
 
-	public GroupManagementPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public GroupManagementPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
+		this.random = new RandomGeneratorUtils();
 		this.randomGroupName = random.generateRandomString(5);
 	}
 
@@ -191,3 +193,4 @@ public class GroupManagementPage extends GroupManagementPageLocators {
 		}
 	}
 }
+

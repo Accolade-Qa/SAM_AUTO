@@ -28,7 +28,7 @@ public class UserManagementPage extends UserManagementPageLocators {
 	private RandomGeneratorUtils random;
 	private final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
-	public UserManagementPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public UserManagementPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
 		this.random = new RandomGeneratorUtils();
@@ -352,3 +352,4 @@ public class UserManagementPage extends UserManagementPageLocators {
 	}
 
 }
+

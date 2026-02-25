@@ -19,23 +19,24 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 
 import com.aepl.sam.locators.DeviceModelsPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 import com.aepl.sam.utils.TableUtils;
 
 public class DeviceModelsPage extends DeviceModelsPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private String randomModelCode;
 	private RandomGeneratorUtils random;
 	private TableUtils table;
 
 	private static final Logger logger = LogManager.getLogger(DeviceModelsPage.class);
 
-	public DeviceModelsPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public DeviceModelsPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 		this.random = new RandomGeneratorUtils();
 		this.table = new TableUtils(driver, wait);
 	}
@@ -401,3 +402,4 @@ public class DeviceModelsPage extends DeviceModelsPageLocators {
 	}
 
 }
+

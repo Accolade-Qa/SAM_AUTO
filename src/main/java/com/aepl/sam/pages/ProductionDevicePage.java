@@ -20,16 +20,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.sam.actions.CalendarActions;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.ProductionDevicePageLocators;
+import com.aepl.sam.utils.CalendarActions;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 import com.aepl.sam.utils.TableUtils;
 
 public class ProductionDevicePage extends ProductionDevicePageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods commonMethods;
+	private PageActionsUtil actions;
 	private CalendarActions CalAct;
 	JavascriptExecutor js;
 	private String randomUIN;
@@ -42,7 +43,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 	public ProductionDevicePage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.commonMethods = new CommonMethods(driver, wait);
+		this.actions = new PageActionsUtil(driver, wait);
 		this.CalAct = new CalendarActions(driver, wait);
 		this.js = (JavascriptExecutor) driver;
 		this.random = new RandomGeneratorUtils();
@@ -112,10 +113,10 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 				return errorElements.get(0).getText().trim();
 			}
 
-			return "✅ No validation error";
+			return "âœ… No validation error";
 
 		} catch (org.openqa.selenium.TimeoutException e) {
-			return "⚠️ No validation message appeared";
+			return "âš ï¸ No validation message appeared";
 		}
 	}
 
@@ -148,7 +149,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 				if (!errorElements.isEmpty()) {
 					return errorElements.get(0).getText().trim();
 				}
-				return "✅ File upload validated successfully";
+				return "âœ… File upload validated successfully";
 			}
 
 			// Handle non-file inputs as before.
@@ -166,7 +167,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			return errorElement.getText().trim();
 
 		} catch (org.openqa.selenium.TimeoutException e) {
-			return "⚠️ No validation message appeared";
+			return "âš ï¸ No validation message appeared";
 		}
 	}
 
@@ -240,15 +241,15 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			logger.info("Filling Add Production Device form...");
 
 			WebElement AddUID = wait.until(ExpectedConditions.visibilityOfElementLocated(UID));
-			commonMethods.highlightElement(AddUID, "solid purple");
+			actions.highlightElement(AddUID, "solid purple");
 			AddUID.sendKeys(randomUIN);
 
 			WebElement AddIMEI = wait.until(ExpectedConditions.visibilityOfElementLocated(IMEI));
-			commonMethods.highlightElement(AddIMEI, "solid purple");
+			actions.highlightElement(AddIMEI, "solid purple");
 			AddIMEI.sendKeys(randomIMEI);
 
 			WebElement AddICCID = wait.until(ExpectedConditions.visibilityOfElementLocated(ICCID));
-			commonMethods.highlightElement(AddICCID, "solid purple");
+			actions.highlightElement(AddICCID, "solid purple");
 			AddICCID.sendKeys(randomICCID);
 
 			WebElement deviceModelDropdown = wait
@@ -261,7 +262,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			for (WebElement modelOption : deviceModelOptions) {
 				String modelText = modelOption.getText().trim();
 				js.executeScript("arguments[0].scrollIntoView({block: 'center'});", modelOption);
-				commonMethods.highlightElement(modelOption, "solid purple");
+				actions.highlightElement(modelOption, "solid purple");
 
 				if (modelText.equals(Constants.DEVICE_MODEL)) {
 					modelOption.click();
@@ -294,11 +295,11 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 			WebElement SubmitButton = wait.until(ExpectedConditions.visibilityOfElementLocated(SUBMIT_BTN));
 			js.executeScript("arguments[0].scrollIntoView({block: 'center'});", SubmitButton);
-			commonMethods.highlightElement(SubmitButton, "solid purple");
+			actions.highlightElement(SubmitButton, "solid purple");
 			SubmitButton.click();
 
 			WebElement toast_msg = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_MSG));
-			commonMethods.highlightElement(toast_msg, "solid purple");
+			actions.highlightElement(toast_msg, "solid purple");
 			logger.info("Toast message after adding device: {}", toast_msg.getText());
 			return toast_msg.getText();
 
@@ -320,7 +321,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			for (WebElement modelOption : deviceModelOptions) {
 				String modelText = modelOption.getText().trim();
 				js.executeScript("arguments[0].scrollIntoView({block: 'center'});", modelOption);
-				commonMethods.highlightElement(modelOption, "solid purple");
+				actions.highlightElement(modelOption, "solid purple");
 
 				if (modelText.equals(Constants.DEVICE_MODEL)) {
 					modelOption.click();
@@ -368,11 +369,11 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			scrollToBottom();
 
 			WebElement update_btn = wait.until(ExpectedConditions.elementToBeClickable(UPDATE_BTN));
-			commonMethods.highlightElement(update_btn, "solid purple");
+			actions.highlightElement(update_btn, "solid purple");
 			update_btn.click();
 
 			WebElement toast_msg = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_MSG));
-			commonMethods.highlightElement(toast_msg, "solid purple");
+			actions.highlightElement(toast_msg, "solid purple");
 			logger.info("Toast message after adding device: {}", toast_msg.getText());
 			return toast_msg.getText();
 
@@ -450,7 +451,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isDeviceModelNameClickable() {
 		WebElement deviceModelDropdown = wait.until(ExpectedConditions.elementToBeClickable(DEVICE_MODEL_NAME));
-		commonMethods.highlightElement(deviceModelDropdown, "solid purple");
+		actions.highlightElement(deviceModelDropdown, "solid purple");
 		boolean isClickable = deviceModelDropdown.isEnabled();
 		logger.info("Device Model Name dropdown clickable: {}", isClickable);
 		return isClickable;
@@ -465,7 +466,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isBulkUploadButtonEnabled() {
 		WebElement bulkUploadButton = wait.until(ExpectedConditions.visibilityOfElementLocated(BULK_UPLOAD));
-		commonMethods.highlightElement(bulkUploadButton, "solid purple");
+		actions.highlightElement(bulkUploadButton, "solid purple");
 		boolean isEnabled = bulkUploadButton.isEnabled();
 		logger.info("Bulk Upload button enabled: {}", isEnabled);
 		return isEnabled;
@@ -483,18 +484,18 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 		logger.info("Clicking on Bulk Upload button...");
 		WebElement bulkUploadButton = wait.until(ExpectedConditions.visibilityOfElementLocated(BULK_UPLOAD));
-		commonMethods.highlightElement(bulkUploadButton, "solid purple");
+		actions.highlightElement(bulkUploadButton, "solid purple");
 		bulkUploadButton.click();
 
 		WebElement bulkUploadPageTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(PAGE_TITLE));
-		commonMethods.highlightElement(bulkUploadPageTitle, "solid purple");
+		actions.highlightElement(bulkUploadPageTitle, "solid purple");
 		logger.info("Bulk Upload Page Title: {}", bulkUploadPageTitle.getText());
 		return bulkUploadPageTitle.getText();
 	}
 
 	public boolean isDownloadSampleButtonEnabled() {
 		WebElement downloadSampleButton = wait.until(ExpectedConditions.visibilityOfElementLocated(DOWNLOAD_SAMPLE));
-		commonMethods.highlightElement(downloadSampleButton, "solid purple");
+		actions.highlightElement(downloadSampleButton, "solid purple");
 		boolean isEnabled = downloadSampleButton.isEnabled();
 		logger.info("Download Sample button enabled: {}", isEnabled);
 		return isEnabled;
@@ -502,19 +503,19 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isDownloadSampleButtonClickable() {
 		WebElement downloadSampleButton = wait.until(ExpectedConditions.elementToBeClickable(DOWNLOAD_SAMPLE));
-		commonMethods.highlightElement(downloadSampleButton, "solid purple");
+		actions.highlightElement(downloadSampleButton, "solid purple");
 		boolean isClickable = downloadSampleButton.isEnabled();
 		logger.info("Download Sample button clickable: {}", isClickable);
 		return isClickable;
 	}
 
 	public String downloadSampleFile() {
-		return commonMethods.clickSampleFileButton();
+		return actions.clickSampleFileButton();
 	}
 
 	public boolean isAttachButtonEnabled() {
 		WebElement attachButton = wait.until(ExpectedConditions.visibilityOfElementLocated(ATTACH_FILE));
-		commonMethods.highlightElement(attachButton, "solid purple");
+		actions.highlightElement(attachButton, "solid purple");
 		boolean isEnabled = attachButton.isEnabled();
 		logger.info("Attach button enabled: {}", isEnabled);
 		return isEnabled;
@@ -522,7 +523,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isAttachButtonClickable() {
 		WebElement attachButton = wait.until(ExpectedConditions.elementToBeClickable(ATTACH_FILE));
-		commonMethods.highlightElement(attachButton, "solid purple");
+		actions.highlightElement(attachButton, "solid purple");
 		boolean isClickable = attachButton.isEnabled();
 		logger.info("Attach button clickable: {}", isClickable);
 		return isClickable;
@@ -548,7 +549,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 			submitButton.click();
 			logger.info("Submit button clicked.");
 			WebElement toastMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(TOAST_MSG));
-			commonMethods.highlightElement(toastMessage, "solid purple");
+			actions.highlightElement(toastMessage, "solid purple");
 			message = toastMessage.getText().trim().toString();
 			logger.info("Toast message received: {}", message);
 		} catch (Exception e) {
@@ -619,7 +620,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isSearchBoxEnabled() {
 		WebElement searchBox = wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BOX_INPUT));
-		commonMethods.highlightElement(searchBox, "solid purple");
+		actions.highlightElement(searchBox, "solid purple");
 		boolean isEnabled = searchBox.isEnabled();
 		logger.info("Search box enabled: {}", isEnabled);
 		return isEnabled;
@@ -627,7 +628,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isSearchBoxClickable() {
 		WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(SEARCH_BOX_INPUT));
-		commonMethods.highlightElement(searchBox, "solid purple");
+		actions.highlightElement(searchBox, "solid purple");
 		boolean isClickable = searchBox.isEnabled();
 		logger.info("Search box clickable: {}", isClickable);
 		return isClickable;
@@ -635,7 +636,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isSearchButtonEnabled() {
 		WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BOX_BTN));
-		commonMethods.highlightElement(searchButton, "solid purple");
+		actions.highlightElement(searchButton, "solid purple");
 		boolean isEnabled = searchButton.isEnabled();
 		logger.info("Search button enabled: {}", isEnabled);
 		return isEnabled;
@@ -643,7 +644,7 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isSearchButtonClickable() {
 		WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(SEARCH_BOX_BTN));
-		commonMethods.highlightElement(searchButton, "solid purple");
+		actions.highlightElement(searchButton, "solid purple");
 		boolean isClickable = searchButton.isEnabled();
 		logger.info("Search button clickable: {}", isClickable);
 		return isClickable;
@@ -651,12 +652,12 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public String searchProductionDevice() {
 		WebElement searchBox = wait.until(ExpectedConditions.visibilityOfElementLocated(SEARCH_BOX_INPUT));
-		commonMethods.highlightElement(searchBox, "solid purple");
+		actions.highlightElement(searchBox, "solid purple");
 		searchBox.clear();
 		searchBox.sendKeys(Constants.DEVICE_UID);
 
 		WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(SEARCH_BOX_BTN));
-		commonMethods.highlightElement(searchButton, "solid purple");
+		actions.highlightElement(searchButton, "solid purple");
 		searchButton.click();
 
 		WebElement uinOfDevice = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//td[1]")));
@@ -685,9 +686,10 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 
 	public boolean isUpdateButtonVisible() {
 		WebElement updateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(UPDATE_BTN));
-		commonMethods.highlightElement(updateButton, "solid purple");
+		actions.highlightElement(updateButton, "solid purple");
 		boolean isVisible = updateButton.isDisplayed();
 		logger.info("Update button visibility: {}", isVisible);
 		return isVisible;
 	}
 }
+

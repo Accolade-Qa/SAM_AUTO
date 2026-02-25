@@ -9,7 +9,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.SimBatchDataDetailsPage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -19,7 +20,8 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	private ExcelUtility excelUtility;
 	private SimBatchDataDetailsPage simBatch;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -27,8 +29,9 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
-		this.simBatch = new SimBatchDataDetailsPage(driver, wait, comm);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
+		this.simBatch = new SimBatchDataDetailsPage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
 		excelUtility.initializeExcel(SHEET_NAME);
@@ -57,12 +60,12 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 5)
 	public void testButtons() {
-		executor.executeTest("Test all button on page {Sim Batch Data Details}", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Test all button on page {Sim Batch Data Details}", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 6)
 	public void testComponents() {
-		executor.executeTest("Test All Components on the page {Sim Batch Data Details}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, comm::validateComponents);
+		executor.executeTest("Test All Components on the page {Sim Batch Data Details}", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
 	}
 
 	@Test(priority = 7)
@@ -195,12 +198,12 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 36)
 	public void testVersion() {
-		executor.executeTest("Verify Application Version Display", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Application Version Display", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	@Test(priority = 37)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright Text", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Text", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@AfterClass
@@ -208,3 +211,5 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+

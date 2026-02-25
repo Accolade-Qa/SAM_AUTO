@@ -82,7 +82,7 @@ public class Executor {
 				Object actVal = actMap.get(key);
 
 				if (!String.valueOf(expVal).equalsIgnoreCase(String.valueOf(actVal))) {
-					logger.debug("Value mismatch for key {} → expected: {}, actual: {}", key, expVal, actVal);
+					logger.debug("Value mismatch for key {} â†’ expected: {}, actual: {}", key, expVal, actVal);
 					return false;
 				}
 			}

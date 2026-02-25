@@ -22,15 +22,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.aepl.sam.actions.MouseActions;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.DeviceDashboardPageLocators;
+import com.aepl.sam.utils.MouseActions;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.TableUtils;
 
 public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private TableUtils tableUtils;
 
 	private static final Logger logger = LogManager.getLogger(DeviceDashboardPage.class);
@@ -38,7 +39,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	public DeviceDashboardPage(WebDriver driver, WebDriverWait wait, MouseActions action) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
 		this.tableUtils = new TableUtils(wait);
 	}
 
@@ -494,9 +495,9 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 				String headerText = tableHeader.getText().trim();
 
 				if (headerText.equalsIgnoreCase(cardName)) {
-					logger.info("✅ PASS: {} matches table header.", cardName);
+					logger.info("âœ… PASS: {} matches table header.", cardName);
 				} else {
-					logger.error("❌ FAIL: Card {} but header is {}", cardName, headerText);
+					logger.error("âŒ FAIL: Card {} but header is {}", cardName, headerText);
 					allCardsValidated = false; // mark failure but continue loop
 				}
 
@@ -534,9 +535,9 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 				String headerText = tableHeader.getText().trim();
 
 				if (headerText.equalsIgnoreCase(graphName)) {
-					logger.info("✅ PASS: {} matches table header.", graphName);
+					logger.info("âœ… PASS: {} matches table header.", graphName);
 				} else {
-					logger.error("❌ FAIL: Graph {} but header is {}", graphName, headerText);
+					logger.error("âŒ FAIL: Graph {} but header is {}", graphName, headerText);
 					allGraphsPassed = false; // mark failure
 				}
 
@@ -652,7 +653,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			String path = "//div/h6[contains(@class, 'component-title')]";
 			WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(path)));
 			String title = titleElement.getText().trim();
-			logger.info("📌 Current card title: {}", title);
+			logger.info("ðŸ“Œ Current card title: {}", title);
 
 			// Pick correct search term
 			String searchTerm;
@@ -671,21 +672,21 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 					searchTerm = imei;
 					break;
 				default:
-					logger.warn("⚠️ Unknown card title: {}", title);
+					logger.warn("âš ï¸ Unknown card title: {}", title);
 					return false;
 			}
 
 			searchInput.sendKeys(searchTerm);
 			searchInput.sendKeys(Keys.ENTER);
 
-			// 🔄 Wait until at least 1st cell contains non-empty text
+			// ðŸ”„ Wait until at least 1st cell contains non-empty text
 			By firstCell = By.xpath("//tbody/tr[1]/td");
 			wait.until(driver -> {
 				List<WebElement> rows = driver.findElements(firstCell);
 				return !rows.isEmpty() && rows.get(0).getText().trim().length() > 0;
 			});
 
-			// ✅ Re-fetch every time, don’t reuse stale elements
+			// âœ… Re-fetch every time, donâ€™t reuse stale elements
 			List<WebElement> results = driver.findElements(firstCell);
 
 			for (WebElement result : results) {
@@ -694,23 +695,23 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 
 				if (text.contains(uin) || text.contains(imei) || text.contains(iccid)
 						|| text.contains(fallbackDeviceUIN) || text.contains(fallbackDeviceIMEI)) {
-					logger.info("✅ Search successful, term [{}] found in results.", searchTerm);
+					logger.info("âœ… Search successful, term [{}] found in results.", searchTerm);
 					return true;
 				}
 			}
 
-			logger.error("❌ Search term [{}] not found in results.", searchTerm);
+			logger.error("âŒ Search term [{}] not found in results.", searchTerm);
 			return false;
 
 		} catch (TimeoutException e) {
-			logger.error("⏱️ Search operation timed out: {}", e.getMessage());
+			logger.error("â±ï¸ Search operation timed out: {}", e.getMessage());
 			return false;
 		} catch (StaleElementReferenceException e) {
-			logger.warn("♻️ Retrying due to stale element...");
-			// 🔄 Safer retry with limited attempts
+			logger.warn("â™»ï¸ Retrying due to stale element...");
+			// ðŸ”„ Safer retry with limited attempts
 			return retrySearch(3);
 		} catch (Exception e) {
-			logger.error("❌ Unexpected error: {}", e.getMessage());
+			logger.error("âŒ Unexpected error: {}", e.getMessage());
 			return false;
 		}
 	}
@@ -721,7 +722,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			try {
 				return searchDevice();
 			} catch (StaleElementReferenceException ignored) {
-				logger.warn("♻️ Attempt {} failed, retrying...", (i + 1));
+				logger.warn("â™»ï¸ Attempt {} failed, retrying...", (i + 1));
 			}
 		}
 		return false;
@@ -883,10 +884,10 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			String headerText = tableHeader.getText().trim();
 
 			if (headerText.equalsIgnoreCase(graphName)) {
-				logger.info("✅ PASS: {} matches table header.", graphName);
+				logger.info("âœ… PASS: {} matches table header.", graphName);
 				return true;
 			} else {
-				logger.error("❌ FAIL: Graph {} but header is {}", graphName, headerText);
+				logger.error("âŒ FAIL: Graph {} but header is {}", graphName, headerText);
 				return false;
 			}
 
@@ -926,16 +927,16 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 					String headerText = tableHeader.getText().trim();
 
 					if (headerText.equalsIgnoreCase(graphName)) {
-						logger.info("✅ PASS: Firmware Wise Devices graph opened correctly.");
+						logger.info("âœ… PASS: Firmware Wise Devices graph opened correctly.");
 						return true;
 					} else {
-						logger.error("❌ FAIL: Expected: Firmware Wise Devices, but header is: {}", headerText);
+						logger.error("âŒ FAIL: Expected: Firmware Wise Devices, but header is: {}", headerText);
 						return false;
 					}
 				}
 			}
 
-			logger.error("❌ Firmware Wise Devices graph not found among listed graphs.");
+			logger.error("âŒ Firmware Wise Devices graph not found among listed graphs.");
 			return false;
 
 		} catch (Exception e) {
@@ -1080,3 +1081,4 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 		}
 	}
 }
+

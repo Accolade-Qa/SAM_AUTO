@@ -26,6 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.DispatchedDevicesPageLocators;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.TableUtils;
 
 public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
@@ -33,14 +34,14 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private JavascriptExecutor js;
 	private TableUtils table;
 
-	public DispatchedDevicesPage(WebDriver driver, WebDriverWait wait, CommonMethods comm) {
+	public DispatchedDevicesPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = comm;
+		this.comm = new PageActionsUtil(driver, wait);
 		this.js = (JavascriptExecutor) driver;
 		this.table = new TableUtils(driver, wait);
 		logger.info("Initialized DispatchedDevicesPage");
@@ -99,10 +100,10 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 				return errorElements.get(0).getText().trim();
 			}
 
-			return "✅ No validation error";
+			return "âœ… No validation error";
 
 		} catch (org.openqa.selenium.TimeoutException e) {
-			return "⚠️ No validation message appeared";
+			return "âš ï¸ No validation message appeared";
 		}
 	}
 
@@ -135,7 +136,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 				if (!errorElements.isEmpty()) {
 					return errorElements.get(0).getText().trim();
 				}
-				return "✅ File upload validated successfully";
+				return "âœ… File upload validated successfully";
 			}
 
 			// Handle non-file inputs as before.
@@ -153,7 +154,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 			return errorElement.getText().trim();
 
 		} catch (org.openqa.selenium.TimeoutException e) {
-			return "⚠️ No validation message appeared";
+			return "âš ï¸ No validation message appeared";
 		}
 	}
 

@@ -7,13 +7,13 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.aepl.sam.base.TestBase;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.ExtentManager;
 import com.aepl.sam.utils.ExtentTestManager;
 import com.aventstack.extentreports.Status;
 
 public class TestListener extends TestBase implements ITestListener {
-	CommonMethods commonMethod;
+	PageActionsUtil commonMethod;
 	private static final Logger logger = LogManager.getLogger(TestListener.class);
 
 	@Override
@@ -49,7 +49,7 @@ public class TestListener extends TestBase implements ITestListener {
 				if (driver == null || wait == null) {
 					logger.error("Driver or Wait is null. Cannot capture screenshot.");
 				} else {
-					commonMethod = new CommonMethods(driver, wait);
+					commonMethod = new PageActionsUtil(driver, wait);
 				}
 			}
 
@@ -58,7 +58,7 @@ public class TestListener extends TestBase implements ITestListener {
 				ExtentTestManager.getTest().log(Status.FAIL, "Screenshot captured for failure");
 			} else {
 				ExtentTestManager.getTest().log(Status.WARNING,
-						"Screenshot not captured due to uninitialized CommonMethods.");
+						"Screenshot not captured due to uninitialized PageActionsUtil.");
 			}
 
 		} catch (Exception e) {
@@ -82,7 +82,7 @@ public class TestListener extends TestBase implements ITestListener {
 		if (driver == null || wait == null) {
 			logger.warn("Driver or Wait not initialized at suite start. Will retry later.");
 		} else {
-			this.commonMethod = new CommonMethods(driver, wait);
+			this.commonMethod = new PageActionsUtil(driver, wait);
 		}
 	}
 
@@ -104,3 +104,4 @@ public class TestListener extends TestBase implements ITestListener {
 		onTestFailure(result); // Treat timeout as a failure
 	}
 }
+

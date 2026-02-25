@@ -7,7 +7,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.Constants;
-import com.aepl.sam.pages.CommonMethods;
+import com.aepl.sam.utils.PageActionsUtil;
+import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.UserProfilePage;
 import com.aepl.sam.utils.ExcelUtility;
 
@@ -17,7 +18,8 @@ public class UserProfilePageTest extends TestBase {
 
 	private ExcelUtility excelUtility;
 	private UserProfilePage userProf;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
+	private PageAssertionsUtil assertion;
 	private SoftAssert softAssert;
 	private Executor executor;
 
@@ -25,7 +27,8 @@ public class UserProfilePageTest extends TestBase {
 	@BeforeClass
 	public void setUp() {
 		super.setUp();
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
+		this.assertion = new PageAssertionsUtil(driver, wait);
 		this.userProf = new UserProfilePage(driver, wait);
 		this.excelUtility = new ExcelUtility();
 		this.softAssert = new SoftAssert();
@@ -35,12 +38,12 @@ public class UserProfilePageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest("Verify Company Logo on Webpage", "Logo Displayed", () -> comm.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", "Logo Displayed", () -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
 	public void testPageTitle() {
-		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, comm::verifyPageTitle);
+		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
 	@Test(priority = 3)
@@ -58,7 +61,7 @@ public class UserProfilePageTest extends TestBase {
 
 	@Test(priority = 5)
 	public void testButtons1() {
-		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, comm::validateButtons);
+		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 6)
@@ -92,12 +95,12 @@ public class UserProfilePageTest extends TestBase {
 
 	@Test(priority = 10)
 	public void testVersion() {
-		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, comm::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	@Test(priority = 11)
 	public void testCopyright() {
-		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, comm::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@AfterClass
@@ -105,3 +108,4 @@ public class UserProfilePageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+

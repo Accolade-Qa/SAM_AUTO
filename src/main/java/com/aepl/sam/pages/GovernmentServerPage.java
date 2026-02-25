@@ -27,11 +27,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import com.aepl.sam.actions.CalendarActions;
-import com.aepl.sam.actions.MouseActions;
 import com.aepl.sam.locators.GovernmentServerPageLocators;
+import com.aepl.sam.utils.CalendarActions;
 import com.aepl.sam.utils.ConfigProperties;
 import com.aepl.sam.utils.Constants;
+import com.aepl.sam.utils.MouseActions;
+import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 import com.aepl.sam.utils.TableUtils;
 
@@ -40,7 +41,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 	private WebDriverWait wait;
 	private CalendarActions calAct;
 	private LoginPage loginPage;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private String randomStateName;
 	private String randomStateAbr;
 	private RandomGeneratorUtils random;
@@ -53,7 +54,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		this.wait = wait;
 		this.calAct = new CalendarActions(this.driver, this.wait);
 		this.loginPage = new LoginPage(driver, wait);
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
 		this.random = new RandomGeneratorUtils();
 		this.table = new TableUtils(wait);
 	}
@@ -532,7 +533,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 				List<WebElement> inputs = form.findElements(inputLocator);
 
 				softAssert.assertTrue(!inputs.isEmpty(),
-						"❌ Input with formcontrolname='" + controlName + "' not found in the form!");
+						"âŒ Input with formcontrolname='" + controlName + "' not found in the form!");
 
 				if (!inputs.isEmpty()) {
 					WebElement input = inputs.get(0);
@@ -540,10 +541,10 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 					boolean enabled = input.isEnabled();
 
 					// Verify visibility and enabled state
-					softAssert.assertTrue(displayed, "❌ Input '" + placeholder + "' is not visible!");
-					softAssert.assertTrue(enabled, "❌ Input '" + placeholder + "' is not enabled!");
+					softAssert.assertTrue(displayed, "âŒ Input '" + placeholder + "' is not visible!");
+					softAssert.assertTrue(enabled, "âŒ Input '" + placeholder + "' is not enabled!");
 
-					logger.info("✅ Verified input '{}' (formcontrolname='{}') - Visible: {}, Enabled: {}", placeholder,
+					logger.info("âœ… Verified input '{}' (formcontrolname='{}') - Visible: {}, Enabled: {}", placeholder,
 							controlName, displayed, enabled);
 
 					if (!displayed || !enabled) {
@@ -604,7 +605,7 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 			return errorElement.getText().trim();
 
 		} catch (org.openqa.selenium.TimeoutException e) {
-			return "⚠️ No validation message appeared";
+			return "âš ï¸ No validation message appeared";
 		}
 	}
 
@@ -676,10 +677,10 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 			return messageText;
 
 		} catch (TimeoutException e) {
-			logger.error("❌ No toast message appeared after submitting duplicate state data");
+			logger.error("âŒ No toast message appeared after submitting duplicate state data");
 			return "No toast message found";
 		} catch (Exception e) {
-			logger.error("❌ Error validating duplicate entry: {}", e.getMessage(), e);
+			logger.error("âŒ Error validating duplicate entry: {}", e.getMessage(), e);
 			return "Error: " + e.getMessage();
 		}
 	}
@@ -728,10 +729,10 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		logger.info("Expected randomStateName: {}", randomStateName);
 
 		if (inputValue.equals(randomStateName)) {
-			logger.info("✅ Input value matches the randomStateName");
+			logger.info("âœ… Input value matches the randomStateName");
 			return true;
 		} else {
-			logger.error("❌ Input value does NOT match. Expected: {}, Found: {}", randomStateName, inputValue);
+			logger.error("âŒ Input value does NOT match. Expected: {}, Found: {}", randomStateName, inputValue);
 			return false;
 		}
 	}
@@ -753,12 +754,12 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		List<WebElement> updateButtons = driver.findElements(By.xpath("//button[contains(@class,'update-button')]"));
 
 		if (updateButtons.isEmpty()) {
-			logger.info("✅ Update button is not visible as expected when no changes are made.");
+			logger.info("âœ… Update button is not visible as expected when no changes are made.");
 			return true;
 		} else {
 			WebElement updateButton = updateButtons.get(0);
 			boolean isDisplayed = updateButton.isDisplayed();
-			logger.error("❌ Update button visibility status: {}", isDisplayed);
+			logger.error("âŒ Update button visibility status: {}", isDisplayed);
 			return !isDisplayed;
 		}
 	}
@@ -1054,21 +1055,21 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 					"Uploaded file name does not match expected");
 
 			if (fileNameText.equals(Constants.EXPECTED_FILE_NAME)) {
-				logger.info("✅ File uploaded successfully: {}", fileNameText);
+				logger.info("âœ… File uploaded successfully: {}", fileNameText);
 				return true;
 			} else {
-				logger.warn("⚠️ Uploaded file name mismatch: {}", fileNameText);
+				logger.warn("âš ï¸ Uploaded file name mismatch: {}", fileNameText);
 				return false;
 			}
 
 		} catch (TimeoutException e) {
-			logger.error("❌ Timeout waiting for uploaded file name: {}", e.getMessage());
+			logger.error("âŒ Timeout waiting for uploaded file name: {}", e.getMessage());
 			return false;
 		} catch (NoSuchElementException e) {
-			logger.error("❌ File upload element not found: {}", e.getMessage());
+			logger.error("âŒ File upload element not found: {}", e.getMessage());
 			return false;
 		} catch (Exception e) {
-			logger.error("❌ Exception during file upload: {}", e.getMessage());
+			logger.error("âŒ Exception during file upload: {}", e.getMessage());
 			return false;
 		}
 	}
@@ -1223,10 +1224,10 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		String firmwareName = lastRow.getOrDefault("Firmware Name", "").trim();
 
 		if ("TestFirmware".equals(firmwareName)) {
-			logger.info("✅ Latest added firmware 'TestFirmware' is at the last row as expected.");
+			logger.info("âœ… Latest added firmware 'TestFirmware' is at the last row as expected.");
 			return true;
 		} else {
-			logger.error("❌ Latest added firmware is not at the last row. Found: {}", firmwareName);
+			logger.error("âŒ Latest added firmware is not at the last row. Found: {}", firmwareName);
 			return false;
 		}
 	}
@@ -1262,3 +1263,4 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 		}
 	}
 }
+

@@ -16,17 +16,18 @@ import com.aepl.sam.utils.Constants;
 import com.aepl.sam.locators.LoginPageLocators;
 import com.aepl.sam.utils.ConfigProperties;
 import com.aepl.sam.utils.EmailReader;
+import com.aepl.sam.utils.PageActionsUtil;
 
 public class LoginPage extends LoginPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
-	private CommonMethods comm;
+	private PageActionsUtil comm;
 	private static final Logger logger = LogManager.getLogger(LoginPage.class);
 
 	public LoginPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
-		this.comm = new CommonMethods(driver, wait);
+		this.comm = new PageActionsUtil(driver, wait);
 	}
 
 	public LoginPage enterUsername(String username) {
@@ -239,17 +240,17 @@ public class LoginPage extends LoginPageLocators {
 			logger.debug("After click, password field type: {}", afterType);
 
 			if (beforeType.equalsIgnoreCase("password") && afterType.equalsIgnoreCase("text")) {
-				logger.info("✅ Password visibility toggled ON successfully.");
+				logger.info("âœ… Password visibility toggled ON successfully.");
 				return true;
 			} else if (beforeType.equalsIgnoreCase("text") && afterType.equalsIgnoreCase("password")) {
-				logger.info("✅ Password visibility toggled OFF successfully.");
+				logger.info("âœ… Password visibility toggled OFF successfully.");
 				return true;
 			} else {
-				logger.warn("⚠️ Eye icon click did not toggle password visibility.");
+				logger.warn("âš ï¸ Eye icon click did not toggle password visibility.");
 				return false;
 			}
 		} catch (Exception e) {
-			logger.error("❌ Error while verifying eye icon click: {}", e.getMessage(), e);
+			logger.error("âŒ Error while verifying eye icon click: {}", e.getMessage(), e);
 			return false;
 		}
 	}
@@ -264,19 +265,31 @@ public class LoginPage extends LoginPageLocators {
 			boolean isEnabled = forgotPasswordLink.isEnabled();
 
 			if (isDisplayed && isEnabled) {
-				logger.info("✅ 'Forgot Password' link is present and enabled.");
+				logger.info("âœ… 'Forgot Password' link is present and enabled.");
 				return true;
 			} else {
-				logger.warn("⚠️ 'Forgot Password' link is either not visible or disabled.");
+				logger.warn("âš ï¸ 'Forgot Password' link is either not visible or disabled.");
 				return false;
 			}
 		} catch (NoSuchElementException e) {
-			logger.error("❌ 'Forgot Password' link not found: {}", e.getMessage());
+			logger.error("âŒ 'Forgot Password' link not found: {}", e.getMessage());
 			return false;
 		} catch (Exception e) {
-			logger.error("❌ Unexpected error while checking 'Forgot Password' link: {}", e.getMessage(), e);
+			logger.error("âŒ Unexpected error while checking 'Forgot Password' link: {}", e.getMessage(), e);
 			return false;
 		}
+	}
+
+	public String getEmailFieldErrorMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText();
+	}
+
+	public String getPasswordFieldErrorMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div/mat-error"))).getText();
+	}
+
+	public String getToastMessage() {
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//simple-snack-bar/div[1]"))).getText();
 	}
 
 	// Helper method for waiting element visibility
@@ -284,3 +297,4 @@ public class LoginPage extends LoginPageLocators {
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	}
 }
+
