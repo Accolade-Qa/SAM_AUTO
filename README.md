@@ -67,6 +67,8 @@ SAM_QA_MANAGER_USERNAME=your_qa_manager_username
 SAM_QA_MANAGER_PASSWORD=your_qa_manager_password
 SAM_SOFT_MANAGER_USERNAME=your_software_manager_username
 SAM_SOFT_MANAGER_PASSWORD=your_software_manager_password
+SAM_CURRENT_PASSWORD=your_current_profile_password
+SAM_NEW_PASSWORD=your_new_profile_password
 ```
 
 ## Running tests

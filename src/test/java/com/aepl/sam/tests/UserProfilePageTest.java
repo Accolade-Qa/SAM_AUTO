@@ -104,3 +104,5 @@ public class UserProfilePageTest extends TestBase {
 	}
 }
 
+
+

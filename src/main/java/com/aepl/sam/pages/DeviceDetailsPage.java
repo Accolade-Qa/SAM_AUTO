@@ -1250,3 +1250,5 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 }
 
 
+
+

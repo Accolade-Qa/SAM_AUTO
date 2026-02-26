@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aepl.sam.utils.Constants;
+import com.aepl.sam.utils.ConfigProperties;
 import com.aepl.sam.locators.UserProfilePageLocators;
 
 import io.restassured.http.ContentType;
@@ -82,13 +83,16 @@ public class UserProfilePage extends UserProfilePageLocators {
 			changePass.click();
 
 			// Inside modal: locate and interact with fields
+			String currentPassword = resolvePassword(Constants.CURRENT_PASSWORD_KEY);
+			String newPassword = resolvePassword(Constants.NEW_PASSWORD_KEY);
+
 			WebElement curPass = wait.until(ExpectedConditions.visibilityOfElementLocated(CUR_PASS));
 			curPass.clear();
-			curPass.sendKeys(Constants.CUR_PASS);
+			curPass.sendKeys(currentPassword);
 
 			WebElement newPass = wait.until(ExpectedConditions.visibilityOfElementLocated(NEW_PASS));
 			newPass.clear();
-			newPass.sendKeys(Constants.NEW_PASS);
+			newPass.sendKeys(newPassword);
 
 			// Click on confirm/change password button inside modal
 			WebElement changePasswordBtn = wait.until(ExpectedConditions.elementToBeClickable(CHANGE_BTN));
@@ -101,6 +105,22 @@ public class UserProfilePage extends UserProfilePageLocators {
 		} catch (Exception e) {
 			logger.error("Error changing password: {}", e.getMessage(), e);
 		}
+	}
+
+	private String resolvePassword(String key) {
+		String value = ConfigProperties.getProperty(key);
+		if (value != null && !value.isBlank()) {
+			return value;
+		}
+
+		String fallback = ConfigProperties.getProperty("password");
+		if (fallback != null && !fallback.isBlank()) {
+			logger.warn("Missing '{}' in env/config. Falling back to 'password'.", key);
+			return fallback;
+		}
+
+		throw new IllegalStateException(
+				"Missing required credential key '" + key + "'. Set it in .env or system environment.");
 	}
 
 	public boolean uploadProfilePicture() {
@@ -246,3 +266,5 @@ public class UserProfilePage extends UserProfilePageLocators {
 	}
 
 }
+
+

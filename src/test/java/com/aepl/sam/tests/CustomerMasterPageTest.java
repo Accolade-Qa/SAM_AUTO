@@ -39,8 +39,8 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testCompanyLogo() {
-		executor.executeTest("Verify Company Logo on Webpage", Constants.EXP_LOGO_DISPLAYED,
-				() -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
+		executor.executeTest("Verify Company Logo on Webpage", "Logo Displayed",
+				() -> assertion.verifyWebpageLogo() ? "Logo Displayed" : "Logo Not Displayed");
 	}
 
 	@Test(priority = 2)
@@ -213,4 +213,6 @@ public class CustomerMasterPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
+
+
 

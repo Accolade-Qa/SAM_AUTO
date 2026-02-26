@@ -28,6 +28,8 @@ public class ConfigProperties {
 		ENV_OVERRIDES.put("qa_pass", "SAM_QA_MANAGER_PASSWORD");
 		ENV_OVERRIDES.put("soft_man", "SAM_SOFT_MANAGER_USERNAME");
 		ENV_OVERRIDES.put("soft_pass", "SAM_SOFT_MANAGER_PASSWORD");
+		ENV_OVERRIDES.put("current.password", "SAM_CURRENT_PASSWORD");
+		ENV_OVERRIDES.put("new.password", "SAM_NEW_PASSWORD");
 	}
 
 	private ConfigProperties() {

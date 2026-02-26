@@ -1070,3 +1070,5 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 	}
 }
 
+
+

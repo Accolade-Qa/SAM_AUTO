@@ -1,6 +1,8 @@
 package com.aepl.sam.utils;
 
-public class Constants {
+import java.nio.file.Paths;
+
+public final class Constants {
 
     // Private constructor to prevent instantiation
     private Constants() {
@@ -38,21 +40,21 @@ public class Constants {
     public static final String EXP_VERSION_TEXT = "Version: 1.6.0";
     public static final String EXP_COPYRIGHT_TEXT = "Accolade Electronics Pvt. Ltd.";
 
-    // Login Credentials
-    public static final String CUR_PASS = "KZTVvTtE";
-    public static final String NEW_PASS = "KZTVvTtE";
+    // Credential property keys (resolved via ConfigProperties / .env)
+    public static final String CURRENT_PASSWORD_KEY = "current.password";
+    public static final String NEW_PASSWORD_KEY = "new.password";
 
     // Validation Error Messages
-    public static final String email_error_msg_01 = "This field is required and can't be only spaces.";
-    public static final String email_error_msg_02 = "Please enter a valid Email ID.";
-    public static final String password_error_msg_01 = "Please Enter Password";
-    public static final String password_error_msg_02 = "Minimum 6 characters required.";
+    public static final String EMAIL_ERROR_MSG_REQUIRED = "This field is required and can't be only spaces.";
+    public static final String EMAIL_ERROR_MSG_INVALID = "Please enter a valid Email ID.";
+    public static final String PASSWORD_ERROR_MSG_REQUIRED = "Please Enter Password";
+    public static final String PASSWORD_ERROR_MSG_MIN_LENGTH = "Minimum 6 characters required.";
 
     // Toast messages
-    public static final String toast_error_msg = "Invalid credentials!!";
-    public static final String toast_error_msg_01 = "User Not Found";
-    public static final String toast_error_msg_02 = "login Failed due to Incorrect email or password";
-    public static final String toast_error_msg_03 = "Validation Error";
+    public static final String TOAST_ERROR_MSG_INVALID_CREDENTIALS = "Invalid credentials!!";
+    public static final String TOAST_ERROR_MSG_USER_NOT_FOUND = "User Not Found";
+    public static final String TOAST_ERROR_MSG_LOGIN_FAILED = "login Failed due to Incorrect email or password";
+    public static final String TOAST_ERROR_MSG_VALIDATION = "Validation Error";
 
     // Test Device Data
     public static final String IMEI = "867950076683091";
@@ -90,6 +92,25 @@ public class Constants {
     public static final String GOV_STATE_CODE = "SA";
 
     // File Upload Data
-    public static final String BIN_FILE_PATH = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\src\\test\\resources\\SampleUpload\\TCP01.bin";
+    public static final String BIN_FILE_PATH = Paths.get(System.getProperty("user.dir"), "src", "test", "resources",
+            "SampleUpload", "TCP01.bin").toString();
     public static final String EXPECTED_FILE_NAME = "TCP01.bin";
+
+    // Backward-compatible aliases (to be removed after call sites are updated).
+    @Deprecated
+    public static final String email_error_msg_01 = EMAIL_ERROR_MSG_REQUIRED;
+    @Deprecated
+    public static final String email_error_msg_02 = EMAIL_ERROR_MSG_INVALID;
+    @Deprecated
+    public static final String password_error_msg_01 = PASSWORD_ERROR_MSG_REQUIRED;
+    @Deprecated
+    public static final String password_error_msg_02 = PASSWORD_ERROR_MSG_MIN_LENGTH;
+    @Deprecated
+    public static final String toast_error_msg = TOAST_ERROR_MSG_INVALID_CREDENTIALS;
+    @Deprecated
+    public static final String toast_error_msg_01 = TOAST_ERROR_MSG_USER_NOT_FOUND;
+    @Deprecated
+    public static final String toast_error_msg_02 = TOAST_ERROR_MSG_LOGIN_FAILED;
+    @Deprecated
+    public static final String toast_error_msg_03 = TOAST_ERROR_MSG_VALIDATION;
 }
