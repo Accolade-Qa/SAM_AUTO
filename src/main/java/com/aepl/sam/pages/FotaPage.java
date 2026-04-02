@@ -63,11 +63,14 @@ public class FotaPage extends FotaPageLocators {
 
 	public void selectFOTATypeButton(String type) {
 		if (type.equalsIgnoreCase("manual")) {
+			((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -500);");
 			logger.info("Selecting Manual FOTA");
-			WebElement manualFOTA = driver.findElement(MANUAL_FOTA_BTN);
+			WebElement manualFOTA = wait.until(ExpectedConditions.elementToBeClickable(MANUAL_FOTA_BTN));
 			comm.highlightElement(manualFOTA, "solid purple");
 			if (manualFOTA.isDisplayed() && manualFOTA.isEnabled()) {
 				manualFOTA.click();
+				Assert.assertTrue(driver.getCurrentUrl().contains("manual"), "Manual FOTA page not loaded correctly.");
+				logger.info("Manual FOTA page loaded successfully.");
 			} else {
 				logger.error("Manual FOTA button is not displayed or enabled.");
 				throw new RuntimeException("Manual FOTA button is not displayed or enabled.");
@@ -82,6 +85,8 @@ public class FotaPage extends FotaPageLocators {
 
 			if (bulkFOTA.isDisplayed() && bulkFOTA.isEnabled()) {
 				bulkFOTA.click();
+				Assert.assertTrue(driver.getCurrentUrl().contains("bulk"), "Bulk FOTA page not loaded correctly.");
+				logger.info("Bulk FOTA page loaded successfully.");
 			} else {
 				logger.error("Bulk FOTA button is not displayed or enabled.");
 				throw new RuntimeException("Bulk FOTA button is not displayed or enabled.");
