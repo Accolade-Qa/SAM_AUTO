@@ -1,7 +1,11 @@
 package com.aepl.sam.listeners;
 
+import java.time.Duration;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -10,10 +14,10 @@ import com.aepl.sam.base.TestBase;
 import com.aepl.sam.utils.PageActionsUtil;
 import com.aepl.sam.utils.ExtentManager;
 import com.aepl.sam.utils.ExtentTestManager;
+import com.aepl.sam.utils.WebDriverFactory;
 import com.aventstack.extentreports.Status;
 
 public class TestListener extends TestBase implements ITestListener {
-	PageActionsUtil commonMethod;
 	private static final Logger logger = LogManager.getLogger(TestListener.class);
 
 	@Override
@@ -44,22 +48,16 @@ public class TestListener extends TestBase implements ITestListener {
 				"Cause: " + (throwable != null ? throwable.getMessage() : "Unknown"));
 
 		try {
-			// Lazy initialize commonMethod if not yet done
-			if (commonMethod == null) {
-				if (driver == null || wait == null) {
-					logger.error("Driver or Wait is null. Cannot capture screenshot.");
-				} else {
-					commonMethod = new PageActionsUtil(driver, wait);
-				}
+			WebDriver currentDriver = WebDriverFactory.getWebDriver();
+			if (currentDriver == null) {
+				logger.error("Current WebDriver is null. Cannot capture screenshot.");
+				ExtentTestManager.getTest().log(Status.WARNING, "Screenshot not captured: driver is null.");
+				return;
 			}
 
-			if (commonMethod != null) {
-				commonMethod.captureScreenshot(testName);
-				ExtentTestManager.getTest().log(Status.FAIL, "Screenshot captured for failure");
-			} else {
-				ExtentTestManager.getTest().log(Status.WARNING,
-						"Screenshot not captured due to uninitialized PageActionsUtil.");
-			}
+			WebDriverWait currentWait = new WebDriverWait(currentDriver, Duration.ofSeconds(10));
+			new PageActionsUtil(currentDriver, currentWait).captureScreenshot(testName);
+			ExtentTestManager.getTest().log(Status.FAIL, "Screenshot captured for failure");
 
 		} catch (Exception e) {
 			logger.error("Error while capturing screenshot: {}", e.getMessage(), e);
@@ -79,11 +77,7 @@ public class TestListener extends TestBase implements ITestListener {
 		logger.info("Test suite started: {}", context.getName());
 		ExtentManager.createInstance();
 
-		if (driver == null || wait == null) {
-			logger.warn("Driver or Wait not initialized at suite start. Will retry later.");
-		} else {
-			this.commonMethod = new PageActionsUtil(driver, wait);
-		}
+		logger.info("Ensuring Extent report is ready.");
 	}
 
 	@Override

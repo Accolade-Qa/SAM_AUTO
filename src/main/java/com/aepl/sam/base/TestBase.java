@@ -7,20 +7,20 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
-import com.aepl.sam.utils.Constants;
 import com.aepl.sam.pages.LoginPage;
 import com.aepl.sam.utils.ConfigProperties;
+import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.MouseActions;
 import com.aepl.sam.utils.WebDriverFactory;
 
 public class TestBase {
 
-	protected static WebDriver driver;
-	protected static WebDriverWait wait;
+	protected WebDriver driver;
+	protected WebDriverWait wait;
 	protected MouseActions action;
 	protected LoginPage loginPage;
 
@@ -28,46 +28,41 @@ public class TestBase {
 
 	@BeforeClass
 	public void setUp() {
-		logger.info("========== Test Suite Setup Started ==========");
-		if (driver == null) {
-			try {
-				logger.debug("Initializing properties for QA environment.");
-				ConfigProperties.initialize("qa");
+		logger.info("========== Test Class Setup Started [{}] ==========", this.getClass().getSimpleName());
+		try {
+			logger.debug("Initializing properties for QA environment.");
+			ConfigProperties.initialize("qa");
 
-				String browserType = ConfigProperties.getProperty("browser").toLowerCase();
-				logger.info("Browser configured: {}", browserType);
+			String browserType = ConfigProperties.getProperty("browser").toLowerCase();
+			logger.info("Browser configured: {}", browserType);
 
-				WebDriverFactory.setDriver(browserType);
-				driver = WebDriverFactory.getWebDriver();
+			WebDriverFactory.setDriver(browserType);
+			driver = WebDriverFactory.getWebDriver();
 
-				if (driver == null) {
-					logger.error("WebDriver creation returned null. Aborting setup.");
-					throw new RuntimeException("WebDriver initialization failed.");
-				}
-
-				wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-				driver.manage().window().maximize();
-
-				logger.debug("Navigating to base URL: {}", Constants.BASE_URL);
-				driver.get(Constants.BASE_URL);
-
-				loginPage = new LoginPage(driver, wait);
-				logger.info("Successfully navigated to: {}", Constants.BASE_URL);
-
-				if (!this.getClass().getSimpleName().equals("LoginPageTest")) {
-					logger.info("Auto-login initiated for test class: {}", this.getClass().getSimpleName());
-					login();
-				}
-
-			} catch (Exception e) {
-				logger.error("Exception during setup in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
-				throw e;
+			if (driver == null) {
+				logger.error("WebDriver creation returned null. Aborting setup.");
+				throw new RuntimeException("WebDriver initialization failed.");
 			}
-		} else {
-			logger.warn("Driver is already initialized. Skipping setup.");
+
+			wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			driver.manage().window().maximize();
+
+			logger.debug("Navigating to base URL: {}", Constants.BASE_URL);
+			driver.get(Constants.BASE_URL);
+
+			loginPage = new LoginPage(driver, wait);
+			logger.info("Successfully navigated to: {}", Constants.BASE_URL);
+
+			if (!this.getClass().getSimpleName().equals("LoginPageTest")) {
+				logger.info("Auto-login initiated for test class: {}", this.getClass().getSimpleName());
+				login();
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception during setup in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
+			throw e;
 		}
-		logger.info("========== Test Suite Setup Completed ==========");
+		logger.info("========== Test Class Setup Completed [{}] ==========", this.getClass().getSimpleName());
 	}
 
 	@BeforeMethod
@@ -80,24 +75,11 @@ public class TestBase {
 		}
 	}
 
-	@AfterSuite
-	public void tearDown() {
-		logger.info("========== Test Suite Teardown Started ==========");
-		if (driver != null) {
-			try {
-				logger.info("Attempting logout before closing browser.");
-				logout();
-
-				driver.quit();
-				driver = null;
-				logger.info("Browser closed and WebDriver instance reset to null.");
-			} catch (Exception e) {
-				logger.error("Exception during teardown in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
-			}
-		} else {
-			logger.warn("WebDriver is already null; skipping browser closure.");
-		}
-		logger.info("========== Test Suite Teardown Completed ==========");
+	@AfterClass(alwaysRun = true)
+	public void tearDownClass() {
+		logger.info("========== Test Class Teardown Started [{}] ==========", this.getClass().getSimpleName());
+		cleanupDriver();
+		logger.info("========== Test Class Teardown Completed [{}] ==========", this.getClass().getSimpleName());
 	}
 
 	// ------------------ Helper Methods ------------------
@@ -123,6 +105,30 @@ public class TestBase {
 		} catch (Exception e) {
 			logger.error("Logout failed in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
 			throw e;
+		}
+	}
+
+	protected void cleanupDriver() {
+		if (driver != null) {
+			try {
+				logger.info("Attempting logout before closing browser.");
+				logout();
+			} catch (Exception e) {
+				logger.warn("Logout during cleanup failed: {}", e.getMessage());
+			}
+
+			try {
+				WebDriverFactory.quitDriver();
+			} catch (Exception e) {
+				logger.error("Error while quitting WebDriver: {}", e.getMessage(), e);
+			} finally {
+				driver = null;
+				wait = null;
+				loginPage = null;
+			}
+			logger.info("Browser closed and WebDriver instance reset to null.");
+		} else {
+			logger.warn("WebDriver is already null; skipping browser closure.");
 		}
 	}
 }
