@@ -1,6 +1,23 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<!-- 
+	TestNG Configuration for Sampark Automation Suite
+	
+	PARALLEL EXECUTION SETTINGS:
+	- parallel="classes": Run multiple test classes in parallel
+	- thread-count="4": Maximum 4 threads can run simultaneously at TestNG level
+	  NOTE: ThreadQueueManager further controls concurrent execution to prevent resource exhaustion
+	  
+	EXECUTION FLOW:
+	1. TestNG spawns up to 4 threads
+	2. Each thread attempts to run a test class
+	3. ThreadQueueManager restricts actual execution to defined capacity (default: 4)
+	4. When a thread finishes, the next waiting thread acquires a slot
+	5. This prevents resource exhaustion and ensures stable parallel execution
+	
+	preserve-order="true": Maintain the order of test classes/methods as defined
+-->
 <suite name="AllTestSuite" verbose="1" preserve-order="true"
-	parallel="classes" thread-count="2">
+	parallel="classes" thread-count="4">
 	<listeners>
 		<listener class-name="com.aepl.sam.listeners.TestListener" />
 		<listener class-name="com.aepl.sam.listeners.Transformer" />
@@ -24,12 +41,6 @@
 			<class name="com.aepl.sam.tests.RoleManagementPageTest" />
 			<class name="com.aepl.sam.tests.DealersManagementPageTest" />
 			<class name="com.aepl.sam.tests.UserProfilePageTest" />
-		</classes>
-	</test>
-	<test name="demo" enabled="false">
-		<classes>
-			<class name="com.aepl.sam.tests.CustomerMasterPageTest" />
-			<class name="com.aepl.sam.tests.DeviceModelsPageTest" />
 		</classes>
 	</test>
 </suite>

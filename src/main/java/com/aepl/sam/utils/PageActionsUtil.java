@@ -62,7 +62,8 @@ public class PageActionsUtil {
 		try {
 			String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 			String fileName = testCaseName + "_" + timestamp + ".png";
-			String screenshotDir = System.getProperty("user.dir") + File.separator + "screenshots";
+			String screenshotDir = System.getProperty("user.dir") + File.separator + "Results" + File.separator
+					+ "screenshots";
 			File dir = new File(screenshotDir);
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -151,7 +152,8 @@ public class PageActionsUtil {
 
 	public boolean checkSearchBoxWithTableHeadings(String input, List<String> expectedHeaders) {
 		checkSearchBox(input);
-		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim).map(String::toLowerCase)
+		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim)
+				.map(String::toLowerCase)
 				.collect(Collectors.toList());
 		List<String> expected = expectedHeaders.stream().map(String::trim).map(String::toLowerCase)
 				.collect(Collectors.toList());
@@ -167,7 +169,8 @@ public class PageActionsUtil {
 	}
 
 	public boolean checkTableHeadings(List<String> expectedHeaders) {
-		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim).map(String::toLowerCase)
+		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim)
+				.map(String::toLowerCase)
 				.collect(Collectors.toList());
 		List<String> expected = expectedHeaders.stream().map(String::trim).map(String::toLowerCase)
 				.collect(Collectors.toList());
@@ -336,7 +339,8 @@ public class PageActionsUtil {
 				try {
 					WebElement exportButton = driver.findElement(EXPORT_BUTTON);
 					if (exportButton.isDisplayed()) {
-						js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});", exportButton);
+						js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
+								exportButton);
 						if (exportButton.isEnabled()) {
 							exportButton.click();
 							Alert alert = wait.until(ExpectedConditions.alertIsPresent());

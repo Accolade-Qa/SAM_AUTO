@@ -50,12 +50,14 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 3)
 	public void testClickNavBar() {
-		executor.executeTest("Verify Navigation Bar Click Functionality", "http://aepltest.accoladeelectronics.com:6102/customer-master", customerMasterPage::navBarLink);
+		executor.executeTest("Verify Navigation Bar Click Functionality",
+				"http://sampark-qa.accoladeelectronics.com/customer-master", customerMasterPage::navBarLink);
 	}
 
 	@Test(priority = 4)
 	public void testButtons1() {
-		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
+		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
+				assertion::validateButtons);
 	}
 
 	@Test(priority = 5)
@@ -72,7 +74,8 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 7)
 	public void testAddNewCustomer() {
-		executor.executeTest("Verify Add New Customer Functionality", "Customer Added Successfully", customerMasterPage::addNewCustomer);
+		executor.executeTest("Verify Add New Customer Functionality", "Customer Added Successfully",
+				customerMasterPage::addNewCustomer);
 	}
 
 	@Test(priority = 8)
@@ -82,7 +85,8 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 9)
 	public void testButtons2() {
-		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
+		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
+				assertion::validateButtons);
 	}
 
 	@Test(priority = 10, enabled = false)
@@ -98,7 +102,8 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 11)
 	public void testSearchCustomer() {
-		executor.executeTest("Verify Search Customer Functionality", "Customer Found", customerMasterPage::searchCustomer);
+		executor.executeTest("Verify Search Customer Functionality", "Customer Found",
+				customerMasterPage::searchCustomer);
 	}
 
 	@Test(priority = 12)
@@ -187,7 +192,8 @@ public class CustomerMasterPageTest extends TestBase {
 
 	@Test(priority = 23)
 	public void testValidateComponents() {
-		executor.executeTest("Verify Components on Customer Master Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT, assertion::validateComponents);
+		executor.executeTest("Verify Components on Customer Master Page", Constants.EXP_VALIDATE_COMPONENTS_TEXT,
+				assertion::validateComponents);
 	}
 
 	@Test(priority = 24)
@@ -213,6 +219,3 @@ public class CustomerMasterPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 }
-
-
-

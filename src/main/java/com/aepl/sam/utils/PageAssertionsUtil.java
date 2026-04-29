@@ -41,7 +41,7 @@ public class PageAssertionsUtil {
 	}
 
 	public String verifyPageTitle() {
-		String expectedTitle = "AEPL Sampark Diagnostic Cloud";
+		String expectedTitle = "AEPL Sampark QA Diagnostic Cloud";
 		WebElement titleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(PROJECT_TITLE));
 		highlightElement(titleElement, "solid purple");
 		String actualTitle = titleElement.getText();
@@ -81,8 +81,7 @@ public class PageAssertionsUtil {
 
 	public String validateButtons() {
 		try {
-			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(ALL_BTN));
-			List<WebElement> buttons = driver.findElements(ALL_BTN);
+			List<WebElement> buttons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ALL_BTN));
 
 			softAssert.assertFalse(buttons.isEmpty(), "No buttons found on the page!");
 

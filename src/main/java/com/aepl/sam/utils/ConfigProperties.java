@@ -57,7 +57,7 @@ public class ConfigProperties {
 		}
 	}
 
-	public static String getProperty(String key) {
+	public static synchronized String getProperty(String key) {
 		if (properties == null) {
 			logger.error("Attempted to access property before initialization.");
 			throw new IllegalStateException("ConfigProperties is not initialized. Call initialize(env) first.");

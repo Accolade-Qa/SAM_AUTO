@@ -11,8 +11,9 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 public class ExtentManager {
 
-	private static ExtentReports extent;
+	private static volatile ExtentReports extent;
 	private static final Logger logger = LogManager.getLogger(ExtentManager.class);
+	private static final Object lock = new Object();
 
 	public static ExtentReports createInstance() {
 		if (extent != null) {
@@ -21,7 +22,7 @@ public class ExtentManager {
 			throw new IllegalStateException(errorMsg);
 		}
 
-		String filePath = System.getProperty("user.dir") + "/test-results/ExtentReport.html";
+		String filePath = System.getProperty("user.dir") + "/Results/test-results/ExtentReport.html";
 		logger.info("Initializing ExtentReports at path: {}", filePath);
 
 		File reportFile = new File(filePath);
@@ -43,7 +44,8 @@ public class ExtentManager {
 
 			extent = new ExtentReports();
 			extent.attachReporter(sparkReporter);
-			extent.setSystemInfo("Environment", System.getenv("ENVIRONMENT") != null ? System.getenv("ENVIRONMENT") : "QA");
+			extent.setSystemInfo("Environment",
+					System.getenv("ENVIRONMENT") != null ? System.getenv("ENVIRONMENT") : "QA");
 			extent.setSystemInfo("User", System.getProperty("user.name"));
 			extent.setSystemInfo("OS", System.getProperty("os.name"));
 			extent.setAnalysisStrategy(AnalysisStrategy.TEST);
@@ -60,13 +62,17 @@ public class ExtentManager {
 
 	public static ExtentReports getInstance() {
 		if (extent == null) {
-			logger.warn("ExtentReports instance not found. Creating new instance...");
-			createInstance();
+			synchronized (lock) {
+				if (extent == null) {
+					logger.warn("ExtentReports instance not found. Creating new instance...");
+					createInstance();
+				}
+			}
 		}
 		return extent;
 	}
 
-	public static void flush() {
+	public static synchronized void flush() {
 		if (extent == null) {
 			String errorMsg = "ExtentReports instance is null. Cannot flush reports.";
 			logger.error(errorMsg);

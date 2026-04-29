@@ -28,17 +28,17 @@ public class WebDriverFactory {
 
 		WebDriver driver;
 		switch (browserName.toLowerCase()) {
-		case "chrome":
-			driver = createChromeDriver();
-			break;
-		case "firefox":
-			driver = createFirefoxDriver();
-			break;
-		case "brave":
-			driver = createBraveDriver();
-			break;
-		default:
-			throw new IllegalArgumentException("Unsupported browser: " + browserName);
+			case "chrome":
+				driver = createChromeDriver();
+				break;
+			case "firefox":
+				driver = createFirefoxDriver();
+				break;
+			case "brave":
+				driver = createBraveDriver();
+				break;
+			default:
+				throw new IllegalArgumentException("Unsupported browser: " + browserName);
 		}
 
 		threadLocalDriver.set(driver);

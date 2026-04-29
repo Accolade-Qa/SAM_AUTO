@@ -25,7 +25,7 @@ public class ExcelUtility {
 	private String filePath;
 
 	public void initializeExcel(String sheetName) {
-		filePath = System.getProperty("user.dir") + "/test-results/" + sheetName + ".xlsx";
+		filePath = System.getProperty("user.dir") + "/Results/test-results/" + sheetName + ".xlsx";
 		try {
 			File file = new File(filePath);
 			logger.info("Initializing Excel file at path: {}", filePath);

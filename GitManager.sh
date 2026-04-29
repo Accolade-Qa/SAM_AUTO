@@ -7,7 +7,7 @@
 TARGET_DIR="/d/AEPL_AUTOMATION/SAM_AUTO"
 
 # Folder names to delete (space-separated list)   
-FOLDERS_TO_DELETE=("logs" "screenshots" "test-output" "test-results")
+FOLDERS_TO_DELETE=("Results")
 
 # Navigate to the target directory
 cd "$TARGET_DIR" || { echo "Failed to navigate to $TARGET_DIR"; exit 1; }

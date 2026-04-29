@@ -15,6 +15,7 @@ import com.aepl.sam.pages.LoginPage;
 import com.aepl.sam.utils.ConfigProperties;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.MouseActions;
+import com.aepl.sam.utils.ThreadQueueManager;
 import com.aepl.sam.utils.WebDriverFactory;
 
 public class TestBase {
@@ -23,6 +24,7 @@ public class TestBase {
 	protected WebDriverWait wait;
 	protected MouseActions action;
 	protected LoginPage loginPage;
+	private int threadSlotNumber = -1; // Track acquired slot for cleanup
 
 	protected final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -30,6 +32,17 @@ public class TestBase {
 	public void setUp() {
 		logger.info("========== Test Class Setup Started [{}] ==========", this.getClass().getSimpleName());
 		try {
+			// STEP 1: Acquire thread slot from queue (controls concurrent execution)
+			ThreadQueueManager queueManager = ThreadQueueManager.getInstance();
+			try {
+				threadSlotNumber = queueManager.acquireSlot();
+				logger.info("Thread slot acquired. Queue Status: {}", queueManager.getQueueStats());
+			} catch (InterruptedException e) {
+				logger.error("Interrupted while waiting for thread slot", e);
+				Thread.currentThread().interrupt();
+				throw new RuntimeException("Failed to acquire thread slot", e);
+			}
+
 			logger.debug("Initializing properties for QA environment.");
 			ConfigProperties.initialize("qa");
 
@@ -60,6 +73,8 @@ public class TestBase {
 
 		} catch (Exception e) {
 			logger.error("Exception during setup in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
+			// Release slot if setup fails
+			releaseThreadSlot();
 			throw e;
 		}
 		logger.info("========== Test Class Setup Completed [{}] ==========", this.getClass().getSimpleName());
@@ -78,8 +93,13 @@ public class TestBase {
 	@AfterClass(alwaysRun = true)
 	public void tearDownClass() {
 		logger.info("========== Test Class Teardown Started [{}] ==========", this.getClass().getSimpleName());
-		cleanupDriver();
-		logger.info("========== Test Class Teardown Completed [{}] ==========", this.getClass().getSimpleName());
+		try {
+			cleanupDriver();
+		} finally {
+			// ALWAYS release thread slot to allow next thread to execute
+			releaseThreadSlot();
+			logger.info("========== Test Class Teardown Completed [{}] ==========", this.getClass().getSimpleName());
+		}
 	}
 
 	// ------------------ Helper Methods ------------------
@@ -131,6 +151,22 @@ public class TestBase {
 			logger.warn("WebDriver is already null; skipping browser closure.");
 		}
 	}
+
+	/**
+	 * Release the thread slot acquired from ThreadQueueManager.
+	 * This allows the next waiting thread to proceed with execution.
+	 */
+	private void releaseThreadSlot() {
+		if (threadSlotNumber >= 0) {
+			try {
+				ThreadQueueManager queueManager = ThreadQueueManager.getInstance();
+				queueManager.releaseSlot();
+				logger.info("Thread slot #{} released. Queue Status: {}", threadSlotNumber,
+						queueManager.getQueueStats());
+				threadSlotNumber = -1;
+			} catch (Exception e) {
+				logger.error("Error releasing thread slot: {}", e.getMessage(), e);
+			}
+		}
+	}
 }
-
-

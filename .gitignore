@@ -14,10 +14,7 @@ bin/
 *.class
 
 # Runtime artifacts
-test-output/
-test-results/
-logs/
-screenshots/
+Results/
 src/test/resources/SampleDownload/
 
 # Local environment and secrets

@@ -204,7 +204,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			}
 
 			// âœ… Ensure the target directory exists
-			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\test-results\\outputs";
+			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\Results\\test-results\\outputs";
 			File directory = new File(directoryPath);
 			if (!directory.exists() && !directory.mkdirs()) {
 				logger.error("Failed to create output directory: {}", directoryPath);
@@ -227,8 +227,9 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 					eyeElement.click();
 					logger.debug("Clicked eye icon #{} to open login packet modal.", packetCounter);
 
-						// Wait for modal to appear
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'component-body')]") ));
+					// Wait for modal to appear
+					wait.until(ExpectedConditions
+							.visibilityOfElementLocated(By.xpath("//div[contains(@class,'component-body')]")));
 
 					// Locate component-body that contains table details
 					List<WebElement> detailsElements = driver
@@ -407,7 +408,7 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 			}
 
 			// âœ… Ensure the directory exists
-			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\test-results\\outputFiles";
+			String directoryPath = "D:\\AEPL_AUTOMATION\\SAM_AUTO\\Results\\test-results\\outputFiles";
 			File directory = new File(directoryPath);
 			if (!directory.exists() && !directory.mkdirs()) {
 				logger.error("Failed to create output directory: {}", directoryPath);
@@ -431,8 +432,9 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 
 					logger.debug("Clicked eye icon #{} to open health packet modal.", packetCounter);
 
-					    // Wait for modal to appear
-					    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'component-body')]") ));
+					// Wait for modal to appear
+					wait.until(ExpectedConditions
+							.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'component-body')]")));
 
 					// Locate the component-body that contains table data
 					List<WebElement> detailsElements = driver
@@ -1248,7 +1250,3 @@ public class DeviceDetailsPage extends DeviceDetailsPageLocators {
 		return tableUtils.clickFirstViewButton(By.xpath("//table"));
 	}
 }
-
-
-
-

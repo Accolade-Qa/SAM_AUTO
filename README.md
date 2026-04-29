@@ -81,7 +81,9 @@ mvn test
 
 ## Reports and logs
 
-- Extent report path: `test-results/ExtentReport.html`
+- Extent report path: `Results/test-results/ExtentReport.html`
+- Logs are stored in: `Results/logs/test-automation.log`
+- Screenshots are stored in: `Results/screenshots/`
 - Logs are configured through `src/main/resources/log4j2.xml`
 
 ## Internal use

@@ -2,7 +2,7 @@
 <Configuration status="WARN">
     <!-- Define properties for reusability -->
     <Properties>
-        <Property name="logDir">logs</Property>
+        <Property name="logDir">Results/logs</Property>
         <Property name="logFileName">test-automation.log</Property>
         <Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level: %msg%n%throwable</Property>
     </Properties>

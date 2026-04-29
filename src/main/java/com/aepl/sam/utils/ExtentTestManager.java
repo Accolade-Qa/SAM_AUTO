@@ -1,8 +1,5 @@
 package com.aepl.sam.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,24 +9,23 @@ import com.aventstack.extentreports.ExtentTest;
 public class ExtentTestManager {
 
     private static final Logger logger = LogManager.getLogger(ExtentTestManager.class);
-    private static final Map<Integer, ExtentTest> extentTestMap = new HashMap<>();
+    private static final ThreadLocal<ExtentTest> extentTestLocal = new ThreadLocal<>();
     private static final ExtentReports extent = ExtentManager.getInstance();
 
-    public static synchronized ExtentTest startTest(String testName) {
+    public static ExtentTest startTest(String testName) {
         String threadKey = Thread.currentThread().getName();
         logger.info("Starting test '{}' on thread: {}", testName, threadKey);
 
         ExtentTest test = extent.createTest(testName);
-        extentTestMap.put(threadKey.hashCode() & 0xfffffff, test);
+        extentTestLocal.set(test);
 
-        logger.debug("Test instance stored in extentTestMap for thread: {}", threadKey);
+        logger.debug("Test instance stored in ThreadLocal for thread: {}", threadKey);
         return test;
     }
 
-    public static synchronized ExtentTest getTest() {
+    public static ExtentTest getTest() {
         String threadKey = Thread.currentThread().getName();
-        int key = threadKey.hashCode() & 0xfffffff;
-        ExtentTest test = extentTestMap.get(key);
+        ExtentTest test = extentTestLocal.get();
 
         if (test != null) {
             logger.debug("Retrieved ExtentTest for thread: {}", threadKey);
@@ -38,5 +34,11 @@ public class ExtentTestManager {
         }
 
         return test;
+    }
+
+    public static void removeTest() {
+        String threadKey = Thread.currentThread().getName();
+        extentTestLocal.remove();
+        logger.debug("Removed ExtentTest from ThreadLocal for thread: {}", threadKey);
     }
 }
