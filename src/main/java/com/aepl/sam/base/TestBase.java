@@ -71,7 +71,7 @@ public class TestBase {
 				login();
 			}
 
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			logger.error("Exception during setup in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
 			// Release slot if setup fails
 			releaseThreadSlot();
@@ -111,7 +111,7 @@ public class TestBase {
 					.enterPassword(ConfigProperties.getProperty("password")).clickLogin();
 
 			logger.info("Login successful for user: {}", ConfigProperties.getProperty("username"));
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			logger.error("Login failed in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
 			throw e;
 		}
@@ -122,7 +122,7 @@ public class TestBase {
 			logger.debug("Attempting logout action.");
 			loginPage.clickLogout();
 			logger.info("Logout action completed successfully.");
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			logger.error("Logout failed in {}: {}", this.getClass().getSimpleName(), e.getMessage(), e);
 			throw e;
 		}
@@ -133,13 +133,13 @@ public class TestBase {
 			try {
 				logger.info("Attempting logout before closing browser.");
 				logout();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				logger.warn("Logout during cleanup failed: {}", e.getMessage());
 			}
 
 			try {
 				WebDriverFactory.quitDriver();
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				logger.error("Error while quitting WebDriver: {}", e.getMessage(), e);
 			} finally {
 				driver = null;
@@ -164,7 +164,7 @@ public class TestBase {
 				logger.info("Thread slot #{} released. Queue Status: {}", threadSlotNumber,
 						queueManager.getQueueStats());
 				threadSlotNumber = -1;
-			} catch (Exception e) {
+			} catch (RuntimeException e) {
 				logger.error("Error releasing thread slot: {}", e.getMessage(), e);
 			}
 		}

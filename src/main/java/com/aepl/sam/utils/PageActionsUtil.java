@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -27,17 +27,27 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
-
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.aepl.sam.locators.CommonPageLocators.*;
+import static com.aepl.sam.locators.CommonPageLocators.EXPORT_BUTTON;
+import static com.aepl.sam.locators.CommonPageLocators.INPUT_BOX_ERROR;
+import static com.aepl.sam.locators.CommonPageLocators.LEFT_ARROW;
+import static com.aepl.sam.locators.CommonPageLocators.REFRESH_BUTTON;
+import static com.aepl.sam.locators.CommonPageLocators.RIGHT_ARROW;
+import static com.aepl.sam.locators.CommonPageLocators.ROW_PER_PAGE;
+import static com.aepl.sam.locators.CommonPageLocators.SAMPLE_FILE_BUTTON;
+import static com.aepl.sam.locators.CommonPageLocators.SEARCH_BOX_INPUT;
+import static com.aepl.sam.locators.CommonPageLocators.TABLE;
 
 public class PageActionsUtil {
 
@@ -113,7 +123,7 @@ public class PageActionsUtil {
 	public void clickElement(WebElement element) {
 		try {
 			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-		} catch (Exception e) {
+		} catch (WebDriverException e) {
 			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 		}
 	}
@@ -199,7 +209,6 @@ public class PageActionsUtil {
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-			Thread.sleep(500);
 
 			WebElement rowPerPage = wait.until(ExpectedConditions.elementToBeClickable(ROW_PER_PAGE));
 			highlightElement(rowPerPage, "solid purple");
@@ -208,12 +217,11 @@ public class PageActionsUtil {
 			List<WebElement> options = select.getOptions();
 			for (int i = 0; i < options.size(); i++) {
 				js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-				Thread.sleep(500);
 				rowPerPage = wait.until(ExpectedConditions.elementToBeClickable(ROW_PER_PAGE));
 				select = new Select(rowPerPage);
 				WebElement option = select.getOptions().get(i);
 				option.click();
-				Thread.sleep(500);
+				wait.until(ExpectedConditions.elementToBeClickable(ROW_PER_PAGE));
 			}
 
 			rowPerPage = wait.until(ExpectedConditions.elementToBeClickable(ROW_PER_PAGE));
@@ -221,27 +229,26 @@ public class PageActionsUtil {
 			WebElement defaultOption = select.getOptions().get(0);
 			js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 			defaultOption.click();
+			wait.until(ExpectedConditions.elementToBeClickable(RIGHT_ARROW));
 
 			for (int i = 1; i < 4; i++) {
 				js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-				Thread.sleep(300);
 				WebElement rightArrow = wait.until(ExpectedConditions.elementToBeClickable(RIGHT_ARROW));
 				highlightElement(rightArrow, "solid purple");
 				js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});", rightArrow);
 				rightArrow.click();
-				Thread.sleep(500);
+				wait.until(ExpectedConditions.elementToBeClickable(RIGHT_ARROW));
 			}
 
 			for (int i = 4; i > 1; i--) {
 				js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-				Thread.sleep(300);
 				WebElement leftArrow = wait.until(ExpectedConditions.elementToBeClickable(LEFT_ARROW));
 				highlightElement(leftArrow, "solid purple");
 				js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});", leftArrow);
 				leftArrow.click();
-				Thread.sleep(500);
+				wait.until(ExpectedConditions.elementToBeClickable(LEFT_ARROW));
 			}
-		} catch (Exception e) {
+		} catch (WebDriverException e) {
 			logger.error("Error occurred during pagination check: {}", e.getMessage(), e);
 		}
 	}
@@ -251,7 +258,7 @@ public class PageActionsUtil {
 		try {
 			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 			alert.accept();
-		} catch (Exception ignored) {
+		} catch (NoAlertPresentException | TimeoutException ignored) {
 		}
 	}
 
@@ -280,17 +287,16 @@ public class PageActionsUtil {
 	public void clickRefreshButton() {
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-			WebElement refreshButton = wait.until(ExpectedConditions.visibilityOfElementLocated(REFRESH_BUTTON));
+			WebElement refreshButton = wait.until(ExpectedConditions.elementToBeClickable(REFRESH_BUTTON));
 			js.executeScript("arguments[0].scrollIntoView(true);", refreshButton);
-			Thread.sleep(1000);
 			js.executeScript("arguments[0].style.border='3px solid purple'", refreshButton);
 			try {
 				refreshButton.click();
 			} catch (ElementClickInterceptedException e) {
 				js.executeScript("arguments[0].click();", refreshButton);
 			}
-			Thread.sleep(1000);
-		} catch (Exception e) {
+			wait.until(driver1 -> "complete".equals(((JavascriptExecutor) driver1).executeScript("return document.readyState")));
+		} catch (WebDriverException e) {
 			logger.error("Failed to click on the refresh button.", e);
 			throw new RuntimeException("Failed to click on the refresh button.", e);
 		}
@@ -302,18 +308,24 @@ public class PageActionsUtil {
 		return componentTitle.getText();
 	}
 
+	public String validateInputBoxError() {
+		WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(INPUT_BOX_ERROR));
+		return errorElement.getText();
+	}
+
 	public String clickSampleFileButton() {
 		for (int i = 0; i <= 3; i++) {
 			try {
 				WebElement sampleFileButton = wait.until(ExpectedConditions.elementToBeClickable(SAMPLE_FILE_BUTTON));
 				highlightElement(sampleFileButton, "solid purple");
 				sampleFileButton.click();
-				Thread.sleep(500);
-			} catch (Exception e) {
+				wait.until(ExpectedConditions.elementToBeClickable(SAMPLE_FILE_BUTTON));
+				return "File downloaded successfully.";
+			} catch (WebDriverException e) {
 				logger.warn("Attempt {} failed to click 'Sample File' button: {}", i + 1, e.getMessage());
 			}
 		}
-		return "File downloaded successfully.";
+		return "File download failed.";
 	}
 
 	public boolean validateSampleFileButton() {
@@ -323,9 +335,9 @@ public class PageActionsUtil {
 				sampleFileButton.click();
 				Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 				alert.accept();
-				Thread.sleep(2000);
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@role='alert']")));
 			}
-		} catch (Exception e) {
+		} catch (WebDriverException e) {
 			logger.error("Error validating Sample File button: {}", e.getMessage(), e);
 			return false;
 		}
@@ -336,49 +348,24 @@ public class PageActionsUtil {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		for (int attempt = 0; attempt < 3; attempt++) {
 			try {
-				try {
-					WebElement exportButton = driver.findElement(EXPORT_BUTTON);
-					if (exportButton.isDisplayed()) {
-						js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
-								exportButton);
-						if (exportButton.isEnabled()) {
-							exportButton.click();
-							Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-							alert.accept();
-							return true;
-						}
-						return false;
-					}
-				} catch (Exception inner) {
-					js.executeScript("window.scrollBy(0, 200);");
-					Thread.sleep(300);
+				WebElement exportButton = wait.until(ExpectedConditions.elementToBeClickable(EXPORT_BUTTON));
+				if (exportButton.isDisplayed() && exportButton.isEnabled()) {
+					js.executeScript("arguments[0].scrollIntoView({behavior: 'auto', block: 'center'});",
+						exportButton);
+					exportButton.click();
+					Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+					alert.accept();
+					return true;
 				}
-			} catch (Exception e) {
+				return false;
+			} catch (NoSuchElementException | TimeoutException | ElementClickInterceptedException inner) {
+				js.executeScript("window.scrollBy(0, 200);");
+				wait.until(ExpectedConditions.elementToBeClickable(EXPORT_BUTTON));
+			} catch (WebDriverException e) {
 				logger.error("Attempt {} failed: {}", attempt + 1, e.getMessage());
 			}
 		}
 		return false;
-	}
-
-	public String validateInputBoxError() {
-		try {
-			WebElement inputBox = wait.until(ExpectedConditions.visibilityOfElementLocated(INPUT_BOX));
-			highlightElement(inputBox, "solid purple");
-			inputBox.click();
-			Thread.sleep(500);
-			WebElement body = driver.findElement(By.xpath("//body/app-root/app-header/div"));
-			body.click();
-			Thread.sleep(500);
-			WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(INPUT_BOX_ERROR));
-			String errorMessage = errorElement.getText().trim();
-			return !errorMessage.isEmpty() ? errorMessage : "Error Message Empty";
-		} catch (TimeoutException e) {
-			logger.error("Error message not found: {}", e.getMessage());
-			return "Error Message Not Found";
-		} catch (Exception e) {
-			logger.error("Unexpected exception during error validation: {}", e.getMessage(), e);
-			return "Validation Failed";
-		}
 	}
 
 	public boolean verifyCSVHeader(String filePath, String expectedHeader) {
@@ -396,7 +383,9 @@ public class PageActionsUtil {
 				if (lines.isEmpty()) {
 					return false;
 				}
-				actualHeaders = Arrays.stream(lines.get(0).split(",")).map(String::trim).filter(h -> !h.isEmpty())
+				actualHeaders = Arrays.stream(lines.get(0).split(","))
+						.map(String::trim)
+						.filter(h -> !h.isEmpty())
 						.collect(Collectors.toList());
 			} else if (lowerName.endsWith(".xlsx")) {
 				try (FileInputStream fis = new FileInputStream(file); Workbook workbook = new XSSFWorkbook(fis)) {
@@ -417,12 +406,14 @@ public class PageActionsUtil {
 				return false;
 			}
 
-			List<String> expectedHeaders = Arrays.stream(expectedHeader.split(",")).map(String::trim)
-					.filter(h -> !h.isEmpty()).collect(Collectors.toList());
+			List<String> expectedHeaders = Arrays.stream(expectedHeader.split(","))
+					.map(String::trim)
+					.filter(h -> !h.isEmpty())
+					.collect(Collectors.toList());
 
 			return actualHeaders.size() >= expectedHeaders.size()
 					&& actualHeaders.subList(0, expectedHeaders.size()).equals(expectedHeaders);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			logger.error("Error verifying file header: {}", e.getMessage(), e);
 			return false;
 		}

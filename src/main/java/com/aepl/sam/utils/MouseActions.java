@@ -77,8 +77,9 @@ public class MouseActions {
 			Thread.sleep(1000);
 			actions.doubleClick(element).build().perform();
 			logger.info("Double-clicked on element: {}", element);
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			logger.error("Failed to double-click element: {}", e.getMessage(), e);
+			Thread.currentThread().interrupt();
 		}
 	}
 

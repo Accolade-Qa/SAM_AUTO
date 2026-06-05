@@ -16,10 +16,10 @@ import com.aepl.sam.locators.GroupManagementPageLocators;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 
 public class GroupManagementPage extends GroupManagementPageLocators {
-	private WebDriver driver;
-	private WebDriverWait wait;
+	private final WebDriver driver;
+	private final WebDriverWait wait;
 	public String randomGroupName;
-	private RandomGeneratorUtils random;
+	private final RandomGeneratorUtils random;
 	private static final Logger logger = LogManager.getLogger(GroupManagementPage.class);
 
 	public GroupManagementPage(WebDriver driver, WebDriverWait wait) {

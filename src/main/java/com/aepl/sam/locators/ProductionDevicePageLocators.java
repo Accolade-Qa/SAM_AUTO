@@ -7,7 +7,6 @@ public class ProductionDevicePageLocators extends CommonPageLocators {
 	// Production Device Page
 
 	public static final By ADD_PRODUCTION_DEVICE = By.xpath("//button[@class='primary-button']");
-	public static final By DEVICE_UTILITY = By.xpath("//a[contains(text(),'DEVICE UTILITY')]");
 	public static final By PRODUCTION_DEVICES = By.xpath("//a[contains(text(),'PRODUCTION DEVICE')]");
 	public static final By MODEL_TO_SEARCH = By.xpath("//td[normalize-space()='ACON4IA202200049619']");
 

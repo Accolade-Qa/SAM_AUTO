@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 public class ThreadQueueManager {
 
     private static final Logger logger = LogManager.getLogger(ThreadQueueManager.class);
-    private static ThreadQueueManager instance;
+    private static ThreadQueueManager instance = null;
     private static final Object lock = new Object();
 
     private final BlockingQueue<Integer> threadSlotQueue;
@@ -70,10 +70,12 @@ public class ThreadQueueManager {
      * Get singleton instance with custom configuration
      */
     public static ThreadQueueManager getInstance(int maxThreads, long timeoutSeconds) {
+        ThreadQueueManager instance = ThreadQueueManager.instance;
         if (instance == null) {
             synchronized (lock) {
+                instance = ThreadQueueManager.instance;
                 if (instance == null) {
-                    instance = new ThreadQueueManager(maxThreads, timeoutSeconds);
+                    ThreadQueueManager.instance = instance = new ThreadQueueManager(maxThreads, timeoutSeconds);
                 }
             }
         }
@@ -89,10 +91,9 @@ public class ThreadQueueManager {
      */
     public int acquireSlot() throws InterruptedException {
         String threadName = Thread.currentThread().getName();
-        long threadId = Thread.currentThread().getId();
 
-        logger.debug("Thread [{}] (ID: {}) requesting a slot. Available slots: {}",
-                threadName, threadId, threadSlotQueue.size());
+        logger.debug("Thread [{}] requesting a slot. Available slots: {}",
+                threadName, threadSlotQueue.size());
 
         Integer slotNumber;
         try {
@@ -101,14 +102,14 @@ public class ThreadQueueManager {
 
             if (slotNumber == null) {
                 String errorMsg = String.format(
-                        "Thread [%s] (ID: %d) exceeded timeout of %d seconds waiting for thread slot",
-                        threadName, threadId, acquisitionTimeoutSeconds);
+                        "Thread [%s] exceeded timeout of %d seconds waiting for thread slot",
+                        threadName, acquisitionTimeoutSeconds);
                 logger.error(errorMsg);
                 throw new InterruptedException(errorMsg);
             }
 
-            logger.info("Thread [{}] (ID: {}) acquired slot #{}. Queue size: {}",
-                    threadName, threadId, slotNumber, threadSlotQueue.size());
+            logger.info("Thread [{}] acquired slot #{}. Queue size: {}",
+                    threadName, slotNumber, threadSlotQueue.size());
 
             // Store slot number in ThreadLocal for later release
             ThreadLocalSlotNumber.set(slotNumber);
@@ -116,8 +117,8 @@ public class ThreadQueueManager {
 
         } catch (InterruptedException e) {
             String errorMsg = String.format(
-                    "Thread [%s] (ID: %d) interrupted while waiting for slot",
-                    threadName, threadId);
+                    "Thread [%s] interrupted while waiting for slot",
+                    threadName);
             logger.error(errorMsg, e);
             throw new InterruptedException(errorMsg);
         }
@@ -129,13 +130,12 @@ public class ThreadQueueManager {
      */
     public void releaseSlot() {
         String threadName = Thread.currentThread().getName();
-        long threadId = Thread.currentThread().getId();
 
         Integer slotNumber = ThreadLocalSlotNumber.get();
 
         if (slotNumber == null) {
-            logger.warn("Thread [{}] (ID: {}) attempted to release slot but no slot was acquired",
-                    threadName, threadId);
+            logger.warn("Thread [{}] attempted to release slot but no slot was acquired",
+                    threadName);
             return;
         }
 
@@ -143,12 +143,12 @@ public class ThreadQueueManager {
             threadSlotQueue.put(slotNumber);
             ThreadLocalSlotNumber.remove();
 
-            logger.info("Thread [{}] (ID: {}) released slot #{}. Queue size: {}",
-                    threadName, threadId, slotNumber, threadSlotQueue.size());
+            logger.info("Thread [{}] released slot #{}. Queue size: {}",
+                    threadName, slotNumber, threadSlotQueue.size());
 
         } catch (InterruptedException e) {
-            logger.error("Thread [{}] (ID: {}) interrupted while releasing slot: {}",
-                    threadName, threadId, e.getMessage(), e);
+            logger.error("Thread [{}] interrupted while releasing slot: {}",
+                    threadName, e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
     }

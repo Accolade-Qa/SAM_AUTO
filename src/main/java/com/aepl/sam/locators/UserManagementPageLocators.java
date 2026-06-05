@@ -7,8 +7,6 @@ public class UserManagementPageLocators extends CommonPageLocators {
 	// User Management
 	public static final By USR_MANAGEMENT_LINK = By.xpath("//li/a[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'user management')]");
 	public static final By ADD_USR_BTN = By.xpath("//button[contains(text(), 'Add')]");
-	public static final By PAGE_TITLE = By.xpath("//span[@class='page-title']");
-	public static final By COMPONENT_TITLE = By.xpath("//h6[@class=\"component-title\"]");
 	public static final By DRP_DOWN_BTN = By.xpath("//mat-select[@role=\"combobox\"]");
 
 	// Add user Button

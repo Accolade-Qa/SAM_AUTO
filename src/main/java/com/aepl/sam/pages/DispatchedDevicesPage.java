@@ -177,7 +177,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 	public String ClickAddDisDevice() {
 		logger.info("Clicking Add Dispatched Device button");
-		WebElement AddDisDevice = wait.until(ExpectedConditions.visibilityOfElementLocated(MANUAL_UPLOAD));
+		WebElement AddDisDevice = wait.until(ExpectedConditions.visibilityOfElementLocated(DISPATCHED_MANUAL_UPLOAD));
 		comm.highlightElement(AddDisDevice, "solid purple");
 		AddDisDevice.click();
 
@@ -318,17 +318,17 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 	}
 
 	public boolean isManualUploadButtonVisible() {
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(MANUAL_UPLOAD)).isDisplayed();
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(DISPATCHED_MANUAL_UPLOAD)).isDisplayed();
 	}
 
 	public boolean isManualUploadButtonClickable() {
-		return wait.until(ExpectedConditions.elementToBeClickable(MANUAL_UPLOAD)).isEnabled();
+		return wait.until(ExpectedConditions.elementToBeClickable(DISPATCHED_MANUAL_UPLOAD)).isEnabled();
 	}
 
 	public String getPageTitleAfterClickingManualUpload() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollTo(0, 0);");
-		wait.until(ExpectedConditions.elementToBeClickable(MANUAL_UPLOAD)).click();
+		wait.until(ExpectedConditions.elementToBeClickable(DISPATCHED_MANUAL_UPLOAD)).click();
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(PAGE_TITLE)).getText();
 	}
 
