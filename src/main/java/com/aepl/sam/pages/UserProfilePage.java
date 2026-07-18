@@ -225,7 +225,7 @@ public class UserProfilePage extends UserProfilePageLocators {
 					.accept(ContentType.JSON)
 					.header("Authorization",
 							"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXJhai5iaGFsZXJhb0BhY2NvbGFkZWVsZWN0cm9uaWNzLmNvbSIsImlhdCI6MTc3NDQyODUzOCwiZXhwIjoxNzc0NDUwMTM4fQ.4Sk8nAJNHsBmCUYyX9PEvDUOZwcKhuKgTU6EgMraOz4")
-					.when().get("http://sampark-qa.accoladeelectronics.com/profile/users/getUserdetails?id=16").then()
+					.when().get(Constants.BASE_URL + "/profile/users/getUserdetails?id=16").then()
 					.statusCode(200).extract().response();
 
 			// Print full response JSON on console

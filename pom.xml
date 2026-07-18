@@ -157,6 +157,12 @@
             <version>20210307</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+        </dependency>
+
 		<!-- Mail -->
         <dependency>
             <groupId>com.sun.mail</groupId>

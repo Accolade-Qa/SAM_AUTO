@@ -29,6 +29,7 @@ public class WebDriverFactory {
 		WebDriver driver;
 		switch (browserName.toLowerCase()) {
 			case "chrome":
+			case "chromium":
 				driver = createChromeDriver();
 				break;
 			case "firefox":
@@ -58,6 +59,15 @@ public class WebDriverFactory {
 		WebDriverManager.chromedriver().setup(); // Automatically matches local Chrome version
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--disable-notifications", "--disable-popup-blocking", "--start-maximized");
+
+		String headlessValue = ConfigProperties.getProperty("headless");
+		if (headlessValue != null && headlessValue.equalsIgnoreCase("true")) {
+			logger.info("Running Chrome in HEADLESS mode.");
+			options.addArguments("--headless=new");
+			options.addArguments("--disable-gpu");
+			options.addArguments("--no-sandbox");
+			options.addArguments("--disable-dev-shm-usage");
+		}
 
 		Map<String, Object> prefs = new HashMap<>();
 		prefs.put("download.prompt_for_download", false);

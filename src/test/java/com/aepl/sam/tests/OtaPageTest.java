@@ -13,6 +13,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.OtaPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class OtaPageTest extends TestBase {
 	private static final String SHEET_NAME = "OTA_Test";
 
@@ -24,7 +25,7 @@ public class OtaPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

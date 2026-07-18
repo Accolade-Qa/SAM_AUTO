@@ -15,6 +15,7 @@ import com.aepl.sam.pages.DeviceDashboardPage;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class DeviceDashboardPageTest extends TestBase {
 	private static final String DEVICE_DASHBOARD_EXCEL_SHEET = "DeviceDashboardTests";
 
@@ -26,7 +27,7 @@ public class DeviceDashboardPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.deviceDashboardPage = new DeviceDashboardPage(driver, wait, action);

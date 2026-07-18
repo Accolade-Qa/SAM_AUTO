@@ -14,6 +14,7 @@ import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
 import com.aepl.sam.utils.PageAssertionsUtil;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class ProductionDevicePageTest extends TestBase {
 
 	private static final String DEVICE_EXCEL_SHEET = "Device_Dashboard_Test";
@@ -25,7 +26,7 @@ public class ProductionDevicePageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.productionDevicePage = new ProductionDevicePage(driver, wait);

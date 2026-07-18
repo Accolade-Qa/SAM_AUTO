@@ -14,6 +14,7 @@ import com.aepl.sam.pages.DealersManagementPage;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class DealersManagementPageTest extends TestBase {
 	// Excel Sheet Name
 	private static final String SHEET_NAME = "Dealer_Management_Test";
@@ -26,7 +27,7 @@ public class DealersManagementPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

@@ -15,6 +15,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.SimBatchDataDetailsPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class SimBatchDataDetailsPageTest extends TestBase {
 	// Excel Sheet Name
 	private static final String SHEET_NAME = "Sim_Batch_Data_Details_Test";
@@ -27,7 +28,7 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

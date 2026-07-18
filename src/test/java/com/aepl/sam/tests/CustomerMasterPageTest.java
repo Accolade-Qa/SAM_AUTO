@@ -12,6 +12,7 @@ import com.aepl.sam.pages.CustomerMasterPage;
 import com.aepl.sam.utils.Constants;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = { "sampark", "lct", "trio", "swaraj", "atcu", "regression" })
 public class CustomerMasterPageTest extends TestBase {
 	// Excel Sheet Name
 	private static final String CUSTOMER_MASTER_EXCEL_SHEET = "Customer_Master_Test";
@@ -24,7 +25,7 @@ public class CustomerMasterPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.customerMasterPage = new CustomerMasterPage(driver, wait);
@@ -37,7 +38,7 @@ public class CustomerMasterPageTest extends TestBase {
 		logger.info("Setup completed for CustomerMasterPageTest");
 	}
 
-	@Test(priority = 1)
+	@Test(priority = 1, groups = { "sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression" })
 	public void testCompanyLogo() {
 		executor.executeTest("Verify Company Logo on Webpage", "Logo Displayed",
 				() -> assertion.verifyWebpageLogo() ? "Logo Displayed" : "Logo Not Displayed");
@@ -51,7 +52,7 @@ public class CustomerMasterPageTest extends TestBase {
 	@Test(priority = 3)
 	public void testClickNavBar() {
 		executor.executeTest("Verify Navigation Bar Click Functionality",
-				"http://sampark-qa.accoladeelectronics.com/customer-master", customerMasterPage::navBarLink);
+				Constants.BASE_URL + "/customer-master", customerMasterPage::navBarLink);
 	}
 
 	@Test(priority = 4)

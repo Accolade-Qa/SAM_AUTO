@@ -28,7 +28,7 @@ public class TestBase {
 
 	protected final Logger logger = LogManager.getLogger(this.getClass());
 
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		logger.info("========== Test Class Setup Started [{}] ==========", this.getClass().getSimpleName());
 		try {
@@ -80,7 +80,7 @@ public class TestBase {
 		logger.info("========== Test Class Setup Completed [{}] ==========", this.getClass().getSimpleName());
 	}
 
-	@BeforeMethod
+	@BeforeMethod(alwaysRun = true)
 	public void zoomChrome() {
 		if (driver != null) {
 			logger.debug("Zooming out Chrome browser to 67% for test execution.");

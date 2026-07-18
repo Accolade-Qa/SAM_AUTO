@@ -15,6 +15,7 @@ import com.aepl.sam.utils.ExcelUtility;
 import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.utils.RandomGeneratorUtils;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class LoginPageTest extends TestBase {
 
 	private LoginPage loginPage;
@@ -25,7 +26,7 @@ public class LoginPageTest extends TestBase {
 	private RandomGeneratorUtils randomGen;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.loginPage = new LoginPage(driver, wait);
@@ -178,7 +179,7 @@ public class LoginPageTest extends TestBase {
 		executor.executeTest("Version Verification Test", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
-	@Test(priority = 24)
+	@Test(priority = 24, groups = {"sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression"})
 	public void loginSuccess() {
 		executor.executeTest("Login Success Test", true, () -> {
 			loginPage.enterUsername(ConfigProperties.getProperty("username"))

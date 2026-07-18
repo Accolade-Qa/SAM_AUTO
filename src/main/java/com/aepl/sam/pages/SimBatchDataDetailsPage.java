@@ -44,7 +44,7 @@ public class SimBatchDataDetailsPage extends SimBatchDataDetailsPageLocators {
 			sim_batch.click();
 
 			if (driver.getCurrentUrl()
-					.equals("http://aepltest.accoladeelectronics.com:6102/sensorise-sim-data-details")) {
+					.equals(Constants.BASE_URL + "/sensorise-sim-data-details")) {
 				isViewed = true;
 			}
 			logger.info("Successfully navigated to User Management page.");

@@ -12,6 +12,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.UserManagementPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class UserManagementPageTest extends TestBase {
 	private static final String SHEET_NAME = "User_Management_Test";
 
@@ -23,7 +24,7 @@ public class UserManagementPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

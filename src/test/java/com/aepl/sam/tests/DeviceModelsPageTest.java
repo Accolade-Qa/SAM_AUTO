@@ -19,6 +19,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DeviceModelsPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class DeviceModelsPageTest extends TestBase {
 	private static final String DEVICE_MODELS_EXCEL_SHEET = "Device_Models_Test";
 
@@ -30,7 +31,7 @@ public class DeviceModelsPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

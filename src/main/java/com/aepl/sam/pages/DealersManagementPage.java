@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
+import com.aepl.sam.utils.Constants;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,8 +55,8 @@ public class DealersManagementPage extends DealersManagementLocators {
 			dealer_management_link.click();
 			logger.info("Clicked on Dealer Management link.");
 
-			wait.until(ExpectedConditions.urlToBe("http://aepltest.accoladeelectronics.com:6102/dealers-management"));
-			isViewed = driver.getCurrentUrl().equals("http://aepltest.accoladeelectronics.com:6102/dealers-management");
+			wait.until(ExpectedConditions.urlToBe(Constants.BASE_URL + "/dealers-management"));
+			isViewed = driver.getCurrentUrl().equals(Constants.BASE_URL + "/dealers-management");
 
 			logger.info("Navigation to Dealer Management page result: {}", isViewed);
 		} catch (Exception e) {

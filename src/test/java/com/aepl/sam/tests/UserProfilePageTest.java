@@ -11,6 +11,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.UserProfilePage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class UserProfilePageTest extends TestBase {
 	private static final String SHEET_NAME = "User_Profile_Test";
 	private ExcelUtility excelUtility;
@@ -20,7 +21,7 @@ public class UserProfilePageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.assertion = new PageAssertionsUtil(driver, wait);

@@ -15,6 +15,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.DispatchedDevicesPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class DispatchedDevicesPageTest extends TestBase {
 	private ExcelUtility excelUtility;
 	private DispatchedDevicesPage dispatchedDevicePage;
@@ -24,7 +25,7 @@ public class DispatchedDevicesPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);

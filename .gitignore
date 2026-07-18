@@ -39,3 +39,4 @@ coverage/
 *.lcov
 *.clover
 coverage-final.json
+/Reports

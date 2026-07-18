@@ -9,29 +9,29 @@ public final class Constants {
         throw new UnsupportedOperationException("Utility class - cannot be instantiated");
     }
 
-    // Base URL
-    public static final String BASE_URL = "http://sampark-qa.accoladeelectronics.com";
+    // Base URL (Non-final to support dynamic multi-project config at runtime)
+    public static String BASE_URL = "http://sampark-qa.accoladeelectronics.com";
 
-    // General URLs
-    public static final String LOGIN_URL = BASE_URL + "/login";
-    public static final String EXP_FRGT_PWD_URL = BASE_URL + "/login";
-    public static final String DASH_URL = BASE_URL + "/device-dashboard-page";
-    public static final String GOV_LINK = BASE_URL + "/govt-servers";
-    public static final String DEVICE_LINK = BASE_URL + "/model";
-    public static final String ADD_MODEL_LINK = BASE_URL + "/model-firmware";
-    public static final String USR_MAN = BASE_URL + "/user-tab";
-    public static final String USR_PROFILE = BASE_URL + "/profile";
-    public static final String ROLE_MANAGEMENT = BASE_URL + "/user-role";
-    public static final String PROD_DEVICE_LINK = BASE_URL + "/production-device-page";
-    public static final String DISP_DEVICE_LINK = BASE_URL + "/dispatch-device-page";
-    public static final String CREATE_DIS_DEVICE_LINK = BASE_URL + "/dispatch-device-add-page";
-    public static final String ROLE_GROUP = BASE_URL + "/role-group";
-    public static final String OTA_LINK = BASE_URL + "/ota-batch-page";
-    public static final String SIM_MANUAL_UPLOAD = BASE_URL + "/sensorise-sim-manual-upload";
+    // General URLs (Non-final to support dynamic multi-project config at runtime)
+    public static String LOGIN_URL = BASE_URL + "/login";
+    public static String EXP_FRGT_PWD_URL = BASE_URL + "/login";
+    public static String DASH_URL = BASE_URL + "/device-dashboard-page";
+    public static String GOV_LINK = BASE_URL + "/govt-servers";
+    public static String DEVICE_LINK = BASE_URL + "/model";
+    public static String ADD_MODEL_LINK = BASE_URL + "/model-firmware";
+    public static String USR_MAN = BASE_URL + "/user-tab";
+    public static String USR_PROFILE = BASE_URL + "/profile";
+    public static String ROLE_MANAGEMENT = BASE_URL + "/user-role";
+    public static String PROD_DEVICE_LINK = BASE_URL + "/production-device-page";
+    public static String DISP_DEVICE_LINK = BASE_URL + "/dispatch-device-page";
+    public static String CREATE_DIS_DEVICE_LINK = BASE_URL + "/dispatch-device-add-page";
+    public static String ROLE_GROUP = BASE_URL + "/role-group";
+    public static String OTA_LINK = BASE_URL + "/ota-batch-page";
+    public static String SIM_MANUAL_UPLOAD = BASE_URL + "/sensorise-sim-manual-upload";
 
     // Common UI Expectations
     public static final String EXP_LOGO_DISPLAYED = "Logo Displayed";
-    public static final String EXP_PAGE_TITLE_TEXT = "AEPL Sampark QA Diagnostic Cloud";
+    public static String EXP_PAGE_TITLE_TEXT = "AEPL Sampark QA Diagnostic Cloud";
     public static final String EXP_VALIDATE_BUTTONS_TEXT = "All buttons are displayed and enabled successfully.";
     public static final String EXP_VALIDATE_COMPONENTS_TEXT = "All components are displayed and validated successfully.";
     public static final String EXP_PAGINATION_TEXT = "Pagination works correctly";
@@ -56,11 +56,11 @@ public final class Constants {
     public static final String TOAST_ERROR_MSG_LOGIN_FAILED = "login Failed due to Incorrect email or password";
     public static final String TOAST_ERROR_MSG_VALIDATION = "Validation Error";
 
-    // Test Device Data
-    public static final String IMEI = "867950076683091";
-    public static final String ICCID = "89916440844825969900";
-    public static final String UIN = "ACON4SA162426683091";
-    public static final String VIN = "ACCDEV12242083091";
+    // Test Device Data (Non-final to support dynamic overrides per-project)
+    public static String IMEI = "867950076683091";
+    public static String ICCID = "89916440844825969900";
+    public static String UIN = "ACON4SA162426683091";
+    public static String VIN = "ACCDEV12242083091";
 
     // Generic Test Data
     public static final String DEVICE_MODEL = "Testing";

@@ -19,6 +19,7 @@ import com.aepl.sam.utils.PageAssertionsUtil;
 import com.aepl.sam.pages.GovernmentServerPage;
 import com.aepl.sam.utils.ExcelUtility;
 
+@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "regression"})
 public class GovernmentServerPageTest extends TestBase {
 	private static final String SHEET_NAME = "Government_Server_Test";
 
@@ -30,7 +31,7 @@ public class GovernmentServerPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass
+	@BeforeClass(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.govServerPage = new GovernmentServerPage(driver, wait, action);

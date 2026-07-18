@@ -21,6 +21,7 @@
 	<listeners>
 		<listener class-name="com.aepl.sam.listeners.TestListener" />
 		<listener class-name="com.aepl.sam.listeners.Transformer" />
+		<listener class-name="com.aepl.sam.listeners.ProjectFilterInterceptor" />
 	</listeners>
 
 	<test name="ALLTests" enabled="true">
