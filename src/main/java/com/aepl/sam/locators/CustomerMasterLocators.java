@@ -3,6 +3,7 @@ package com.aepl.sam.locators;
 import org.openqa.selenium.By;
 
 public class CustomerMasterLocators extends CommonPageLocators {
+	public static final String CUSTOMER_MASTER_URL = "https://sampark-qa.accoladeelectronics.com/customer-master";
 	public static final By CUSTOMER_MASTER_LINK = By.xpath(
 			"//a[contains(translate(text(), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 'CUSTOMER MASTER')]");
 	public static final By ADD_CUSTOMER_BTN = By.xpath(

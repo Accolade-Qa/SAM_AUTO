@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeMethod;
 
 import com.aepl.sam.locators.CustomerMasterLocators;
 import com.aepl.sam.utils.PageActionsUtil;
@@ -36,6 +37,14 @@ public class CustomerMasterPage extends CustomerMasterLocators {
 		this.comm = new PageActionsUtil(driver, wait);
 		this.random = new RandomGeneratorUtils();
 		this.tableUtils = new TableUtils(wait);
+	}
+
+	@BeforeMethod
+	public void goesToCustomerMasterPage() {
+		logger.info("Navigating to Customer Master Page");
+		driver.get(CUSTOMER_MASTER_URL);
+		wait.until(ExpectedConditions.titleIs("Customer Master"));
+		logger.info("Navigation to Customer Master Page successful");
 	}
 
 	public String navBarLink() {
