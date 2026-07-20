@@ -1,7 +1,7 @@
 package com.aepl.sam.tests;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -21,7 +21,7 @@ public class UserProfilePageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.assertion = new PageAssertionsUtil(driver, wait);
@@ -30,24 +30,25 @@ public class UserProfilePageTest extends TestBase {
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
 		excelUtility.initializeExcel(SHEET_NAME);
+		userProf.navBarLink();
 	}
 
-	@Test(priority = 1)
+	@Test
 	public void testCompanyLogo() {
 		executor.executeTest("Verify Company Logo on Webpage", "Logo Displayed", () -> assertion.verifyWebpageLogo() ? Constants.EXP_LOGO_DISPLAYED : "Logo Not Displayed");
 	}
 
-	@Test(priority = 2)
+	@Test
 	public void testPageTitle() {
 		executor.executeTest("Verify Page Title on Webpage", Constants.EXP_PAGE_TITLE_TEXT, assertion::verifyPageTitle);
 	}
 
-	@Test(priority = 3)
+	@Test
 	public void testNavBarLink() {
 		executor.executeTest("Verify Navbar Link Navigation", Constants.USR_PROFILE, userProf::navBarLink);
 	}
 
-	@Test(priority = 4)
+	@Test
 	public void testRefreshButton() {
 		executor.executeTest("Verify Refresh Button Functionality", "Page refreshed successfully.", () -> {
 			userProf.refreshButton();
@@ -55,12 +56,12 @@ public class UserProfilePageTest extends TestBase {
 		});
 	}
 
-	@Test(priority = 5)
+	@Test
 	public void testButtons1() {
 		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
-	@Test(priority = 6)
+	@Test
 	public void testUploadProfilePicture() {
 		executor.executeTest("Verify Upload Profile Picture Functionality", "Profile picture uploaded successfully.", () -> {
 			boolean isUploaded = userProf.uploadProfilePicture();
@@ -68,12 +69,12 @@ public class UserProfilePageTest extends TestBase {
 		});
 	}
 
-	@Test(priority = 7)
+	@Test
 	public void testUserProfileData() {
 		executor.executeTest("Test the user profile data", "User Verified successfully", userProf::validateUserData);
 	}
 
-	@Test(priority = 8)
+	@Test
 	public void testUpdateProfileDetails() {
 		executor.executeTest("Verify Update Profile Details Functionality", "Profile updated successfully.", () -> {
 			boolean isUpdated = userProf.updateProfileDetails();
@@ -81,7 +82,7 @@ public class UserProfilePageTest extends TestBase {
 		});
 	}
 
-	@Test(priority = 9)
+	@Test
 	public void testChangePassword() {
 		executor.executeTest("Verify Change Password Functionality", "Password changed successfully.", () -> {
 			userProf.changePassword();
@@ -89,17 +90,17 @@ public class UserProfilePageTest extends TestBase {
 		});
 	}
 
-	@Test(priority = 10)
+	@Test
 	public void testVersion() {
 		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
-	@Test(priority = 11)
+	@Test
 	public void testCopyright() {
 		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

@@ -1,7 +1,7 @@
 package com.aepl.sam.tests;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -25,7 +25,7 @@ public class CustomerMasterPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.customerMasterPage = new CustomerMasterPage(driver, wait);
@@ -36,6 +36,7 @@ public class CustomerMasterPageTest extends TestBase {
 		this.excelUtility.initializeExcel(CUSTOMER_MASTER_EXCEL_SHEET);
 		this.executor = new Executor(excelUtility, softAssert);
 		logger.info("Setup completed for CustomerMasterPageTest");
+		customerMasterPage.navBarLink();
 	}
 
 	@Test(priority = 1, groups = { "sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression" })
@@ -215,7 +216,7 @@ public class CustomerMasterPageTest extends TestBase {
 		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

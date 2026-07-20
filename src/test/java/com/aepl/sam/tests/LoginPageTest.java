@@ -2,8 +2,8 @@ package com.aepl.sam.tests;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -26,7 +26,7 @@ public class LoginPageTest extends TestBase {
 	private RandomGeneratorUtils randomGen;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.loginPage = new LoginPage(driver, wait);
@@ -38,33 +38,33 @@ public class LoginPageTest extends TestBase {
 		excelUtility.initializeExcel("Login_Page_Test");
 	}
 
-	@Test(priority = 1)
+	@Test
 	public void testEmptyUsernameWithValidPassword() {
 		loginPage.enterUsername(" ").enterPassword(ConfigProperties.getProperty("password")).clickLogin();
 		Assert.assertEquals(loginPage.getEmailFieldErrorMessage(), Constants.EMAIL_ERROR_MSG_REQUIRED);
 	}
 
-	@Test(priority = 2)
+	@Test
 	public void testValidUsernameWithLongInvalidPassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(randomGen.generateRandomString(16))
 				.clickLogin();
 		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
-	@Test(priority = 3)
+	@Test
 	public void testValidUsernameWithEmptyPassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(" ").clickLogin();
 		Assert.assertEquals(loginPage.getPasswordFieldErrorMessage(), Constants.PASSWORD_ERROR_MSG_MIN_LENGTH);
 	}
 
-	@Test(priority = 4)
+	@Test
 	public void testInvalidUsernameWithValidPassword() {
 		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(ConfigProperties.getProperty("password"))
 				.clickLogin();
 		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
-	@Test(priority = 5)
+	@Test
 	public void testEmptyUsernameAndEmptyPassword() {
 		loginPage.enterUsername(" ").enterPassword(" ").clickLogin();
 		String actualEmailError = loginPage.getEmailFieldErrorMessage();
@@ -75,20 +75,20 @@ public class LoginPageTest extends TestBase {
 				|| actualPasswordError.equals(Constants.PASSWORD_ERROR_MSG_MIN_LENGTH));
 	}
 
-	@Test(priority = 6)
+	@Test
 	public void testInvalidUsernameWithInvalidPassword() {
 		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(randomGen.generateRandomString(8))
 				.clickLogin();
 		assertInvalidLoginToast(loginPage.getToastMessage());
 	}
 
-	@Test(priority = 7)
+	@Test
 	public void testValidUsernameWithShortPassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("short").clickLogin();
 		Assert.assertEquals(loginPage.getPasswordFieldErrorMessage(), Constants.PASSWORD_ERROR_MSG_MIN_LENGTH);
 	}
 
-	@Test(priority = 8)
+	@Test
 	public void testValidUsernameWithWhitespacePassword() {
 		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("       ").clickLogin();
 		String actual = loginPage.getPasswordFieldErrorMessage();
@@ -100,86 +100,86 @@ public class LoginPageTest extends TestBase {
 				|| actual.equals(Constants.PASSWORD_ERROR_MSG_MIN_LENGTH));
 	}
 
-	@Test(priority = 9)
+	@Test
 	public void testCorrectUrl() {
 		executor.executeTest("Test correct url for the {Sampark Cloud}", true, loginPage::isCorrectUrl);
 	}
 
-	@Test(priority = 10)
+	@Test
 	public void testLoginContainerIsDisplayed() {
 		executor.executeTest("Test the login container is displayed", true, loginPage::isLoginContainerIsDisplayed);
 	}
 
-	@Test(priority = 11)
+	@Test
 	public void testSiteNameIsMatched() {
 		executor.executeTest("Test the site name is matched", Constants.EXP_PAGE_TITLE_TEXT, loginPage::siteNameMaching);
 	}
 
-	@Test(priority = 12)
+	@Test
 	public void testLoginFormContainerIsVisible() {
 		executor.executeTest("Test the login form container is visible", true, loginPage::isLoginFormContainerVisible);
 	}
 
-	@Test(priority = 13)
+	@Test
 	public void testHeaderOfLoginFormContainer() {
 		executor.executeTest("Test the header of the login form container", "Welcome Back !",
 				loginPage::validateLoginFormHeader);
 	}
 
-	@Test(priority = 14)
+	@Test
 	public void testLabelHeaderOfEmail() {
 		executor.executeTest("Test the label header of the email field of login form container", "Your Email Address",
 				loginPage::validateLabelOfEmailField);
 	}
 
-	@Test(priority = 15)
+	@Test
 	public void testPersonIconInEmailField() {
 		executor.executeTest("Test the {person} icon in the email field", true, loginPage::isPersonIconPresent);
 	}
 
-	@Test(priority = 16)
+	@Test
 	public void testLabelHeaderOfPassword() {
 		executor.executeTest("Test the label header of the email field of login form container", "Password",
 				loginPage::validateLabelOfPasswordField);
 	}
 
-	@Test(priority = 17)
+	@Test
 	public void testLockIconInPasswordField() {
 		executor.executeTest("Test the {Lock} icon in the password field", true, loginPage::isLockIconPresent);
 	}
 
-	@Test(priority = 18)
+	@Test
 	public void testEyeIconDisplayedInPasswordField() {
 		executor.executeTest("Test the {Eye} icon in the password field", true, loginPage::isEyeIconPresent);
 	}
 
-	@Test(priority = 19)
+	@Test
 	public void testEyeIconEnabledInPasswordField() {
 		executor.executeTest("Test the {Eye} icon in the password field", true, loginPage::isEyeIconEnabled);
 	}
 
-	@Test(priority = 20)
+	@Test
 	public void testClickOnEyeIcon() {
 		executor.executeTest("Test the clicking on eye icon in the password field", true, loginPage::isEyeIconClicked);
 	}
 
-	@Test(priority = 21)
+	@Test
 	public void testPasswordLink() {
 		executor.executeTest("Test the forgot password link is present and enabled", true,
 				loginPage::isForgotPasswordLinkPresentAndEnabled);
 	}
 
-	@Test(priority = 22)
+	@Test
 	public void testCopyright() {
 		executor.executeTest("Copyright Verification Test", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@Test(priority = 23)
+	@Test
 	public void testVersion() {
 		executor.executeTest("Version Verification Test", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
-	@Test(priority = 24, groups = {"sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression"})
+	@Test(groups = {"sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression"})
 	public void loginSuccess() {
 		executor.executeTest("Login Success Test", true, () -> {
 			loginPage.enterUsername(ConfigProperties.getProperty("username"))
@@ -188,7 +188,7 @@ public class LoginPageTest extends TestBase {
 		});
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

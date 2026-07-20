@@ -3,8 +3,8 @@ package com.aepl.sam.tests;
 import java.util.Arrays;
 import java.util.List;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -25,7 +25,7 @@ public class DispatchedDevicesPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);
@@ -35,6 +35,7 @@ public class DispatchedDevicesPageTest extends TestBase {
 		this.softAssert = new SoftAssert();
 		this.executor = new Executor(excelUtility, softAssert);
 		excelUtility.initializeExcel("Dispatched_Devices_Test");
+		dispatchedDevicePage.navBarLink();
 	}
 
 	@Test(priority = 1)
@@ -535,7 +536,7 @@ public class DispatchedDevicesPageTest extends TestBase {
 		executor.executeTest("Verify Copyright", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

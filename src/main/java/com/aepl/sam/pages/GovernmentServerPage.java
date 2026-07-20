@@ -42,8 +42,8 @@ public class GovernmentServerPage extends GovernmentServerPageLocators {
 	private CalendarActions calAct;
 	private LoginPage loginPage;
 	private PageActionsUtil comm;
-	private String randomStateName;
-	private String randomStateAbr;
+	private static String randomStateName;
+	private static String randomStateAbr;
 	private RandomGeneratorUtils random;
 	private TableUtils table;
 	private static final Logger logger = LogManager.getLogger(GovernmentServerPage.class);

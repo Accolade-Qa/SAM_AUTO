@@ -1,7 +1,7 @@
 package com.aepl.sam.tests;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -24,7 +24,7 @@ public class FotaPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.comm = new PageActionsUtil(driver, wait);
@@ -35,6 +35,7 @@ public class FotaPageTest extends TestBase {
 		this.executor = new Executor(excelUtility, softAssert);
 		excelUtility.initializeExcel(FOTA_EXCEL_SHEET);
 		logger.info("Setup completed for FotaPageTest");
+		fota.clickDeviceUtility(); fota.clickFota();
 	}
 
 	@Test(priority = 1)
@@ -129,7 +130,7 @@ public class FotaPageTest extends TestBase {
 		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

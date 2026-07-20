@@ -24,8 +24,8 @@ public class CustomerMasterPage extends CustomerMasterLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private PageActionsUtil comm;
-	private String editedUser;
-	private String randomName;
+	private static String editedUser;
+	private static String randomName;
 	private TableUtils tableUtils;
 	private RandomGeneratorUtils random;
 

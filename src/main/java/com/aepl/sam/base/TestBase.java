@@ -7,8 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.aepl.sam.pages.LoginPage;
@@ -28,7 +27,7 @@ public class TestBase {
 
 	protected final Logger logger = LogManager.getLogger(this.getClass());
 
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		logger.info("========== Test Class Setup Started [{}] ==========", this.getClass().getSimpleName());
 		try {
@@ -66,6 +65,11 @@ public class TestBase {
 			loginPage = new LoginPage(driver, wait);
 			logger.info("Successfully navigated to: {}", Constants.BASE_URL);
 
+			if (driver != null) {
+				logger.debug("Zooming out Chrome browser to 67% for test execution.");
+				((JavascriptExecutor) driver).executeScript("document.body.style.zoom='67%'");
+			}
+
 			if (!this.getClass().getSimpleName().equals("LoginPageTest")) {
 				logger.info("Auto-login initiated for test class: {}", this.getClass().getSimpleName());
 				login();
@@ -80,25 +84,15 @@ public class TestBase {
 		logger.info("========== Test Class Setup Completed [{}] ==========", this.getClass().getSimpleName());
 	}
 
-	@BeforeMethod(alwaysRun = true)
-	public void zoomChrome() {
-		if (driver != null) {
-			logger.debug("Zooming out Chrome browser to 67% for test execution.");
-			((JavascriptExecutor) driver).executeScript("document.body.style.zoom='67%'");
-		} else {
-			logger.warn("Cannot apply zoom - WebDriver instance is null.");
-		}
-	}
-
-	@AfterClass(alwaysRun = true)
-	public void tearDownClass() {
-		logger.info("========== Test Class Teardown Started [{}] ==========", this.getClass().getSimpleName());
+	@AfterMethod(alwaysRun = true)
+	public void tearDownMethod() {
+		logger.info("========== Test Method Teardown Started [{}] ==========", this.getClass().getSimpleName());
 		try {
 			cleanupDriver();
 		} finally {
 			// ALWAYS release thread slot to allow next thread to execute
 			releaseThreadSlot();
-			logger.info("========== Test Class Teardown Completed [{}] ==========", this.getClass().getSimpleName());
+			logger.info("========== Test Method Teardown Completed [{}] ==========", this.getClass().getSimpleName());
 		}
 	}
 

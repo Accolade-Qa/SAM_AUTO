@@ -17,7 +17,7 @@
 	preserve-order="true": Maintain the order of test classes/methods as defined
 -->
 <suite name="AllTestSuite" verbose="1" preserve-order="true"
-	parallel="classes" thread-count="4">
+	parallel="tests" thread-count="4">
 	<listeners>
 		<listener class-name="com.aepl.sam.listeners.TestListener" />
 		<listener class-name="com.aepl.sam.listeners.Transformer" />

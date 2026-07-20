@@ -33,9 +33,9 @@ public class ProductionDevicePage extends ProductionDevicePageLocators {
 	private PageActionsUtil actions;
 	private CalendarActions CalAct;
 	JavascriptExecutor js;
-	private String randomUIN;
-	private String randomIMEI;
-	private String randomICCID;
+	private static String randomUIN;
+	private static String randomIMEI;
+	private static String randomICCID;
 	private RandomGeneratorUtils random;
 	private TableUtils table;
 	private static final Logger logger = LogManager.getLogger(ProductionDevicePage.class);

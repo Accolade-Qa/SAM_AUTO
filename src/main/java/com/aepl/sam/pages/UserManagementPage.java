@@ -34,10 +34,10 @@ public class UserManagementPage extends UserManagementPageLocators {
 		this.random = new RandomGeneratorUtils();
 	}
 
-	private String randomFirstName;
-	private String randomFirstName2;
-	private String randomLastName;
-	private String randomLastName2;
+	private static String randomFirstName;
+	private static String randomFirstName2;
+	private static String randomLastName;
+	private static String randomLastName2;
 
 	public String navBarLink() {
 		try {

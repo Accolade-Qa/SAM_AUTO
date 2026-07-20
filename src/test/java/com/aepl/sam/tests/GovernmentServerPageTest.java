@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -31,7 +31,7 @@ public class GovernmentServerPageTest extends TestBase {
 	private Executor executor;
 
 	@Override
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
 		super.setUp();
 		this.govServerPage = new GovernmentServerPage(driver, wait, action);
@@ -42,6 +42,7 @@ public class GovernmentServerPageTest extends TestBase {
 		this.executor = new Executor(excelUtility, softAssert);
 		excelUtility.initializeExcel(SHEET_NAME);
 		logger.info("Setup completed for GovernmentServerPageTest");
+		govServerPage.navBarLink();
 	}
 
 	// Validate the company logo on the left of the page. if it is displayed or not.
@@ -834,7 +835,7 @@ public class GovernmentServerPageTest extends TestBase {
 		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
 	public void tearDownAssertions() {
 		softAssert.assertAll();
 	}

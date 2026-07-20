@@ -27,7 +27,7 @@ public class DeviceModelsPage extends DeviceModelsPageLocators {
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private PageActionsUtil comm;
-	private String randomModelCode;
+	private static String randomModelCode;
 	private RandomGeneratorUtils random;
 	private TableUtils table;
 
