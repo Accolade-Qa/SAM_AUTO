@@ -50,13 +50,12 @@ mvn clean install
 
 ## Configuration
 
-The framework now separates secrets from non-secret config:
+The framework uses a strict **Single Source of Truth** configuration strategy:
 
-- `src/main/resources/qa.config.properties`
-  - Keep only non-sensitive settings, for example:
-  - `browser=chrome`
-- `.env` (local only, not committed)
-  - Keep credentials and other secrets
+1. **`config/sampark.yaml`** (Single Source of Truth for Project Configuration):
+   - Contains all non-sensitive settings (browser, headless mode, retry count, health checks, device defaults).
+2. **`.env`** (Single Source of Truth for Secrets & Credentials):
+   - Contains all passwords, usernames, and secret tokens (local only, not committed).
 
 Required `.env` keys:
 

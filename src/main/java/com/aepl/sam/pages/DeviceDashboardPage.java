@@ -851,7 +851,7 @@ public class DeviceDashboardPage extends DeviceDashboardPageLocators {
 			List<WebElement> graphs = wait
 					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".graph-card")));
 			comm.highlightElements(graphs, "solid purple");
-			return graphs.stream().allMatch(WebElement::isDisplayed);
+			return graphs.stream().allMatch(graph -> graph.isDisplayed());
 		} catch (TimeoutException e) {
 			logger.error("Device Activity Overview graph not found: {}", e.getMessage());
 			return false;

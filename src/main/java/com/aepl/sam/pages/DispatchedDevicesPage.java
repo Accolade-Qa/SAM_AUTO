@@ -536,7 +536,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 			// Get the value of the REMARK column (case-insensitive header search)
 			String remark = row.entrySet().stream().filter(e -> e.getKey().equalsIgnoreCase("REMARK"))
-					.map(Map.Entry::getValue).findFirst().orElse(null);
+					.map(e -> e.getValue()).findFirst().orElse(null);
 
 			// Validate remark
 			if (remark == null || !remark.equalsIgnoreCase("OK")) {

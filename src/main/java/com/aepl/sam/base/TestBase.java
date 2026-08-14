@@ -46,6 +46,16 @@ public class TestBase {
 			logger.debug("Initializing properties for QA environment.");
 			ConfigProperties.initialize("qa");
 
+			String enableHealthCheck = ConfigProperties.getProperty("enable_preflight_health_check");
+			if ("true".equalsIgnoreCase(enableHealthCheck)) {
+				boolean isHealthy = com.aepl.sam.api.BackendHealthChecker.checkHealth();
+				if (!isHealthy) {
+					logger.error("Pre-flight health check failed for /login endpoint. Aborting setup for test class: {}",
+							this.getClass().getSimpleName());
+					throw new RuntimeException("Pre-flight backend health check failed for target environment.");
+				}
+			}
+
 			String browserType = ConfigProperties.getProperty("browser").toLowerCase();
 			logger.info("Browser configured: {}", browserType);
 

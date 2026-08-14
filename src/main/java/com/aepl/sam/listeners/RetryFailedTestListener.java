@@ -1,31 +1,49 @@
 package com.aepl.sam.listeners;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
+import com.aepl.sam.utils.ConfigProperties;
+
 public class RetryFailedTestListener implements IRetryAnalyzer {
 
-	private static final ThreadLocal<Integer> retryCountLocal = ThreadLocal.withInitial(() -> 0);
-	private static final int maxRetryCount = 3;
 	private static final Logger logger = LogManager.getLogger(RetryFailedTestListener.class);
+	private static final Map<String, Integer> retryCounts = new ConcurrentHashMap<>();
+
+	private int getMaxRetryCount() {
+		try {
+			String configCount = ConfigProperties.getProperty("max_retry_count");
+			if (configCount != null && !configCount.isBlank()) {
+				return Integer.parseInt(configCount.trim());
+			}
+		} catch (Exception e) {
+			logger.warn("Could not parse max_retry_count from config. Defaulting to 2.");
+		}
+		return 2;
+	}
 
 	@Override
 	public boolean retry(ITestResult result) {
-		int currentRetryCount = retryCountLocal.get();
+		String testIdentifier = result.getTestClass().getName() + "." + result.getMethod().getMethodName();
+		int maxRetryCount = getMaxRetryCount();
+		int currentCount = retryCounts.getOrDefault(testIdentifier, 0);
 
-		if (currentRetryCount < maxRetryCount) {
-			currentRetryCount++;
-			retryCountLocal.set(currentRetryCount);
-			logger.info("Retrying test: {} | Attempt: {} | Thread: {}", result.getName(), currentRetryCount,
-					Thread.currentThread().getName());
+		if (currentCount < maxRetryCount) {
+			currentCount++;
+			retryCounts.put(testIdentifier, currentCount);
+			logger.info("Retrying failed test: {} | Attempt: {}/{} | Thread: {}", testIdentifier, currentCount,
+					maxRetryCount, Thread.currentThread().getName());
 			return true;
 		}
 
-		// Clean up ThreadLocal after max retries reached
-		retryCountLocal.remove();
-		logger.info("Max retry count ({}) reached for test: {}", maxRetryCount, result.getName());
+		retryCounts.remove(testIdentifier);
+		logger.info("Max retry count ({}) reached for test: {}", maxRetryCount, testIdentifier);
 		return false;
 	}
 }
+

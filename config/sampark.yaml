@@ -1,0 +1,18 @@
+# SAMPARK Project YAML Configuration
+
+project: sampark
+base_url: http://sampark-qa.accoladeelectronics.com
+browser: chrome
+headless: false
+
+page_title: AEPL Sampark QA Diagnostic Cloud
+
+# Pre-flight API & Retry Settings
+max_retry_count: 2
+enable_preflight_health_check: true
+
+# Test Device Defaults
+imei: "867950076683091"
+iccid: "89916440844825969900"
+uin: "ACON4SA162426683091"
+vin: "ACCDEV12242083091"
