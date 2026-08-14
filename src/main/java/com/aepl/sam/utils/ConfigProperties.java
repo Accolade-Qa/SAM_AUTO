@@ -45,6 +45,12 @@ public class ConfigProperties {
 	}
 
 	public static synchronized void initialize(String env) {
+		if (initialized) {
+			return;
+		}
+
+		initialized = true;
+
 		if (env == null || env.isEmpty()) {
 			env = "qa";
 		}
@@ -63,8 +69,6 @@ public class ConfigProperties {
 
 		// Step 2: Propagate dynamic values to Constants class
 		propagateConstants();
-
-		initialized = true;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,0 +1,34 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<!-- 
+	TestNG Configuration for Sampark Full Regression Suite
+	Executes all UI, API, and System Integration tests.
+-->
+<suite name="RegressionTestSuite" verbose="1" preserve-order="true" parallel="classes" thread-count="4">
+	<listeners>
+		<listener class-name="com.aepl.sam.listeners.TestListener" />
+		<listener class-name="com.aepl.sam.listeners.Transformer" />
+		<listener class-name="com.aepl.sam.listeners.ProjectFilterInterceptor" />
+	</listeners>
+
+	<test name="Full_Regression_Tests" enabled="true">
+		<classes>
+			<class name="com.aepl.sam.tests.LoginPageTest" />
+			<class name="com.aepl.sam.tests.DeviceDashboardPageTest" />
+			<class name="com.aepl.sam.tests.DeviceDetailsPageTest" />
+			<class name="com.aepl.sam.tests.DeviceModelsPageTest" />
+			<class name="com.aepl.sam.tests.GovernmentServerPageTest" />
+			<class name="com.aepl.sam.tests.FotaPageTest" />
+			<class name="com.aepl.sam.tests.ProductionDevicePageTest" />
+			<class name="com.aepl.sam.tests.DispatchedDevicesPageTest" />
+			<class name="com.aepl.sam.tests.OtaPageTest" />
+			<class name="com.aepl.sam.tests.CustomerMasterPageTest" />
+			<class name="com.aepl.sam.tests.SimBatchDataDetailsPageTest" />
+			<class name="com.aepl.sam.tests.UserManagementPageTest" />
+			<class name="com.aepl.sam.tests.GroupManagementPageTest" />
+			<class name="com.aepl.sam.tests.RoleManagementPageTest" />
+			<class name="com.aepl.sam.tests.DealersManagementPageTest" />
+			<class name="com.aepl.sam.tests.UserProfilePageTest" />
+			<class name="com.aepl.sam.tests.api.AuthApiTest" />
+		</classes>
+	</test>
+</suite>

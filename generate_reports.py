@@ -18,25 +18,32 @@ def prepare_project_artifact_dirs(project=None):
     # Ensure Reports/ directory exists
     Path("Reports").mkdir(exist_ok=True)
 
-def load_config_details(project_name):
+def load_config_details(project_name=None):
     base_url = "N/A"
     browser = "chrome"
     headless = True
     
-    yaml_path = Path(__file__).resolve().parent / ".." / "ALL_PROJECTS_AUTOMATION" / "config" / f"{project_name}.yaml"
-    if yaml_path.exists():
-        try:
-            with open(yaml_path, "r", encoding="utf-8") as f:
-                config_data = yaml.safe_load(f)
-                if config_data:
-                    base_url = config_data.get("base_url", base_url)
-                    browser = config_data.get("browser", browser)
-                    headless = config_data.get("headless", headless)
-        except Exception as exc:
-            print(f"Warning: could not load config details: {exc}")
-            
+    name = project_name or "sampark"
+    yaml_paths = [
+        ROOT / "config" / f"{name}.yaml",
+        ROOT / "config" / "sampark.yaml",
+        Path(__file__).resolve().parent / ".." / "ALL_PROJECTS_AUTOMATION" / "config" / f"{name}.yaml"
+    ]
+    for yaml_path in yaml_paths:
+        if yaml_path.exists():
+            try:
+                with open(yaml_path, "r", encoding="utf-8") as f:
+                    config_data = yaml.safe_load(f)
+                    if config_data:
+                        base_url = config_data.get("base_url", base_url)
+                        browser = config_data.get("browser", browser)
+                        headless = config_data.get("headless", headless)
+                        break
+            except Exception as exc:
+                print(f"Warning: could not load config details from {yaml_path}: {exc}")
+                
     class ConfigModule:
-        PROJECT = project_name or "sampark"
+        PROJECT = name
         BASE_URL = base_url
         BROWSER = browser
         HEADLESS = headless
@@ -794,228 +801,8 @@ def _clean(value, limit=500):
     return value[:limit]
 
 
-def _test_case_name(nodeid):
-    if not nodeid:
-        return ""
-    return nodeid.split("::")[-1]
-
-
-def _normalize_status(value):
-    value = str(value or "").strip().lower()
-    if value in {"passed", "pass"}:
-        return "pass"
-    if value in {"failed", "fail"}:
-        return "fail"
-    return "skipped"
-
-
-def _duration_seconds(test_result):
-    duration = test_result.get("duration")
-    if duration is not None:
-        return round(duration, 2)
-
-    total = 0
-    found = False
-    for section in ("setup", "call", "teardown"):
-        section_data = test_result.get(section) or {}
-        section_duration = section_data.get("duration")
-        if section_duration is not None:
-            total += section_duration
-            found = True
-
-    return round(total, 2) if found else ""
-
-
-def _property_map(test_result):
-    properties = {}
-    raw_properties = (
-        test_result.get("user_properties") or test_result.get("properties") or []
-    )
-
-    if isinstance(raw_properties, dict):
-        return {str(key).lower(): value for key, value in raw_properties.items()}
-
-    for item in raw_properties:
-        if isinstance(item, dict):
-            name = item.get("name") or item.get("key")
-            value = item.get("value")
-            if name:
-                properties[str(name).lower()] = value
-            else:
-                for key, value in item.items():
-                    properties[str(key).lower()] = value
-        elif isinstance(item, (list, tuple)) and len(item) >= 2:
-            name, value = item[0], item[1]
-            if name:
-                properties[str(name).lower()] = value
-        else:
-            continue
-
-    return properties
-
-
-def _load_manual_results(manual_excel_path):
-    """Read richer expected/actual rows written by utils.excel_report.write_result."""
-    manual_path = Path(manual_excel_path)
-    if not manual_path.exists():
-        return {}
-
-    try:
-        df = pd.read_excel(manual_path)
-    except Exception as exc:
-        print(f"Warning: Could not read manual Excel report {manual_path}: {exc}")
-        return {}
-
-    required = {"Test Name", "Expected", "Actual", "Status"}
-    missing = required - set(df.columns)
-    if missing:
-        print(f"Warning: Manual report missing columns: {missing}")
-        return {}
-
-    results = {}
-    for _, row in df.iterrows():
-        test_name = _clean(row.get("Test Name"))
-        if not test_name:
-            continue
-        results[test_name] = {
-            "expected": _clean(row.get("Expected")),
-            "actual": _clean(row.get("Actual")),
-            "status": _normalize_status(row.get("Status")),
-            "message": _clean(row.get("Error"), 300),
-        }
-    return results
-
-
-def _extract_expected_actual(longrepr, outcome):
-    """Best-effort extraction for tests that do not call write_result()."""
-    text = _clean(longrepr, 2000)
-
-    if not text:
-        return "Not recorded by test", "Not recorded by test", ""
-
-    patterns = [
-        r"Expected:\s*(?P<expected>.*?)[,;]\s*(?:Got|Actual):\s*(?P<actual>.*)",
-        r"Expected\s+'(?P<expected>.*?)'\s*,?\s*(?:but\s+)?got\s+'(?P<actual>.*?)'",
-        r"Expected\s+(?P<expected>.*?)\s*,\s*got\s+(?P<actual>.*)",
-        r"expected\s+(?P<expected>.*?)\s+but\s+got\s+(?P<actual>.*)",
-        r"Expected\s+URL\s+to\s+be\s+'(?P<expected>.*?)',\s+got\s+(?P<actual>.*)",
-        r"Expected\s+page\s+title\s+'(?P<expected>.*?)',\s+but\s+got\s+'(?P<actual>.*?)'",
-        r"Expected\s+title\s+'(?P<expected>.*?)',\s+but\s+got\s+'(?P<actual>.*?)'",
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            return (
-                _clean(match.group("expected"), 500),
-                _clean(match.group("actual"), 500),
-                text[:300],
-            )
-
-    if "AssertionError:" in text:
-        message = text.split("AssertionError:", 1)[-1].strip()
-        return "Assertion condition should pass", _clean(message, 500), text[:300]
-
-    return "Not recorded by test", _clean(text, 500), text[:300]
-
-
-def _build_test_rows(data, manual_excel_path):
-    manual_results = _load_manual_results(manual_excel_path)
-    tests = []
-    seen = set()
-    counts = {"passed": 0, "failed": 0, "skipped": 0}
-
-    for t in data.get("tests", []):
-        nodeid = t.get("nodeid", "")
-        test_name = _test_case_name(nodeid)
-        status = _normalize_status(t.get("outcome", ""))
-        properties = _property_map(t)
-
-        # 🔹 PRIORITY 1: Check properties (set by report_case fixture or pytest hook)
-        properties_expected = _clean(properties.get("expected"))
-        properties_actual = _clean(properties.get("actual"))
-        properties_message = _clean(properties.get("message"), 300)
-
-        # 🔹 PRIORITY 2: Extract from error/longrepr only if properties don't have expected/actual
-        if properties_expected or properties_actual:
-            # Properties has explicit values - use them
-            expected = properties_expected
-            actual = properties_actual
-            message = properties_message or ""
-        else:
-            # Fall back to extracting from error message
-            expected, actual, message = _extract_expected_actual(
-                t.get("longrepr", ""), t.get("outcome", "")
-            )
-            # Override message with property if available
-            message = properties_message or message
-
-        # 🔹 PRIORITY 3: Update status from properties if available
-        status = _normalize_status(
-            properties.get("result") or properties.get("status") or status
-        )
-
-        # If report_case stored properties but they are empty strings,
-        # preserve the default expected/actual values from the test itself.
-        if not expected and properties.get("expected") == "":
-            expected = "Not recorded by test"
-        if not actual and properties.get("actual") == "":
-            actual = "Not recorded by test"
-
-        # 🔹 PRIORITY 4: Manual results (from write_result) override everything
-        manual = manual_results.get(test_name)
-        if manual:
-            expected = manual["expected"] or expected
-            actual = manual["actual"] or actual
-            status = manual["status"] or status
-            message = manual["message"] or message
-
-        counts[{"pass": "passed", "fail": "failed"}.get(status, "skipped")] += 1
-        seen.add(test_name)
-
-        # [DEBUG] logging for "Not recorded by test" issues
-        if "Not recorded by test" in (expected or actual):
-            print(
-                f"[DEBUG] Test '{test_name}' has 'Not recorded by test' in expected/actual"
-            )
-            print(f"   - has properties: {bool(properties)}")
-            print(f"   - has manual: {bool(manual)}")
-            print(f"   - longrepr length: {len(str(t.get('longrepr', '')))}")
-
-        tests.append(
-            {
-                "name": test_name,
-                "nodeid": nodeid,
-                "expected": expected,
-                "actual": actual,
-                "status": status,
-                "duration": _duration_seconds(t),
-                "message": _clean(message, 300),
-            }
-        )
-
-    for test_name, manual in manual_results.items():
-        if test_name in seen:
-            continue
-        status = manual["status"]
-        counts[{"pass": "passed", "fail": "failed"}.get(status, "skipped")] += 1
-        tests.append(
-            {
-                "name": test_name,
-                "nodeid": test_name,
-                "expected": manual["expected"],
-                "actual": manual["actual"],
-                "status": status,
-                "duration": "",
-                "message": manual["message"],
-            }
-        )
-
-    return tests, counts, len(tests)
-
-
-# ================= STEP 1: RUN PYTEST (MAVEN) =================
-def run_pytest(json_path, project_name=None, markers=None):
+# ================= STEP 1: RUN MAVEN TESTS =================
+def run_maven_tests(json_path, project_name=None, markers=None, suite_xml=None, threads=None, parallel=None):
     report_dir = json_path.parent
     report_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1026,10 +813,22 @@ def run_pytest(json_path, project_name=None, markers=None):
     if markers:
         cmd.append(f"-Dgroups={markers}")
         
+    suite_arg = os.environ.get("SUITE_XML") or suite_xml
+    if suite_arg:
+        cmd.append(f"-DsuiteXmlFile={suite_arg}")
+
     test_arg = os.environ.get("MAVEN_TEST")
     if test_arg:
         cmd.append(f"-Dtest={test_arg}")
-        
+
+    thread_arg = os.environ.get("THREAD_COUNT") or threads
+    if thread_arg:
+        cmd.append(f"-DthreadCount={thread_arg}")
+
+    parallel_arg = os.environ.get("PARALLEL_MODE") or parallel
+    if parallel_arg:
+        cmd.append(f"-Dparallel={parallel_arg}")
+
     print("=" * 60)
     print("RUNNING JAVA SELENIUM TESTS (MAVEN)")
     print("=" * 60)
@@ -1038,6 +837,8 @@ def run_pytest(json_path, project_name=None, markers=None):
 
     result = subprocess.run(" ".join(cmd), shell=True, cwd=ROOT)
     return result.returncode
+
+run_pytest = run_maven_tests
 
 
 # ================= STEP 2: PROCESS TESTNG RESULTS =================
@@ -1429,25 +1230,43 @@ def parse_args():
         "--markers",
         dest="markers",
         nargs="+",
-        help="Pytest marker expression to select tests, e.g. smoke, ui.",
+        help="TestNG group/marker expression to select tests, e.g. smoke, ui.",
+    )
+    parser.add_argument(
+        "--suite",
+        help="TestNG suite XML file to run, e.g. testNG-api.xml or testNG.xml.",
     )
     parser.add_argument(
         "--test",
-        help="Test class or method to run, e.g. LoginPageTest or LoginPageTest#loginSuccess.",
+        help="Test class or method to run, e.g. LoginPageTest or DispatchedDevicesPageTest#validateRemark.",
+    )
+    parser.add_argument(
+        "--threads",
+        "--thread-count",
+        dest="threads",
+        help="Number of parallel threads to run (e.g. 1 for single-thread / sequential, 4 for multi-thread).",
+    )
+    parser.add_argument(
+        "--parallel",
+        help="TestNG parallel mode override (e.g. none, classes, methods).",
     )
     parser.add_argument(
         "--report-dir",
         help="Optional base report directory. Defaults to Reports/ or reports/.",
     )
     parser.add_argument(
+        "--skip-tests",
+        "--skip-test",
+        "--skip-run",
         "--skip-pytest",
+        dest="skip_tests",
         action="store_true",
-        help="Skip running pytest and only generate reports from existing JSON.",
+        help="Skip running Maven tests and only generate reports from existing results.",
     )
     return parser.parse_args()
 
 
-def _run_report_for_target(project_name, base_report_dir, skip_pytest, markers=None):
+def _run_report_for_target(project_name, base_report_dir, skip_tests, markers=None, suite_xml=None, threads=None, parallel=None):
     if project_name:
         os.environ["PROJECT"] = project_name
     config_module = load_config_details(project_name)
@@ -1461,22 +1280,20 @@ def _run_report_for_target(project_name, base_report_dir, skip_pytest, markers=N
     excel_path = report_paths["excel_path"]
 
     print("=" * 60)
-    print(f"TEST REPORT GENERATOR: {project_name or 'default'}")
+    print(f"TEST REPORT GENERATOR: {project_name or 'sampark'}")
     print("=" * 60)
     print(f"Working directory: {ROOT}")
     print(f"Report directory: {report_dir}")
-    print(f"JSON path: {json_path}")
     print(f"HTML path: {html_path}")
     print(f"Excel path: {excel_path}")
     print(f"Manual expected/actual path: {report_paths['manual_excel_path']}")
-    print(f"JSON exists: {json_path.exists()}")
     print("-" * 60)
 
-    if skip_pytest:
-        print("Skipping pytest (--skip-pytest specified)")
+    if skip_tests:
+        print("Skipping Maven test execution (--skip-tests specified)")
         exit_code = 0
     else:
-        exit_code = run_pytest(json_path, project_name, markers)
+        exit_code = run_maven_tests(json_path, project_name, markers, suite_xml, threads, parallel)
 
     try:
         tests, counts, total, data = process_json(
@@ -1493,7 +1310,6 @@ def _run_report_for_target(project_name, base_report_dir, skip_pytest, markers=N
         print("=" * 60)
         print(f"HTML:  {html_path} (exists: {html_path.exists()})")
         print(f"Excel: {excel_path} (exists: {excel_path.exists()})")
-        print(f"JSON:  {json_path} (exists: {json_path.exists()})")
         print("=" * 60)
 
     except Exception as exc:
@@ -1516,6 +1332,13 @@ def main():
     args = parse_args()
     if getattr(args, "test", None):
         os.environ["MAVEN_TEST"] = args.test
+    if getattr(args, "suite", None):
+        os.environ["SUITE_XML"] = args.suite
+    if getattr(args, "threads", None):
+        os.environ["THREAD_COUNT"] = args.threads
+    if getattr(args, "parallel", None):
+        os.environ["PARALLEL_MODE"] = args.parallel
+
     project_names = []
     if args.projects:
         project_names = [p.strip() for p in args.projects.split(",") if p.strip()]
@@ -1532,7 +1355,7 @@ def main():
     overall_exit_code = 0
     for project_name in project_names:
         exit_code = _run_report_for_target(
-            project_name, args.report_dir, args.skip_pytest, marker_expr
+            project_name, args.report_dir, args.skip_tests, marker_expr, suite_xml=args.suite, threads=args.threads, parallel=args.parallel
         )
         overall_exit_code = max(overall_exit_code, exit_code)
 

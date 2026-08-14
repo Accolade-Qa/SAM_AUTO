@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<!-- 
+	TestNG Configuration for User Administration & Access Control Suite
+	Focuses on User Management, Roles, Groups, Dealers, Profiles, and Customer Master.
+-->
+<suite name="UserAdminTestSuite" verbose="1" preserve-order="true" parallel="classes" thread-count="3">
+	<listeners>
+		<listener class-name="com.aepl.sam.listeners.TestListener" />
+		<listener class-name="com.aepl.sam.listeners.Transformer" />
+		<listener class-name="com.aepl.sam.listeners.ProjectFilterInterceptor" />
+	</listeners>
+
+	<test name="User_Admin_Tests" enabled="true">
+		<classes>
+			<class name="com.aepl.sam.tests.UserManagementPageTest" />
+			<class name="com.aepl.sam.tests.GroupManagementPageTest" />
+			<class name="com.aepl.sam.tests.RoleManagementPageTest" />
+			<class name="com.aepl.sam.tests.DealersManagementPageTest" />
+			<class name="com.aepl.sam.tests.UserProfilePageTest" />
+			<class name="com.aepl.sam.tests.CustomerMasterPageTest" />
+		</classes>
+	</test>
+</suite>
