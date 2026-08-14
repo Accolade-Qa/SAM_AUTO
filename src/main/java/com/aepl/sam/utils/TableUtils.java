@@ -40,7 +40,7 @@ public class TableUtils {
 				headers = table.findElements(By.xpath(".//tr[1]/*"));
 			}
 
-			headerTexts = headers.stream().map(WebElement::getText).filter(t -> !t.isEmpty())
+			headerTexts = headers.stream().map(el -> el.getText()).filter(t -> !t.isEmpty())
 					.collect(Collectors.toList());
 
 			logger.info("Table Headers Found: {}", headerTexts);

@@ -71,7 +71,6 @@ public class ConfigProperties {
 		propagateConstants();
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void loadYamlConfig(String projectName) {
 		yamlConfig.clear();
 		String yamlFileName = projectName + ".yaml";
@@ -233,8 +232,11 @@ public class ConfigProperties {
 	}
 
 	public static void setProperty(String key, String value) {
+		if (key == null || key.isBlank()) {
+			return;
+		}
 		String envKey = CREDENTIAL_MAPPINGS.get(key);
-		if (envKey != null || (key != null && key.startsWith("SAM_"))) {
+		if (envKey != null || key.startsWith("SAM_")) {
 			String targetEnvKey = (envKey != null) ? envKey : key;
 			logger.info("Persisting credential property '{}' to .env key '{}'", key, targetEnvKey);
 			DotEnvUtil.set(targetEnvKey, value, true);

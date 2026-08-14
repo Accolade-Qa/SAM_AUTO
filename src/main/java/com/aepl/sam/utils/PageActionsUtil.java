@@ -162,10 +162,10 @@ public class PageActionsUtil {
 
 	public boolean checkSearchBoxWithTableHeadings(String input, List<String> expectedHeaders) {
 		checkSearchBox(input);
-		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim)
-				.map(String::toLowerCase)
+		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(s -> s.trim())
+				.map(s -> s.toLowerCase())
 				.collect(Collectors.toList());
-		List<String> expected = expectedHeaders.stream().map(String::trim).map(String::toLowerCase)
+		List<String> expected = expectedHeaders.stream().map(s -> s.trim()).map(s -> s.toLowerCase())
 				.collect(Collectors.toList());
 		return actualHeaders.equals(expected);
 	}
@@ -179,10 +179,10 @@ public class PageActionsUtil {
 	}
 
 	public boolean checkTableHeadings(List<String> expectedHeaders) {
-		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(String::trim)
-				.map(String::toLowerCase)
+		List<String> actualHeaders = tableUtils.getTableHeaders(TABLE).stream().map(s -> s.trim())
+				.map(s -> s.toLowerCase())
 				.collect(Collectors.toList());
-		List<String> expected = expectedHeaders.stream().map(String::trim).map(String::toLowerCase)
+		List<String> expected = expectedHeaders.stream().map(s -> s.trim()).map(s -> s.toLowerCase())
 				.collect(Collectors.toList());
 		return actualHeaders.equals(expected);
 	}
@@ -384,7 +384,7 @@ public class PageActionsUtil {
 					return false;
 				}
 				actualHeaders = Arrays.stream(lines.get(0).split(","))
-						.map(String::trim)
+						.map(s -> s.trim())
 						.filter(h -> !h.isEmpty())
 						.collect(Collectors.toList());
 			} else if (lowerName.endsWith(".xlsx")) {
@@ -407,7 +407,7 @@ public class PageActionsUtil {
 			}
 
 			List<String> expectedHeaders = Arrays.stream(expectedHeader.split(","))
-					.map(String::trim)
+					.map(s -> s.trim())
 					.filter(h -> !h.isEmpty())
 					.collect(Collectors.toList());
 

@@ -647,7 +647,7 @@ public class DispatchedDevicesPage extends DispatchedDevicesPageLocators {
 
 		for (Map<String, String> row : tableData) {
 			String customerNumber = row.entrySet().stream().filter(e -> e.getKey().equalsIgnoreCase("CUSTOMER NAME"))
-					.map(Map.Entry::getValue).findFirst().orElse(null);
+					.map(e -> e.getValue()).findFirst().orElse(null);
 
 			if (customerNumber == null || !customerNumber.equalsIgnoreCase(Constants.CUSTOMER_UPDATE)) {
 				logger.warn("Customer is not updated : " + customerNumber);
