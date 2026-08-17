@@ -23,6 +23,7 @@ public class Executor {
 		this.softAssert = softAssert;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> void executeTest(String testCaseName, T expected, Supplier<T> actualSupplier) {
 		T actual = null;
 		Result result = Result.FAIL;
@@ -40,10 +41,11 @@ public class Executor {
 		} catch (Exception e) {
 			logger.error("Error in test case {}: {}", testCaseName, e.getMessage(), e);
 			result = Result.ERROR;
+			actual = (T) ("Error: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
 		} finally {
 			synchronized (excelUtility) {
-				excelUtility.writeTestDataToExcel(testCaseName, expected != null ? expected.toString() : "null",
-						actual != null ? actual.toString() : "null", result.getValue());
+				excelUtility.writeTestDataToExcel(testCaseName, expected != null ? expected.toString() : "N/A",
+						actual != null ? actual.toString() : "Execution Failed", result.getValue());
 			}
 		}
 	}

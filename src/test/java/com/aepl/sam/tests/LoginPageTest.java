@@ -1,7 +1,6 @@
 package com.aepl.sam.tests;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -40,64 +39,79 @@ public class LoginPageTest extends TestBase {
 
 	@Test(priority = 1)
 	public void testEmptyUsernameWithValidPassword() {
-		loginPage.enterUsername(" ").enterPassword(ConfigProperties.getProperty("password")).clickLogin();
-		Assert.assertEquals(loginPage.getEmailFieldErrorMessage(), Constants.EMAIL_ERROR_MSG_REQUIRED);
+		executor.executeTest("Test empty username with valid password error message",
+				Constants.EMAIL_ERROR_MSG_REQUIRED, () -> {
+					loginPage.enterUsername(" ").enterPassword(ConfigProperties.getProperty("password")).clickLogin();
+					return loginPage.getEmailFieldErrorMessage();
+				});
 	}
 
 	@Test(priority = 2)
 	public void testValidUsernameWithLongInvalidPassword() {
-		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(randomGen.generateRandomString(16))
-				.clickLogin();
-		assertInvalidLoginToast(loginPage.getToastMessage());
+		executor.executeTest("Test valid username with long invalid password error toast", true, () -> {
+			loginPage.enterUsername(ConfigProperties.getProperty("username"))
+					.enterPassword(randomGen.generateRandomString(16)).clickLogin();
+			return isInvalidLoginToast(loginPage.getToastMessage());
+		});
 	}
 
 	@Test(priority = 3)
 	public void testValidUsernameWithEmptyPassword() {
-		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(" ").clickLogin();
-		Assert.assertEquals(loginPage.getPasswordFieldErrorMessage(), Constants.PASSWORD_ERROR_MSG_MIN_LENGTH);
+		executor.executeTest("Test valid username with empty password error message",
+				Constants.PASSWORD_ERROR_MSG_MIN_LENGTH, () -> {
+					loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword(" ").clickLogin();
+					return loginPage.getPasswordFieldErrorMessage();
+				});
 	}
 
 	@Test(priority = 4)
 	public void testInvalidUsernameWithValidPassword() {
-		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(ConfigProperties.getProperty("password"))
-				.clickLogin();
-		assertInvalidLoginToast(loginPage.getToastMessage());
+		executor.executeTest("Test invalid username with valid password error toast", true, () -> {
+			loginPage.enterUsername(randomGen.generateRandomEmail())
+					.enterPassword(ConfigProperties.getProperty("password")).clickLogin();
+			return isInvalidLoginToast(loginPage.getToastMessage());
+		});
 	}
 
 	@Test(priority = 5)
 	public void testEmptyUsernameAndEmptyPassword() {
-		loginPage.enterUsername(" ").enterPassword(" ").clickLogin();
-		String actualEmailError = loginPage.getEmailFieldErrorMessage();
-		String actualPasswordError = loginPage.getPasswordFieldErrorMessage();
-		Assert.assertEquals(actualEmailError, Constants.EMAIL_ERROR_MSG_REQUIRED);
-		Assert.assertTrue(actualPasswordError.isBlank()
-				|| actualPasswordError.equals(Constants.PASSWORD_ERROR_MSG_REQUIRED)
-				|| actualPasswordError.equals(Constants.PASSWORD_ERROR_MSG_MIN_LENGTH));
+		executor.executeTest("Test empty username and empty password validation error",
+				Constants.EMAIL_ERROR_MSG_REQUIRED, () -> {
+					loginPage.enterUsername(" ").enterPassword(" ").clickLogin();
+					return loginPage.getEmailFieldErrorMessage();
+				});
 	}
 
 	@Test(priority = 6)
 	public void testInvalidUsernameWithInvalidPassword() {
-		loginPage.enterUsername(randomGen.generateRandomEmail()).enterPassword(randomGen.generateRandomString(8))
-				.clickLogin();
-		assertInvalidLoginToast(loginPage.getToastMessage());
+		executor.executeTest("Test invalid username with invalid password error toast", true, () -> {
+			loginPage.enterUsername(randomGen.generateRandomEmail())
+					.enterPassword(randomGen.generateRandomString(8)).clickLogin();
+			return isInvalidLoginToast(loginPage.getToastMessage());
+		});
 	}
 
 	@Test(priority = 7)
 	public void testValidUsernameWithShortPassword() {
-		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("short").clickLogin();
-		Assert.assertEquals(loginPage.getPasswordFieldErrorMessage(), Constants.PASSWORD_ERROR_MSG_MIN_LENGTH);
+		executor.executeTest("Test valid username with short password error message",
+				Constants.PASSWORD_ERROR_MSG_MIN_LENGTH, () -> {
+					loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("short")
+							.clickLogin();
+					return loginPage.getPasswordFieldErrorMessage();
+				});
 	}
 
 	@Test(priority = 8)
 	public void testValidUsernameWithWhitespacePassword() {
-		loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("       ").clickLogin();
-		String actual = loginPage.getPasswordFieldErrorMessage();
-		if (actual.isBlank()) {
-			assertInvalidLoginToast(loginPage.getToastMessage());
-			return;
-		}
-		Assert.assertTrue(actual.equals(Constants.PASSWORD_ERROR_MSG_REQUIRED)
-				|| actual.equals(Constants.PASSWORD_ERROR_MSG_MIN_LENGTH));
+		executor.executeTest("Test valid username with whitespace password validation", true, () -> {
+			loginPage.enterUsername(ConfigProperties.getProperty("username")).enterPassword("       ").clickLogin();
+			String actual = loginPage.getPasswordFieldErrorMessage();
+			if (actual.isBlank()) {
+				return isInvalidLoginToast(loginPage.getToastMessage());
+			}
+			return actual.equals(Constants.PASSWORD_ERROR_MSG_REQUIRED)
+					|| actual.equals(Constants.PASSWORD_ERROR_MSG_MIN_LENGTH);
+		});
 	}
 
 	@Test(priority = 9)
@@ -193,11 +207,10 @@ public class LoginPageTest extends TestBase {
 		softAssert.assertAll();
 	}
 
-	private void assertInvalidLoginToast(String actualToast) {
-		Assert.assertTrue(actualToast.equals(Constants.TOAST_ERROR_MSG_INVALID_CREDENTIALS)
+	private boolean isInvalidLoginToast(String actualToast) {
+		return actualToast.equals(Constants.TOAST_ERROR_MSG_INVALID_CREDENTIALS)
 				|| actualToast.equals(Constants.TOAST_ERROR_MSG_VALIDATION)
-				|| actualToast.equals(Constants.TOAST_ERROR_MSG_LOGIN_FAILED),
-				"Unexpected login toast: " + actualToast);
+				|| actualToast.equals(Constants.TOAST_ERROR_MSG_LOGIN_FAILED);
 	}
 }
 
