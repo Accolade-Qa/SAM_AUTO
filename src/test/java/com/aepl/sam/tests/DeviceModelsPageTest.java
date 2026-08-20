@@ -66,60 +66,60 @@ public class DeviceModelsPageTest extends TestBase {
 	}
 
 	@Test(priority = 5)
-	public void navBarLinkTest() {
-		executor.executeTest("Test Navigation to Device Utility Tab", Constants.DEVICE_LINK, deviceModelsPage::navBarLink);
+	public void testNavBarLink() {
+		executor.executeTest("Verify Navigation to Device Utility Tab", Constants.DEVICE_LINK, deviceModelsPage::navBarLink);
 	}
 
 	// Page title test case
 	@Test(priority = 6)
 	public void testPageTitleOfTheDeviceModelPage() {
-		executor.executeTest("Test the page title of the device model page", "Device Models",
+		executor.executeTest("Verify Page Title of Device Model Page", "Device Models",
 				deviceModelsPage::ValidatePageTitle);
 	}
 
 	// Add Device model visibility
 	@Test(priority = 7)
 	public void testAddDeviceModelButtonIsVisible() {
-		executor.executeTest("Test the add device model button is visible", true,
+		executor.executeTest("Verify Add Device Model Button Visibility", true,
 				deviceModelsPage::isAddDeviceModelButtonVisible);
 	}
 
 	// Add Device model button enability
 	@Test(priority = 8)
 	public void testAddDeviceModelButtonIsEnabled() {
-		executor.executeTest("Test the add device model button is enabled", true,
+		executor.executeTest("Verify Add Device Model Button Status", true,
 				deviceModelsPage::isAddDeviceModelButtonEnable);
 	}
 
 	@Test(priority = 9)
-	public void clickAddDeviceModelTest() {
-		executor.executeTest("Test Clicking Add Device Model Button", "Create Device Model", deviceModelsPage::ClickAddDeviceModel);
+	public void testClickAddDeviceModel() {
+		executor.executeTest("Verify Clicking Add Device Model Button", "Create Device Model", deviceModelsPage::ClickAddDeviceModel);
 	}
 
 	// Validate the component title for the page after it gets clicked
 	@Test(priority = 10)
 	public void testComponentTitleOfAddDeviceModelPage() {
-		executor.executeTest("Test the component title of the add device model page", "Fill Device Model Details",
+		executor.executeTest("Verify Component Title of Add Device Model Page", "Fill Device Model Details",
 				deviceModelsPage::validateComponentTitle);
 	}
 
 	// Validate the error messages for the empty inputs and all input errors
 	@Test(priority = 11, dataProvider = "fieldValidationData", dataProviderClass = DeviceModelsPage.class)
 	public void testInputValidations(By locator, String input, String expectedError) {
-		executor.executeTest("Field Validation", expectedError,
+		executor.executeTest("Verify Field Validation", expectedError,
 				() -> deviceModelsPage.isInputBoxHaveProperValidations(locator, input));
 	}
 
 	// Validate the submit button is disabled if there is no input in all fields
 	@Test(priority = 12)
 	public void testSubmitButtonDisabledWhenAllFieldsEmpty() {
-		executor.executeTest("Test the submit button is disabled if no input boxes are filled", true,
+		executor.executeTest("Verify Submit Button Disabled When Fields Empty", true,
 				deviceModelsPage::isSubmitButtonIsDisabled);
 	}
 
 	@Test(priority = 13)
-	public void addModelTest() {
-		executor.executeTest("Test Adding a New Device Model", "Device Models", () -> {
+	public void testAddModel() {
+		executor.executeTest("Verify Adding New Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.NewInputFields("add");
 			} catch (InterruptedException e) {
@@ -142,30 +142,30 @@ public class DeviceModelsPageTest extends TestBase {
 	// Validate the search input box is visible
 	@Test(priority = 16)
 	public void testSearchInputBoxIsVisible() {
-		executor.executeTest("Test the search input box is visible", true, deviceModelsPage::isSearchInputVisible);
+		executor.executeTest("Verify Search Input Box Visibility", true, deviceModelsPage::isSearchInputVisible);
 	}
 
 	// Validate the search input box is enabled
 	@Test(priority = 17)
 	public void testSearchInputBoxIsEnabled() {
-		executor.executeTest("Test the search input box is enabled", true, deviceModelsPage::isSearchInputEnabled);
+		executor.executeTest("Verify Search Input Box Enabled Status", true, deviceModelsPage::isSearchInputEnabled);
 	}
 
 	// Validate the search button is visible
 	@Test(priority = 18)
 	public void testSearchButtonIsVisible() {
-		executor.executeTest("Test the search button is visible", true, deviceModelsPage::isSearchButtonVisible);
+		executor.executeTest("Verify Search Button Visibility", true, deviceModelsPage::isSearchButtonVisible);
 	}
 
 	// Validate the search button is enabled
 	@Test(priority = 19)
 	public void testSearchButtonIsEnabled() {
-		executor.executeTest("Test the search button is enabled", true, deviceModelsPage::isSearchButtonEnabled);
+		executor.executeTest("Verify Search Button Enabled Status", true, deviceModelsPage::isSearchButtonEnabled);
 	}
 
 	@Test(priority = 20)
-	public void searchModelTest() {
-		executor.executeTest("Test Search Functionality for Device Model", "Device Models", () -> {
+	public void testSearchModel() {
+		executor.executeTest("Verify Search Functionality for Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.searchModel();
 			} catch (InterruptedException e) {
@@ -180,7 +180,7 @@ public class DeviceModelsPageTest extends TestBase {
 	public void testTableHeadersOfDeviceModelListTable() {
 		List<String> actualHeaders = Arrays.asList("MODEL CODE", "MODEL NAME", "MODEL SERIAL SEQUENCE",
 				"HARDWARE VERSION", "ACTION");
-		executor.executeTest("Test the table headers", actualHeaders, deviceModelsPage::validateTableHeaders);
+		executor.executeTest("Verify Table Headers of Device Model List", actualHeaders, deviceModelsPage::validateTableHeaders);
 	}
 
 	// Validate the table data on the page of device model list table
@@ -206,13 +206,13 @@ public class DeviceModelsPageTest extends TestBase {
 		expectedRowPatterns.put("ACTION", "visibility"); // exact match
 
 		List<Map<String, String>> expectedPatterns = Collections.singletonList(expectedRowPatterns);
-		executor.executeTest("Test table data of the Device Model List with regex", expectedPatterns,
+		executor.executeTest("Verify Table Data of Device Model List", expectedPatterns,
 				() -> deviceModelsPage.validateTableDataWithRegex(expectedPatterns));
 	}
 
 	@Test(priority = 23)
-	public void viewModelTest() {
-		executor.executeTest("Test Viewing a Device Model", "View/Update Device Model", () -> {
+	public void testViewModel() {
+		executor.executeTest("Verify Viewing Device Model", "View/Update Device Model", () -> {
 			try {
 				return deviceModelsPage.viewModel();
 			} catch (InterruptedException e) {
@@ -226,13 +226,13 @@ public class DeviceModelsPageTest extends TestBase {
 	/** change the false to true in future */
 	@Test(priority = 24)
 	public void testUpdateButtonIsDisabled() {
-		executor.executeTest("Test update button is disabled if no input is added while updating", false,
+		executor.executeTest("Verify Update Button Disabled Status", false,
 				deviceModelsPage::isUpdateButtonEnabled);
 	}
 
 	@Test(priority = 25)
-	public void updateModelTest() {
-		executor.executeTest("Test Updating an Existing Device Model", "Device Models", () -> {
+	public void testUpdateModel() {
+		executor.executeTest("Verify Updating Existing Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.NewInputFields("update");
 			} catch (InterruptedException e) {
@@ -243,8 +243,8 @@ public class DeviceModelsPageTest extends TestBase {
 	}
 
 	@Test(priority = 26)
-	public void searchModelTest2() {
-		executor.executeTest("Test Search Again for Device Model", "Device Models", () -> {
+	public void testSearchModelAgain() {
+		executor.executeTest("Verify Search Again for Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.searchModel2();
 			} catch (InterruptedException e) {
@@ -255,8 +255,8 @@ public class DeviceModelsPageTest extends TestBase {
 	}
 
 	@Test(priority = 27)
-	public void deleteModelTest() {
-		executor.executeTest("Test Deleting a Device Model", "Device Models", () -> {
+	public void testDeleteModel() {
+		executor.executeTest("Verify Deleting Device Model", "Device Models", () -> {
 			try {
 				return deviceModelsPage.DeleteModel();
 			} catch (InterruptedException e) {

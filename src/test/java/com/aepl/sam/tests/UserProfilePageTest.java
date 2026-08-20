@@ -56,8 +56,8 @@ public class UserProfilePageTest extends TestBase {
 	}
 
 	@Test(priority = 5)
-	public void testButtons1() {
-		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
+	public void testUserProfilePageButtons() {
+		executor.executeTest("Verify Buttons on User Profile Page", Constants.EXP_VALIDATE_BUTTONS_TEXT, assertion::validateButtons);
 	}
 
 	@Test(priority = 6)

@@ -201,12 +201,12 @@ public class SimBatchDataDetailsPageTest extends TestBase {
 
 	@Test(priority = 33)
 	public void testClickSubmitButton() {
-		executor.executeTest("Test Clicked the submit button", true, simBatch::clickSubmitButton);
+		executor.executeTest("Verify Click Submit Button", true, simBatch::clickSubmitButton);
 	}
 
 	@Test(priority = 35)
-	public void testPaginationofSimDataDetailsWholePage2() {
-		executor.executeTest("Test pagination of the whole {Sim Data Details Page}", true, () -> {
+	public void testSimDataDetailsPagination() {
+		executor.executeTest("Verify Pagination of Sim Data Details Page", true, () -> {
 			try {
 				((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
 				Thread.sleep(500);

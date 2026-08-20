@@ -56,7 +56,7 @@ public class CustomerMasterPageTest extends TestBase {
 	}
 
 	@Test(priority = 4)
-	public void testButtons1() {
+	public void testCustomerMasterPageButtons() {
 		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
 				assertion::validateButtons);
 	}
@@ -85,8 +85,8 @@ public class CustomerMasterPageTest extends TestBase {
 	}
 
 	@Test(priority = 9)
-	public void testButtons2() {
-		executor.executeTest("Verify Buttons on Customer Master Page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
+	public void testCustomerListButtons() {
+		executor.executeTest("Verify Buttons on Customer List Page", Constants.EXP_VALIDATE_BUTTONS_TEXT,
 				assertion::validateButtons);
 	}
 

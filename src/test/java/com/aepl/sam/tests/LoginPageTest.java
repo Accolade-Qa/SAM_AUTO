@@ -116,86 +116,86 @@ public class LoginPageTest extends TestBase {
 
 	@Test(priority = 9)
 	public void testCorrectUrl() {
-		executor.executeTest("Test correct url for the {Sampark Cloud}", true, loginPage::isCorrectUrl);
+		executor.executeTest("Verify Correct URL for Sampark Cloud", true, loginPage::isCorrectUrl);
 	}
 
 	@Test(priority = 10)
 	public void testLoginContainerIsDisplayed() {
-		executor.executeTest("Test the login container is displayed", true, loginPage::isLoginContainerIsDisplayed);
+		executor.executeTest("Verify Login Container Visibility", true, loginPage::isLoginContainerIsDisplayed);
 	}
 
 	@Test(priority = 11)
 	public void testSiteNameIsMatched() {
-		executor.executeTest("Test the site name is matched", Constants.EXP_PAGE_TITLE_TEXT, loginPage::siteNameMaching);
+		executor.executeTest("Verify Site Name Matching", Constants.EXP_PAGE_TITLE_TEXT, loginPage::siteNameMaching);
 	}
 
 	@Test(priority = 12)
 	public void testLoginFormContainerIsVisible() {
-		executor.executeTest("Test the login form container is visible", true, loginPage::isLoginFormContainerVisible);
+		executor.executeTest("Verify Login Form Container Visibility", true, loginPage::isLoginFormContainerVisible);
 	}
 
 	@Test(priority = 13)
 	public void testHeaderOfLoginFormContainer() {
-		executor.executeTest("Test the header of the login form container", "Welcome Back !",
+		executor.executeTest("Verify Login Form Container Header", "Welcome Back !",
 				loginPage::validateLoginFormHeader);
 	}
 
 	@Test(priority = 14)
 	public void testLabelHeaderOfEmail() {
-		executor.executeTest("Test the label header of the email field of login form container", "Your Email Address",
+		executor.executeTest("Verify Email Field Label", "Your Email Address",
 				loginPage::validateLabelOfEmailField);
 	}
 
 	@Test(priority = 15)
 	public void testPersonIconInEmailField() {
-		executor.executeTest("Test the {person} icon in the email field", true, loginPage::isPersonIconPresent);
+		executor.executeTest("Verify Person Icon in Email Field", true, loginPage::isPersonIconPresent);
 	}
 
 	@Test(priority = 16)
 	public void testLabelHeaderOfPassword() {
-		executor.executeTest("Test the label header of the email field of login form container", "Password",
+		executor.executeTest("Verify Password Field Label", "Password",
 				loginPage::validateLabelOfPasswordField);
 	}
 
 	@Test(priority = 17)
 	public void testLockIconInPasswordField() {
-		executor.executeTest("Test the {Lock} icon in the password field", true, loginPage::isLockIconPresent);
+		executor.executeTest("Verify Lock Icon in Password Field", true, loginPage::isLockIconPresent);
 	}
 
 	@Test(priority = 18)
 	public void testEyeIconDisplayedInPasswordField() {
-		executor.executeTest("Test the {Eye} icon in the password field", true, loginPage::isEyeIconPresent);
+		executor.executeTest("Verify Eye Icon Visibility in Password Field", true, loginPage::isEyeIconPresent);
 	}
 
 	@Test(priority = 19)
 	public void testEyeIconEnabledInPasswordField() {
-		executor.executeTest("Test the {Eye} icon in the password field", true, loginPage::isEyeIconEnabled);
+		executor.executeTest("Verify Eye Icon Enabled in Password Field", true, loginPage::isEyeIconEnabled);
 	}
 
 	@Test(priority = 20)
 	public void testClickOnEyeIcon() {
-		executor.executeTest("Test the clicking on eye icon in the password field", true, loginPage::isEyeIconClicked);
+		executor.executeTest("Verify Click on Eye Icon", true, loginPage::isEyeIconClicked);
 	}
 
 	@Test(priority = 21)
 	public void testPasswordLink() {
-		executor.executeTest("Test the forgot password link is present and enabled", true,
+		executor.executeTest("Verify Forgot Password Link Presence and Status", true,
 				loginPage::isForgotPasswordLinkPresentAndEnabled);
 	}
 
 	@Test(priority = 22)
 	public void testCopyright() {
-		executor.executeTest("Copyright Verification Test", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
+		executor.executeTest("Verify Copyright Functionality", Constants.EXP_COPYRIGHT_TEXT, assertion::checkCopyright);
 	}
 
 	@Test(priority = 23)
 	public void testVersion() {
-		executor.executeTest("Version Verification Test", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
+		executor.executeTest("Verify Version Functionality", Constants.EXP_VERSION_TEXT, assertion::checkVersion);
 	}
 
 	@Test(priority = 24, groups = {"sampark", "lct", "trio", "swaraj", "atcu", "smoke", "regression"})
-	public void loginSuccess() {
-		executor.executeTest("Login Success Test", true, () -> {
+	public void testLoginSuccess() {
+		executor.executeTest("Verify Successful Login with Valid Credentials", true, () -> {
 			loginPage.enterUsername(ConfigProperties.getProperty("username"))
 					.enterPassword(ConfigProperties.getProperty("password")).clickLogin();
 			return wait.until(ExpectedConditions.urlToBe(Constants.DASH_URL));

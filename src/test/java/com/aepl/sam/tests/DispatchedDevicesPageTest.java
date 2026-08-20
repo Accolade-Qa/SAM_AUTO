@@ -49,8 +49,8 @@ public class DispatchedDevicesPageTest extends TestBase {
 	}
 
 	@Test(priority = 3)
-	public void navBarLinkTest() {
-		executor.executeTest("Test Navigation to Device Utility Tab", Constants.DISP_DEVICE_LINK, dispatchedDevicePage::navBarLink);
+	public void testNavBarLink() {
+		executor.executeTest("Verify Navigation to Device Utility Tab", Constants.DISP_DEVICE_LINK, dispatchedDevicePage::navBarLink);
 	}
 
 	/*** Manual Upload ***/
