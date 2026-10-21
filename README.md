@@ -14,7 +14,7 @@ It covers UI and API validation using Java, Selenium, TestNG, and Maven.
 
 ## Tech stack
 
-- Java 17
+- Java 25 LTS
 - Selenium WebDriver
 - TestNG
 - Maven
@@ -34,7 +34,7 @@ It covers UI and API validation using Java, Selenium, TestNG, and Maven.
 
 ## Prerequisites
 
-- Java JDK 17 or newer
+- Java JDK 25 or newer
 - Apache Maven
 - Chrome, Firefox, or Edge
 
